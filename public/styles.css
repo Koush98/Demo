@@ -38,48 +38,6 @@ a {
   text-decoration: none;
 }
 
-.audio-unlock {
-  position: fixed;
-  right: 24px;
-  bottom: 24px;
-  z-index: 50;
-  display: grid;
-  gap: 4px;
-  max-width: min(360px, calc(100vw - 48px));
-  padding: 16px 18px;
-  border: 1px solid rgba(201, 162, 39, 0.28);
-  border-radius: 8px;
-  background: #071323;
-  color: #ffffff;
-  box-shadow: 0 24px 70px rgba(7, 19, 35, 0.28);
-  cursor: pointer;
-}
-
-.audio-unlock::before {
-  position: absolute;
-  inset: -5px;
-  z-index: -1;
-  border: 1px solid rgba(201, 162, 39, 0.38);
-  border-radius: 12px;
-  content: "";
-  animation: unlockPulse 1.5s ease-in-out infinite;
-}
-
-.audio-unlock span {
-  font-size: 16px;
-  font-weight: 900;
-}
-
-.audio-unlock small {
-  color: #c8d6e5;
-  font-size: 12px;
-  line-height: 1.35;
-}
-
-.audio-unlock.hidden {
-  display: none;
-}
-
 .home-page,
 .screen-page {
   background:
@@ -859,9 +817,9 @@ h2 {
 }
 
 .screen-page .camera-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-auto-rows: minmax(0, 1fr);
-  height: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  align-items: stretch;
+  height: auto;
 }
 
 .screen-page .camera-card {
@@ -870,7 +828,8 @@ h2 {
 
 .screen-page .camera-feed {
   min-height: 0;
-  height: calc(100% - 54px);
+  height: auto;
+  aspect-ratio: 16 / 9;
 }
 
 .camera-card {
@@ -1750,11 +1709,6 @@ th {
     min-height: 360px;
   }
 
-  .audio-unlock {
-    right: 12px;
-    bottom: 12px;
-    max-width: calc(100vw - 24px);
-  }
 }
 
 @media (min-width: 821px) and (max-width: 1100px) {

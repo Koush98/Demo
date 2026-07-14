@@ -4,7 +4,6 @@
   const heardText = document.getElementById("heardText");
   const responseText = document.getElementById("responseText");
   const voiceVisualizer = document.getElementById("voiceVisualizer");
-  const audioUnlock = document.getElementById("audioUnlock");
   const agentCore = document.getElementById("agentCore");
   const agentState = document.getElementById("agentState");
   const agentDetail = document.getElementById("agentDetail");
@@ -14,7 +13,6 @@
   let lastActionAt = 0;
   let currentAudio = null;
   let activityTimers = [];
-  let audioEnabled = false;
 
   const scenes = {
     welcome: renderWelcome,
@@ -31,7 +29,7 @@
   }
 
   renderIdle();
-  setupAudioUnlock();
+  runInitialGreeting();
 
   window.SnapKeySync.subscribe((payload) => {
     if (!payload || payload.at <= lastActionAt) return;
@@ -59,11 +57,6 @@
   }
 
   function playResponse(action) {
-    if (!audioEnabled) {
-      showAudioUnlock("Click to enable voice, then press the command again.");
-      return;
-    }
-
     if (currentAudio) currentAudio.pause();
     currentAudio = new Audio(action.audio);
     currentAudio.volume = 1;
@@ -71,13 +64,11 @@
     currentAudio.addEventListener("ended", () => setVoiceMode("complete"));
     currentAudio.addEventListener("pause", () => setVoiceMode("complete"));
     currentAudio.play().catch(() => {
-      showAudioUnlock("Browser blocked audio. Click to enable voice.");
       speakFallback(action.response);
     });
   }
 
   function speakFallback(text) {
-    if (!audioEnabled) return;
     if (!("speechSynthesis" in window)) return;
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
@@ -88,29 +79,12 @@
     window.speechSynthesis.speak(utterance);
   }
 
-  function setupAudioUnlock() {
-    audioUnlock.addEventListener("click", async () => {
-      try {
-        const unlockAudio = new Audio(actions[0]?.audio || "");
-        unlockAudio.muted = true;
-        unlockAudio.volume = 0;
-        await unlockAudio.play();
-        unlockAudio.pause();
-        unlockAudio.currentTime = 0;
-      } catch (error) {
-        console.warn("Silent audio unlock could not play yet.", error);
-      }
+  function runInitialGreeting() {
+    const greeting = actions.find((item) => item.id === "hi") || actions[0];
+    if (!greeting) return;
 
-      audioEnabled = true;
-      audioUnlock.classList.add("hidden");
-      setVoiceMode("complete");
-    });
-  }
-
-  function showAudioUnlock(message) {
-    audioUnlock.classList.remove("hidden");
-    const detail = audioUnlock.querySelector("small");
-    if (detail) detail.textContent = message;
+    const timer = window.setTimeout(() => runAction(greeting), 450);
+    activityTimers.push(timer);
   }
 
   function clearActivityTimers() {
