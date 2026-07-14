@@ -28,8 +28,9 @@ body {
 }
 
 body.screen-page {
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 a {
@@ -458,9 +459,9 @@ h2 {
 .screen-shell {
   display: grid;
   grid-template-rows: auto auto auto minmax(0, 1fr);
-  height: 100vh;
+  min-height: 100vh;
   padding: 12px 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .live-pill {
@@ -675,7 +676,7 @@ h2 {
 
 .scene {
   min-height: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .scene > * {
@@ -1037,8 +1038,8 @@ h2 {
 .madhushala-dashboard {
   display: grid;
   grid-template-columns: 178px minmax(0, 1fr);
-  height: 100%;
-  overflow: hidden;
+  min-height: min(720px, calc(100vh - 190px));
+  overflow: visible;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #f2f4f7;
@@ -1111,7 +1112,7 @@ h2 {
   display: grid;
   grid-template-rows: 38px 132px minmax(0, 1fr);
   min-width: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .madhu-topbar {
@@ -1199,7 +1200,7 @@ h2 {
 .madhu-report {
   min-height: 0;
   padding: 12px 20px 16px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .madhu-report h3 {
@@ -1225,15 +1226,16 @@ h2 {
 }
 
 .madhu-table-wrap {
-  height: calc(100% - 30px);
-  overflow: hidden;
+  height: auto;
+  max-height: min(520px, calc(100vh - 390px));
+  overflow: auto;
   border: 1px solid #d4d8de;
   background: #ffffff;
 }
 
 .madhu-table {
   min-width: 940px;
-  height: 100%;
+  height: auto;
   margin: 0;
   font-size: 12px;
 }
@@ -1734,6 +1736,34 @@ th {
     right: 12px;
     bottom: 12px;
     max-width: calc(100vw - 24px);
+  }
+}
+
+@media (min-width: 821px) and (max-width: 1100px) {
+  .madhushala-dashboard {
+    grid-template-columns: 132px minmax(0, 1fr);
+  }
+
+  .madhu-sidebar {
+    padding: 12px 10px;
+  }
+
+  .madhu-logo strong {
+    font-size: 12px;
+  }
+
+  .madhu-filter-grid {
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+    gap: 10px;
+  }
+
+  .madhu-filter button {
+    grid-column: 1 / -1;
+  }
+
+  .madhu-table-wrap {
+    max-height: min(560px, calc(100vh - 430px));
+    overflow: auto;
   }
 }
 
