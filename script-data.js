@@ -12,7 +12,7 @@ window.SNAPKEY_ACTIONS = [
     trigger: "Can you show me my shop camera?",
     response: "Ok, showing your shop cameras.",
     scene: "cameras",
-    steps: ["Voice command received", "Connecting to shop CCTV feed", "Checking 4 camera streams", "Camera wall opened"],
+    steps: ["Voice command received", "Connecting to shop CCTV feed", "Checking 5 camera streams", "Camera wall opened"],
     audio: "assets/audio/show-shop-cameras.mp3"
   },
   {

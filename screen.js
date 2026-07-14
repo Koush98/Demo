@@ -8,6 +8,7 @@
   const agentDetail = document.getElementById("agentDetail");
   const activityList = document.getElementById("activityList");
   const appConfig = window.SNAPKEY_CONFIG || {};
+  const cameras = appConfig.cameras || [];
   let lastActionAt = 0;
   let currentAudio = null;
   let activityTimers = [];
@@ -126,7 +127,7 @@
         <div class="metric-row">
           <article><span>Today Sales</span><strong>Rs. 84,250</strong></article>
           <article><span>Orders</span><strong>183</strong></article>
-          <article><span>Cameras</span><strong>4 Online</strong></article>
+          <article><span>Cameras</span><strong>${cameras.length || 5} Online</strong></article>
         </div>
       </div>
     `;
@@ -145,32 +146,40 @@
   }
 
   function renderCameras() {
+    const cameraList = getCameras();
     scene.innerHTML = `
       <div class="camera-grid">
-        ${cameraCard("Camera 1", "Entrance", "Customers entering", "green")}
-        ${cameraCard("Camera 2", "Billing Counter", "Queue active", "amber")}
-        ${cameraCard("Camera 3", "Aisle 4", "Normal movement", "green")}
-        ${cameraCard("Camera 4", "Stock Room", "No alerts", "green")}
+        ${cameraList.map((camera) => cameraCard(camera)).join("")}
       </div>
     `;
   }
 
   function renderCamera2() {
+    const camera = getCameras().find((item) => item.id === "camera2") || getCameras()[1];
+    const analytics = camera.analytics || {};
     scene.innerHTML = `
       <div class="focus-layout">
-        <div class="camera-feed large">
+        <div class="camera-feed large ${camera.status || ""}">
+          ${videoMarkup(camera)}
           <div class="scan-lines"></div>
-          <span class="camera-title">Camera 2 - Billing Counter</span>
+          <span class="camera-title">${camera.title} - ${camera.location}</span>
           <span class="timestamp">${new Date().toLocaleTimeString()}</span>
         </div>
         <aside class="report-panel">
           <p class="eyebrow">Camera 2 report</p>
-          <h2>Billing Counter Activity</h2>
+          <h2>People Analytics</h2>
+          <div class="people-split">
+            <article><span>Total People</span><strong>${analytics.totalPeople || 18}</strong></article>
+            <article><span>Male</span><strong>${analytics.male || 11}</strong></article>
+            <article><span>Female</span><strong>${analytics.female || 7}</strong></article>
+            <article><span>Near Counter</span><strong>${analytics.nearCounter || 6}</strong></article>
+          </div>
           <div class="report-list">
-            <div><span>Queue length</span><strong>6 people</strong></div>
-            <div><span>Average wait</span><strong>3 min 20 sec</strong></div>
-            <div><span>Transactions</span><strong>57 today</strong></div>
-            <div><span>Alert</span><strong>Counter busy</strong></div>
+            <div><span>Queue length</span><strong>${analytics.queueLength || 6} people</strong></div>
+            <div><span>Average wait</span><strong>${analytics.averageWait || "3 min 20 sec"}</strong></div>
+            <div><span>Staff visible</span><strong>${analytics.staffVisible || 2}</strong></div>
+            <div><span>Transactions</span><strong>${analytics.transactions || 57} today</strong></div>
+            <div><span>Alert</span><strong>${analytics.alert || "Counter busy"}</strong></div>
           </div>
         </aside>
       </div>
@@ -232,18 +241,40 @@
     `;
   }
 
-  function cameraCard(title, location, detail, status) {
+  function getCameras() {
+    return cameras.length
+      ? cameras
+      : [
+          { id: "camera1", title: "Camera 1", location: "Entrance", detail: "Customers entering", status: "green", video: "assets/videos/camera1.mp4" },
+          { id: "camera2", title: "Camera 2", location: "Billing Counter", detail: "Queue active", status: "amber", video: "assets/videos/camera2.mp4" },
+          { id: "camera3", title: "Camera 3", location: "Premium Shelf", detail: "Normal movement", status: "green", video: "assets/videos/camera3.mp4" },
+          { id: "camera4", title: "Camera 4", location: "Stock Room", detail: "No alerts", status: "green", video: "assets/videos/camera4.mp4" },
+          { id: "camera5", title: "Camera 5", location: "Exit Gate", detail: "Exit flow normal", status: "green", video: "assets/videos/camera5.mp4" }
+        ];
+  }
+
+  function cameraCard(camera) {
     return `
       <article class="camera-card">
-        <div class="camera-feed ${status}">
+        <div class="camera-feed ${camera.status || ""}">
+          ${videoMarkup(camera)}
           <div class="scan-lines"></div>
-          <span class="camera-title">${title}</span>
+          <span class="camera-title">${camera.title}</span>
         </div>
         <div>
-          <strong>${location}</strong>
-          <span>${detail}</span>
+          <strong>${camera.location}</strong>
+          <span>${camera.detail}</span>
         </div>
       </article>
+    `;
+  }
+
+  function videoMarkup(camera) {
+    if (!camera.video) return "";
+    return `
+      <video class="camera-video" autoplay muted loop playsinline onerror="this.hidden=true">
+        <source src="${camera.video}" type="video/mp4">
+      </video>
     `;
   }
 })();
