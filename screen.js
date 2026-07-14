@@ -363,7 +363,9 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           phoneNumber: whatsapp.phoneNumber,
-          message: decodeURIComponent(whatsapp.reportMessage || "")
+          message: decodeURIComponent(whatsapp.reportMessage || ""),
+          reportFileUrl: whatsapp.reportFileUrl,
+          reportFileName: whatsapp.reportFileName
         })
       });
 
