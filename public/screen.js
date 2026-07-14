@@ -58,13 +58,22 @@
 
   function playResponse(action) {
     if (currentAudio) currentAudio.pause();
-    currentAudio = new Audio(action.audio);
+    const queue = action.audioQueue && action.audioQueue.length ? action.audioQueue : [action.audio];
+    playAudioQueue(queue, action.response, 0);
+  }
+
+  function playAudioQueue(queue, fallbackText, index) {
+    if (!queue[index]) {
+      setVoiceMode("complete");
+      return;
+    }
+
+    currentAudio = new Audio(queue[index]);
     currentAudio.volume = 1;
     currentAudio.addEventListener("play", () => setVoiceMode("speaking"));
-    currentAudio.addEventListener("ended", () => setVoiceMode("complete"));
-    currentAudio.addEventListener("pause", () => setVoiceMode("complete"));
+    currentAudio.addEventListener("ended", () => playAudioQueue(queue, fallbackText, index + 1));
     currentAudio.play().catch(() => {
-      speakFallback(action.response);
+      speakFallback(fallbackText);
     });
   }
 

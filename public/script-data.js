@@ -29,7 +29,13 @@ window.SNAPKEY_ACTIONS = [
     response: "Opening today's business dashboard.",
     scene: "dashboard",
     steps: ["Fetching today's sales", "Calculating order summary", "Ranking categories", "Dashboard opened"],
-    audio: "assets/videos/dashboard.mp3"
+    audio: "assets/videos/dashboard.mp3",
+    audioQueue: [
+      "assets/videos/dashboard.mp3",
+      "assets/videos/dashboard/1.mp3",
+      "assets/videos/dashboard/2.mp3",
+      "assets/videos/dashboard/3.mp3"
+    ]
   },
   {
     id: "whatsapp-report",
