@@ -32,6 +32,48 @@ a {
   text-decoration: none;
 }
 
+.audio-unlock {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 50;
+  display: grid;
+  gap: 4px;
+  max-width: min(360px, calc(100vw - 48px));
+  padding: 16px 18px;
+  border: 1px solid rgba(3, 127, 255, 0.28);
+  border-radius: 8px;
+  background: #071323;
+  color: #ffffff;
+  box-shadow: 0 24px 70px rgba(7, 19, 35, 0.28);
+  cursor: pointer;
+}
+
+.audio-unlock::before {
+  position: absolute;
+  inset: -5px;
+  z-index: -1;
+  border: 1px solid rgba(3, 127, 255, 0.38);
+  border-radius: 12px;
+  content: "";
+  animation: unlockPulse 1.5s ease-in-out infinite;
+}
+
+.audio-unlock span {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.audio-unlock small {
+  color: #c8d6e5;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.audio-unlock.hidden {
+  display: none;
+}
+
 .home-page,
 .screen-page {
   background:
@@ -1184,6 +1226,18 @@ th {
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes unlockPulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.025);
   }
 }
 
