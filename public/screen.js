@@ -248,7 +248,7 @@
   function renderDashboard() {
     scene.innerHTML = `
       <div class="dashboard-image-frame">
-        <img src="assets/images/madhushala-dashboard.jpeg" alt="Madhushala item wise report dashboard">
+        <img src="assets/images/madhushala-pro-screen.png" alt="Madhushala Pro business dashboard">
       </div>
     `;
   }
