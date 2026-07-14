@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SnapKey Live Screen</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="screen-page">
+    <main class="screen-shell">
+      <header class="screen-header">
+        <div>
+          <p class="eyebrow">SnapKey assistant prototype</p>
+          <h1>Mr. Tiwari's Shop Command Center</h1>
+        </div>
+        <div class="live-pill"><span></span> Live</div>
+      </header>
+
+      <section class="assistant-line">
+        <span id="heardText">Waiting for command...</span>
+        <strong id="responseText">SnapKey is ready.</strong>
+      </section>
+
+      <section class="agent-console">
+        <div class="agent-core" id="agentCore">
+          <div class="core-ring"></div>
+          <div class="core-dot"></div>
+        </div>
+        <div class="agent-copy">
+          <p class="eyebrow">SnapKey AI Core</p>
+          <h2 id="agentState">Idle</h2>
+          <p id="agentDetail">Waiting for the next scripted command.</p>
+        </div>
+        <ol class="activity-list" id="activityList">
+          <li>System online</li>
+        </ol>
+      </section>
+
+      <section id="scene" class="scene"></section>
+    </main>
+
+    <script src="config.js"></script>
+    <script src="script-data.js"></script>
+    <script src="sync.js"></script>
+    <script src="screen.js"></script>
+  </body>
+</html>

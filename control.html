@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SnapKey Controller</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="control-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Private operator panel</p>
+          <h1>SnapKey Controller</h1>
+        </div>
+        <a class="ghost-link" href="screen.html" target="_blank">Screen</a>
+      </header>
+
+      <section class="operator-grid" id="actionList"></section>
+
+      <section class="status-strip">
+        <div>
+          <span class="label">Sync</span>
+          <strong id="syncMode">Local fallback</strong>
+        </div>
+        <div>
+          <span class="label">Last trigger</span>
+          <strong id="lastTrigger">None</strong>
+        </div>
+      </section>
+    </main>
+
+    <script src="config.js"></script>
+    <script src="script-data.js"></script>
+    <script src="sync.js"></script>
+    <script src="control.js"></script>
+  </body>
+</html>
