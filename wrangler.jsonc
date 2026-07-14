@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "snapkey-assistant",
+  "main": "_worker.js",
+  "compatibility_date": "2026-07-14",
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS"
+  }
+}
