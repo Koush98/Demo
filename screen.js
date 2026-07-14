@@ -3,6 +3,7 @@
   const scene = document.getElementById("scene");
   const heardText = document.getElementById("heardText");
   const responseText = document.getElementById("responseText");
+  const voiceVisualizer = document.getElementById("voiceVisualizer");
   const agentCore = document.getElementById("agentCore");
   const agentState = document.getElementById("agentState");
   const agentDetail = document.getElementById("agentDetail");
@@ -39,6 +40,7 @@
 
   function runAction(action) {
     clearActivityTimers();
+    setVoiceMode("listening");
     heardText.textContent = action.trigger;
     responseText.textContent = action.response;
     renderProcessing(action);
@@ -56,6 +58,9 @@
   function playResponse(action) {
     if (currentAudio) currentAudio.pause();
     currentAudio = new Audio(action.audio);
+    currentAudio.addEventListener("play", () => setVoiceMode("speaking"));
+    currentAudio.addEventListener("ended", () => setVoiceMode("complete"));
+    currentAudio.addEventListener("pause", () => setVoiceMode("complete"));
     currentAudio.play().catch(() => speakFallback(action.response));
   }
 
@@ -65,6 +70,8 @@
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = 0.95;
     utterance.pitch = 0.9;
+    utterance.onstart = () => setVoiceMode("speaking");
+    utterance.onend = () => setVoiceMode("complete");
     window.speechSynthesis.speak(utterance);
   }
 
@@ -77,6 +84,10 @@
     agentCore.className = `agent-core ${state}`;
     agentState.textContent = title;
     agentDetail.textContent = detail;
+  }
+
+  function setVoiceMode(mode) {
+    voiceVisualizer.className = `voice-visualizer ${mode}`;
   }
 
   function runActivity(action) {
@@ -92,6 +103,7 @@
         activityList.appendChild(item);
 
         if (index === 1) {
+          setVoiceMode("thinking");
           setAgentState("executing", "Executing Workflow", "Updating dashboard modules and visual response.");
         }
       }, index * 420);
@@ -102,15 +114,23 @@
   function renderProcessing(action) {
     scene.innerHTML = `
       <div class="processing-panel">
-        <div class="processing-grid">
-          <span></span><span></span><span></span><span></span>
-          <span></span><span></span><span></span><span></span>
-          <span></span><span></span><span></span><span></span>
+        <div class="agent-loader">
+          <div class="loader-orbit">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="loader-wave">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="loader-grid">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+          </div>
         </div>
         <div>
           <p class="eyebrow">Live action</p>
           <h2>${action.trigger}</h2>
-          <p>SnapKey is preparing the ${action.scene} view.</p>
+          <p>SnapKey is listening, reasoning, and preparing the ${action.scene} view.</p>
         </div>
       </div>
     `;
@@ -118,6 +138,7 @@
 
   function renderIdle() {
     setAgentState("idle", "Idle", "Waiting for the next scripted command.");
+    setVoiceMode("idle");
     scene.innerHTML = `
       <div class="idle-panel">
         <div>

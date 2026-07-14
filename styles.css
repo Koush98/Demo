@@ -433,7 +433,9 @@ h2 {
 
 .assistant-line {
   display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 10px;
+  align-items: center;
   margin-bottom: 20px;
   padding: 18px;
 }
@@ -443,7 +445,68 @@ h2 {
 }
 
 .assistant-line strong {
+  display: block;
+  margin-top: 6px;
   font-size: clamp(22px, 3vw, 34px);
+}
+
+.voice-visualizer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 158px;
+  height: 58px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffffff, #f3f8ff);
+}
+
+.voice-visualizer span {
+  width: 7px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--blue);
+  opacity: 0.35;
+  transform-origin: center;
+}
+
+.voice-visualizer.listening span {
+  animation: listenBar 780ms ease-in-out infinite;
+}
+
+.voice-visualizer.thinking span {
+  animation: thinkBar 900ms ease-in-out infinite;
+}
+
+.voice-visualizer.speaking span {
+  animation: speakBar 620ms ease-in-out infinite;
+  opacity: 0.95;
+}
+
+.voice-visualizer.complete span {
+  background: var(--green);
+  animation: completeBar 720ms ease-out 1;
+}
+
+.voice-visualizer span:nth-child(2),
+.voice-visualizer span:nth-child(8) {
+  animation-delay: 80ms;
+}
+
+.voice-visualizer span:nth-child(3),
+.voice-visualizer span:nth-child(7) {
+  animation-delay: 160ms;
+}
+
+.voice-visualizer span:nth-child(4),
+.voice-visualizer span:nth-child(6) {
+  animation-delay: 240ms;
+}
+
+.voice-visualizer span:nth-child(5) {
+  animation-delay: 320ms;
 }
 
 .agent-console {
@@ -563,6 +626,10 @@ h2 {
   min-height: 560px;
 }
 
+.scene > * {
+  animation: sceneIn 360ms ease-out both;
+}
+
 .idle-panel,
 .welcome-panel,
 .processing-panel {
@@ -584,13 +651,92 @@ h2 {
   font-size: 18px;
 }
 
-.processing-grid {
+.agent-loader {
+  position: relative;
+  display: grid;
+  width: 238px;
+  min-height: 238px;
+  place-items: center;
+}
+
+.loader-orbit {
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(3, 127, 255, 0.18);
+  border-radius: 999px;
+  animation: rotateOrbit 3.2s linear infinite;
+}
+
+.loader-orbit span {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--blue);
+  box-shadow: 0 0 22px rgba(3, 127, 255, 0.35);
+}
+
+.loader-orbit span:nth-child(1) {
+  top: -8px;
+  left: calc(50% - 8px);
+}
+
+.loader-orbit span:nth-child(2) {
+  right: 14px;
+  bottom: 22px;
+  background: var(--green);
+}
+
+.loader-orbit span:nth-child(3) {
+  bottom: 22px;
+  left: 14px;
+  background: var(--amber);
+}
+
+.loader-wave {
+  position: absolute;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 72px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 18px 46px rgba(7, 19, 35, 0.12);
+}
+
+.loader-wave i {
+  display: block;
+  width: 6px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--blue);
+  animation: speakBar 680ms ease-in-out infinite;
+}
+
+.loader-wave i:nth-child(2),
+.loader-wave i:nth-child(6) {
+  animation-delay: 90ms;
+}
+
+.loader-wave i:nth-child(3),
+.loader-wave i:nth-child(5) {
+  animation-delay: 180ms;
+}
+
+.loader-wave i:nth-child(4) {
+  animation-delay: 270ms;
+}
+
+.loader-grid {
   display: grid;
   grid-template-columns: repeat(4, 52px);
   gap: 12px;
+  opacity: 0.62;
 }
 
-.processing-grid span {
+.loader-grid span {
   width: 52px;
   height: 52px;
   border: 1px solid rgba(74, 163, 255, 0.28);
@@ -599,11 +745,11 @@ h2 {
   animation: tileScan 1.2s ease-in-out infinite;
 }
 
-.processing-grid span:nth-child(2n) {
+.loader-grid span:nth-child(2n) {
   animation-delay: 120ms;
 }
 
-.processing-grid span:nth-child(3n) {
+.loader-grid span:nth-child(3n) {
   animation-delay: 240ms;
 }
 
@@ -978,10 +1124,74 @@ th {
   }
 }
 
+@keyframes listenBar {
+  0%,
+  100% {
+    height: 10px;
+    opacity: 0.35;
+  }
+  50% {
+    height: 30px;
+    opacity: 0.8;
+  }
+}
+
+@keyframes thinkBar {
+  0%,
+  100% {
+    height: 12px;
+    transform: translateY(0);
+  }
+  50% {
+    height: 22px;
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes speakBar {
+  0%,
+  100% {
+    height: 12px;
+  }
+  35% {
+    height: 36px;
+  }
+  65% {
+    height: 22px;
+  }
+}
+
+@keyframes completeBar {
+  0% {
+    height: 30px;
+  }
+  100% {
+    height: 10px;
+  }
+}
+
+@keyframes rotateOrbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sceneIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @media (max-width: 820px) {
   .home-hero,
   .topbar,
   .screen-header,
+  .assistant-line,
   .agent-console,
   .processing-panel,
   .focus-layout,
