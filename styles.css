@@ -858,7 +858,11 @@ th {
   font-weight: 900;
 }
 
-.phone-shell button {
+.phone-shell button,
+.send-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   align-self: end;
   min-height: 44px;
   border: 0;

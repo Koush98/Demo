@@ -7,6 +7,7 @@
   const agentState = document.getElementById("agentState");
   const agentDetail = document.getElementById("agentDetail");
   const activityList = document.getElementById("activityList");
+  const appConfig = window.SNAPKEY_CONFIG || {};
   let lastActionAt = 0;
   let currentAudio = null;
   let activityTimers = [];
@@ -183,7 +184,7 @@
           <article><span>Total Sales</span><strong>Rs. 84,250</strong></article>
           <article><span>Orders</span><strong>183</strong></article>
           <article><span>Avg. Bill</span><strong>Rs. 460</strong></article>
-          <article><span>Top Item</span><strong>Rice 5kg</strong></article>
+          <article><span>Top Item</span><strong>Kingfisher 650ml</strong></article>
         </div>
         <div class="chart-panel">
           <p class="eyebrow">Hourly sales</p>
@@ -192,12 +193,14 @@
           </div>
         </div>
         <div class="table-panel">
-          <p class="eyebrow">Category performance</p>
+          <p class="eyebrow">Liquor category performance</p>
           <table>
             <tr><th>Category</th><th>Sales</th><th>Status</th></tr>
-            <tr><td>Grocery</td><td>Rs. 36,400</td><td>High</td></tr>
-            <tr><td>Dairy</td><td>Rs. 18,950</td><td>Stable</td></tr>
-            <tr><td>Personal Care</td><td>Rs. 12,700</td><td>Growing</td></tr>
+            <tr><td>Beer</td><td>Rs. 32,800</td><td>High</td></tr>
+            <tr><td>Whisky</td><td>Rs. 27,450</td><td>High</td></tr>
+            <tr><td>Vodka</td><td>Rs. 9,700</td><td>Stable</td></tr>
+            <tr><td>Rum</td><td>Rs. 8,950</td><td>Stable</td></tr>
+            <tr><td>Wine</td><td>Rs. 5,350</td><td>Growing</td></tr>
           </table>
         </div>
       </div>
@@ -205,18 +208,25 @@
   }
 
   function renderWhatsapp() {
+    const whatsapp = appConfig.whatsapp || {};
+    const phoneNumber = whatsapp.phoneNumber || "";
+    const message = whatsapp.reportMessage || "Madhushala POS sales report is ready.";
+    const sendUrl = phoneNumber
+      ? `https://wa.me/${phoneNumber}?text=${message}`
+      : `https://wa.me/?text=${message}`;
+
     scene.innerHTML = `
       <div class="whatsapp-panel">
         <div class="phone-shell">
           <div class="chat-header">WhatsApp - Mr. Tiwari</div>
           <div class="message">Today's sales report is ready.</div>
-          <div class="message document">Sales_Report_Today.pdf</div>
-          <button type="button">Ready to Send</button>
+          <div class="message document">Madhushala_Sales_Report_Today.pdf</div>
+          <a class="send-whatsapp" href="${sendUrl}" target="_blank" rel="noopener">Open WhatsApp</a>
         </div>
         <aside>
           <p class="eyebrow">Report prepared</p>
-          <h2>Sales report queued</h2>
-          <p>Total sales, order count, top categories, and camera summary are attached.</p>
+          <h2>Liquor sales report queued</h2>
+          <p>Beer, whisky, vodka, rum, wine, total bills, and top item summary are ready for WhatsApp.</p>
         </aside>
       </div>
     `;
