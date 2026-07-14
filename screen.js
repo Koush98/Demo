@@ -247,29 +247,72 @@
 
   function renderDashboard() {
     scene.innerHTML = `
-      <div class="dashboard-layout">
-        <div class="metric-row">
-          <article><span>Total Sales</span><strong>Rs. 84,250</strong></article>
-          <article><span>Orders</span><strong>183</strong></article>
-          <article><span>Avg. Bill</span><strong>Rs. 460</strong></article>
-          <article><span>Top Item</span><strong>Kingfisher 650ml</strong></article>
-        </div>
-        <div class="chart-panel">
-          <p class="eyebrow">Hourly sales</p>
-          <div class="bar-chart">
-            ${[34, 48, 43, 58, 72, 67, 88, 76].map((height) => `<span style="height:${height}%"></span>`).join("")}
+      <div class="madhushala-dashboard">
+        <aside class="madhu-sidebar">
+          <div class="madhu-logo">
+            <span>M</span>
+            <strong>Madhushala</strong>
+            <small>Organic Liquor</small>
           </div>
-        </div>
-        <div class="table-panel">
-          <p class="eyebrow">Liquor category performance</p>
-          <table>
-            <tr><th>Category</th><th>Sales</th><th>Status</th></tr>
-            <tr><td>Beer</td><td>Rs. 32,800</td><td>High</td></tr>
-            <tr><td>Whisky</td><td>Rs. 27,450</td><td>High</td></tr>
-            <tr><td>Vodka</td><td>Rs. 9,700</td><td>Stable</td></tr>
-            <tr><td>Rum</td><td>Rs. 8,950</td><td>Stable</td></tr>
-            <tr><td>Wine</td><td>Rs. 5,350</td><td>Growing</td></tr>
-          </table>
+          <p>Menu</p>
+          <nav>
+            <span>Dashboard</span>
+            <strong>Sales</strong>
+            <b>Item wise report</b>
+            <span>Category wise report</span>
+            <span>Store wise report</span>
+            <span>Customer wise report</span>
+            <span>Sale summary report</span>
+            <span>Purchase</span>
+          </nav>
+        </aside>
+        <div class="madhu-main">
+          <header class="madhu-topbar">
+            <span>[ Amit ]</span>
+            <button type="button">Master creation</button>
+            <strong>Log Out</strong>
+          </header>
+          <section class="madhu-filter">
+            <h2>Select a date range</h2>
+            <div class="madhu-filter-grid">
+              <label>From <input value="07/14/2026" readonly></label>
+              <label>To <input value="07/14/2026" readonly></label>
+              <input value="Category" readonly>
+              <input value="Manufacture" readonly>
+              <button type="button">Filter</button>
+            </div>
+          </section>
+          <section class="madhu-report">
+            <h3><span>ITEM WISE</span> REPORT <b>X</b></h3>
+            <div class="madhu-table-wrap">
+              <table class="madhu-table">
+                <thead>
+                  <tr>
+                    <th>Item Name</th>
+                    <th>Category</th>
+                    <th>Items Sold</th>
+                    <th>Unit price</th>
+                    <th>Gross Sales</th>
+                    <th>Discounts</th>
+                    <th>Net Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${itemRows().map((row) => `
+                    <tr>
+                      <td>${row.name}</td>
+                      <td>${row.category}</td>
+                      <td>${row.sold}</td>
+                      <td>${row.price}</td>
+                      <td>${row.gross}</td>
+                      <td>0.00</td>
+                      <td>${row.net}</td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
+          </section>
         </div>
       </div>
     `;
@@ -287,17 +330,68 @@
       <div class="whatsapp-panel">
         <div class="phone-shell">
           <div class="chat-header">WhatsApp - Mr. Tiwari</div>
-          <div class="message">Today's sales report is ready.</div>
+          <div class="message" id="whatsappStatus">Sending today's sales report...</div>
           <div class="message document">Madhushala_Sales_Report_Today.pdf</div>
           <a class="send-whatsapp" href="${sendUrl}" target="_blank" rel="noopener">Open WhatsApp</a>
         </div>
         <aside>
           <p class="eyebrow">Report prepared</p>
-          <h2>Liquor sales report queued</h2>
-          <p>Beer, whisky, vodka, rum, wine, total bills, and top item summary are ready for WhatsApp.</p>
+          <h2 id="whatsappTitle">Sending report</h2>
+          <p id="whatsappDetail">SnapKey is preparing the WhatsApp delivery status.</p>
         </aside>
       </div>
     `;
+    sendWhatsappReport(whatsapp);
+  }
+
+  async function sendWhatsappReport(whatsapp) {
+    const status = document.getElementById("whatsappStatus");
+    const title = document.getElementById("whatsappTitle");
+    const detail = document.getElementById("whatsappDetail");
+    const endpoint = whatsapp.autoSendEndpoint;
+
+    if (!endpoint) {
+      status.textContent = "WhatsApp API is not connected. Open WhatsApp to send manually.";
+      title.textContent = "Manual send required";
+      detail.textContent = "For automatic sending, connect a backend endpoint using WhatsApp Cloud API.";
+      return;
+    }
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          phoneNumber: whatsapp.phoneNumber,
+          message: decodeURIComponent(whatsapp.reportMessage || "")
+        })
+      });
+
+      if (!response.ok) throw new Error(`WhatsApp endpoint failed: ${response.status}`);
+      status.textContent = "Today's sales report has been sent on WhatsApp.";
+      title.textContent = "Report sent";
+      detail.textContent = "Beer, whisky, vodka, rum, wine, total bills, and top item summary were delivered.";
+    } catch (error) {
+      console.warn(error);
+      status.textContent = "Automatic WhatsApp send failed. Open WhatsApp to send manually.";
+      title.textContent = "Delivery needs attention";
+      detail.textContent = "Check the WhatsApp API endpoint or use the Open WhatsApp button.";
+    }
+  }
+
+  function itemRows() {
+    return [
+      { name: "5000(B)500ML", category: "BEER MADE IN INDIA", sold: 96, price: 110, gross: "10,560.00", net: "10,560.00" },
+      { name: "5000(B)650ML", category: "BEER MADE IN INDIA", sold: 2, price: 148, gross: "296.00", net: "296.00" },
+      { name: "5000(B)650ML", category: "BEER MADE IN INDIA", sold: 10, price: 150, gross: "1,500.00", net: "1,500.00" },
+      { name: "BACARDI LIMON(R)375ML", category: "IMFL RUM", sold: 1, price: 530, gross: "530.00", net: "530.00" },
+      { name: "BACARDI MANGO CHILLI(R)180ML", category: "IMFL RUM", sold: 8, price: 287, gross: "2,296.00", net: "2,296.00" },
+      { name: "BACARDI MANGO CHILLI(R)180ML", category: "IMFL RUM", sold: 2, price: 290, gross: "580.00", net: "580.00" },
+      { name: "BACARDI MANGO CHILLI(R)375ML", category: "IMFL RUM", sold: 6, price: 524, gross: "3,144.00", net: "3,144.00" },
+      { name: "BACARDI MANGO CHILLI(R)375ML", category: "IMFL RUM", sold: 1, price: 530, gross: "530.00", net: "530.00" },
+      { name: "BACARDI MANGO CHILLI(R)750ML", category: "IMFL RUM", sold: 1, price: 1000, gross: "1,000.00", net: "1,000.00" },
+      { name: "BACARDI(R)180ML", category: "IMFL RUM", sold: 1, price: 280, gross: "280.00", net: "280.00" }
+    ];
   }
 
   function getCameras() {

@@ -10,6 +10,9 @@ window.SNAPKEY_CONFIG = {
   whatsapp: {
     // Add country code without +. Example India: "919876543210"
     phoneNumber: "9162906645470",
+    // Optional: add a backend URL that sends through WhatsApp Cloud API.
+    // The browser will POST { phoneNumber, message } and mark the report sent only when it returns OK.
+    autoSendEndpoint: "",
     reportMessage: "Madhushala POS today's sales report:%0A%0ATotal Sales: Rs. 84,250%0ABills: 183%0AAverage Bill: Rs. 460%0ATop Item: Kingfisher Premium 650ml%0A%0ACategory Sales:%0ABeer: Rs. 32,800%0AWhisky: Rs. 27,450%0AVodka: Rs. 9,700%0ARum: Rs. 8,950%0AWine: Rs. 5,350"
   },
 
