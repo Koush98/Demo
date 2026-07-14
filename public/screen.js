@@ -4,6 +4,9 @@
   const heardText = document.getElementById("heardText");
   const responseText = document.getElementById("responseText");
   const voiceVisualizer = document.getElementById("voiceVisualizer");
+  const permissionGate = document.getElementById("permissionGate");
+  const permissionStart = document.getElementById("permissionStart");
+  const permissionNote = document.getElementById("permissionNote");
   const agentCore = document.getElementById("agentCore");
   const agentState = document.getElementById("agentState");
   const agentDetail = document.getElementById("agentDetail");
@@ -13,6 +16,7 @@
   let lastActionAt = 0;
   let currentAudio = null;
   let activityTimers = [];
+  let voiceReady = false;
 
   const scenes = {
     welcome: renderWelcome,
@@ -29,7 +33,7 @@
   }
 
   renderIdle();
-  runInitialGreeting();
+  setupPermissionGate();
 
   window.SnapKeySync.subscribe((payload) => {
     if (!payload || payload.at <= lastActionAt) return;
@@ -57,6 +61,11 @@
   }
 
   function playResponse(action) {
+    if (!voiceReady) {
+      setVoiceMode("thinking");
+      return;
+    }
+
     if (currentAudio) currentAudio.pause();
     const queue = action.audioQueue && action.audioQueue.length ? action.audioQueue : [action.audio];
     playAudioQueue(queue, action.response, 0);
@@ -94,6 +103,39 @@
 
     const timer = window.setTimeout(() => runAction(greeting), 450);
     activityTimers.push(timer);
+  }
+
+  function setupPermissionGate() {
+    permissionStart.addEventListener("click", async () => {
+      permissionStart.disabled = true;
+      permissionStart.textContent = "Starting...";
+
+      try {
+        if (navigator.mediaDevices?.getUserMedia) {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          stream.getTracks().forEach((track) => track.stop());
+        }
+        permissionNote.textContent = "Voice session is ready.";
+      } catch (error) {
+        console.warn("Microphone permission was not granted.", error);
+        permissionNote.textContent = "Microphone was skipped. Speaker audio will still be enabled.";
+      }
+
+      try {
+        const unlockAudio = new Audio(actions[0]?.audio || "");
+        unlockAudio.muted = true;
+        unlockAudio.volume = 0;
+        await unlockAudio.play();
+        unlockAudio.pause();
+        unlockAudio.currentTime = 0;
+      } catch (error) {
+        console.warn("Speaker unlock fallback finished with browser warning.", error);
+      }
+
+      voiceReady = true;
+      permissionGate.classList.add("hidden");
+      runInitialGreeting();
+    });
   }
 
   function clearActivityTimers() {
