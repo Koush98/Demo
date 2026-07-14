@@ -211,6 +211,7 @@ h2 {
 }
 
 .status-strip > div,
+.controller-preview,
 .assistant-line,
 .agent-console,
 .idle-panel,
@@ -234,6 +235,177 @@ h2 {
 .status-strip strong {
   display: block;
   margin-top: 4px;
+}
+
+.controller-preview {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 10;
+  width: min(360px, calc(100vw - 44px));
+  padding: 14px;
+}
+
+.preview-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.preview-header strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.preview-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(0, 208, 132, 0.12);
+  color: #08784f;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.preview-live i {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--green);
+}
+
+.preview-stage {
+  display: grid;
+  min-height: 150px;
+  margin-top: 12px;
+  padding: 12px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8fbff;
+  overflow: hidden;
+}
+
+.preview-response {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.preview-idle {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+}
+
+.preview-idle span {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: var(--blue);
+  box-shadow: 0 0 28px rgba(3, 127, 255, 0.25);
+  animation: corePulse 1.4s ease-in-out infinite;
+}
+
+.preview-idle p {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.mini-camera-grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.mini-camera-grid span,
+.mini-focus > span {
+  min-height: 56px;
+  border-radius: 6px;
+  background:
+    linear-gradient(120deg, rgba(3, 127, 255, 0.28), transparent 45%),
+    repeating-linear-gradient(90deg, #132133 0 10px, #071323 10px 20px);
+}
+
+.mini-camera-grid span.hot {
+  background:
+    linear-gradient(120deg, rgba(252, 185, 0, 0.3), transparent 45%),
+    repeating-linear-gradient(90deg, #34495e 0 10px, #132133 10px 20px);
+}
+
+.mini-focus {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr 92px;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.mini-focus > span {
+  min-height: 110px;
+}
+
+.mini-focus div,
+.mini-dashboard,
+.mini-phone {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+}
+
+.mini-focus b,
+.mini-dashboard span,
+.mini-dashboard p,
+.mini-phone span,
+.mini-phone b {
+  display: block;
+  border-radius: 6px;
+  background: #dce9f7;
+}
+
+.mini-focus b {
+  height: 22px;
+}
+
+.mini-dashboard div {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.mini-dashboard span {
+  height: 42px;
+}
+
+.mini-dashboard p {
+  height: 78px;
+  background: linear-gradient(180deg, rgba(3, 127, 255, 0.35), rgba(2, 111, 224, 0.16));
+}
+
+.mini-phone {
+  max-width: 160px;
+  min-height: 130px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #eaf7f1;
+}
+
+.mini-phone span {
+  height: 28px;
+  background: #ffffff;
+}
+
+.mini-phone b {
+  height: 34px;
+  background: var(--green);
 }
 
 .screen-shell {
@@ -788,6 +960,12 @@ th {
   .metric-row,
   .status-strip {
     grid-template-columns: 1fr;
+  }
+
+  .controller-preview {
+    position: static;
+    width: 100%;
+    margin-top: 18px;
   }
 
   .home-hero {
