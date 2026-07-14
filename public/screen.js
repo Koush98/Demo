@@ -247,73 +247,8 @@
 
   function renderDashboard() {
     scene.innerHTML = `
-      <div class="madhushala-dashboard">
-        <aside class="madhu-sidebar">
-          <div class="madhu-logo">
-            <span>M</span>
-            <strong>Madhushala</strong>
-            <small>Organic Liquor</small>
-          </div>
-          <p>Menu</p>
-          <nav>
-            <span>Dashboard</span>
-            <strong>Sales</strong>
-            <b>Item wise report</b>
-            <span>Category wise report</span>
-            <span>Store wise report</span>
-            <span>Customer wise report</span>
-            <span>Sale summary report</span>
-            <span>Purchase</span>
-          </nav>
-        </aside>
-        <div class="madhu-main">
-          <header class="madhu-topbar">
-            <span>[ Amit ]</span>
-            <button type="button">Master creation</button>
-            <strong>Log Out</strong>
-          </header>
-          <section class="madhu-filter">
-            <h2>Select a date range</h2>
-            <div class="madhu-filter-grid">
-              <label>From <input value="07/14/2026" readonly></label>
-              <label>To <input value="07/14/2026" readonly></label>
-              <input value="Category" readonly>
-              <input value="Manufacture" readonly>
-              <button type="button">Filter</button>
-            </div>
-          </section>
-          <section class="madhu-report">
-            <h3><span>ITEM WISE</span> REPORT <b>X</b></h3>
-            <div class="madhu-table-wrap">
-              <table class="madhu-table">
-                <thead>
-                  <tr>
-                    <th>Item Name</th>
-                    <th>Category</th>
-                    <th>Items Sold</th>
-                    <th>Unit price</th>
-                    <th>Gross Sales</th>
-                    <th>Discounts</th>
-                    <th>Net Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${itemRows().map((row) => `
-                    <tr>
-                      <td>${row.name}</td>
-                      <td>${row.category}</td>
-                      <td>${row.sold}</td>
-                      <td>${row.price}</td>
-                      <td>${row.gross}</td>
-                      <td>0.00</td>
-                      <td>${row.net}</td>
-                    </tr>
-                  `).join("")}
-                </tbody>
-              </table>
-            </div>
-          </section>
-        </div>
+      <div class="dashboard-image-frame">
+        <img src="assets/images/madhushala-dashboard.jpeg" alt="Madhushala item wise report dashboard">
       </div>
     `;
   }
