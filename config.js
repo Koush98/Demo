@@ -1,27 +1,11 @@
 window.SNAPKEY_CONFIG = {
-  // Use "local", "firebase", or "supabase".
-  // Leave as "local" for same-browser testing.
-  provider: "local",
+  provider: "supabase",
 
-  // Optional Supabase Realtime config.
-  // 1. Create a Supabase project.
-  // 2. Copy Project URL and anon public key from Project Settings > API.
-  // 3. Set provider to "supabase".
-  //
-  // supabase: {
-  //   url: "https://YOUR_PROJECT.supabase.co",
-  //   anonKey: "YOUR_ANON_PUBLIC_KEY",
-  //   channel: "snapkey-demo"
-  // },
+  supabase: {
+    url: "https://bsfwffwsmpkijfhcnjzp.supabase.co",
+    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzZndmZndzbXBraWpmaGNuanpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQwMTI2OTUsImV4cCI6MjA5OTU4ODY5NX0.VoNM0SwG9jZzmcJ5MNVoOKRG1clsOUgv6K7VBVpUVKU",
+    channel: "Demo"
+  },
 
-  // Optional Firebase Realtime Database config.
-  //
-  // firebase: {
-  //   apiKey: "YOUR_API_KEY",
-  //   authDomain: "YOUR_PROJECT.firebaseapp.com",
-  //   databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-  //   projectId: "YOUR_PROJECT",
-  //   appId: "YOUR_APP_ID"
-  // },
-  channelPath: "snapkey-demo/currentAction"
+  channelPath: "Demo/currentAction"
 };
