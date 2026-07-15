@@ -231,6 +231,7 @@
         ${cameraList.map((camera) => cameraCard(camera)).join("")}
       </div>
     `;
+    keepCameraVideosLive();
   }
 
   function renderCamera2() {
@@ -263,6 +264,7 @@
         </aside>
       </div>
     `;
+    keepCameraVideosLive();
   }
 
   function renderDashboard() {
@@ -382,9 +384,31 @@
   function videoMarkup(camera) {
     if (!camera.video) return "";
     return `
-      <video class="camera-video" autoplay muted loop playsinline onerror="this.hidden=true">
+      <video class="camera-video" autoplay muted loop playsinline preload="auto" disablepictureinpicture controlslist="nodownload noplaybackrate noremoteplayback" onerror="this.hidden=true">
         <source src="${camera.video}" type="video/mp4">
       </video>
     `;
+  }
+
+  function keepCameraVideosLive() {
+    scene.querySelectorAll(".camera-video").forEach((video) => {
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.controls = false;
+
+      const restart = () => {
+        if (!Number.isFinite(video.duration) || video.duration <= 0) return;
+        video.currentTime = 0.05;
+        video.play().catch(() => {});
+      };
+
+      video.addEventListener("ended", restart);
+      video.addEventListener("pause", () => {
+        if (!video.hidden) video.play().catch(() => {});
+      });
+      video.addEventListener("stalled", () => video.load());
+      video.play().catch(() => {});
+    });
   }
 })();
