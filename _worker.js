@@ -7,7 +7,8 @@ export default {
         return json({
           ok: true,
           service: "snapkey-whatsapp-report",
-          version: "whatsapp-debug-2026-07-15"
+          version: "whatsapp-debug-2026-07-15",
+          runtime: whatsappRuntimeStatus(env)
         });
       }
 
@@ -30,8 +31,12 @@ export default {
 };
 
 async function sendWhatsAppReport(request, env) {
-  if (!env.WHATSAPP_ACCESS_TOKEN || !env.WHATSAPP_PHONE_NUMBER_ID) {
-    return json({ error: "WhatsApp environment variables are not configured." }, 500);
+  const runtime = whatsappRuntimeStatus(env);
+  if (!runtime.hasAccessToken || !runtime.hasPhoneNumberId) {
+    return json({
+      error: "WhatsApp environment variables are not configured.",
+      runtime
+    }, 500);
   }
 
   let payload;
@@ -112,6 +117,15 @@ async function sendWhatsApp(url, accessToken, body) {
     ok: response.ok,
     status: response.status,
     body: responseBody
+  };
+}
+
+function whatsappRuntimeStatus(env) {
+  return {
+    hasAccessToken: Boolean(env.WHATSAPP_ACCESS_TOKEN),
+    hasPhoneNumberId: Boolean(env.WHATSAPP_PHONE_NUMBER_ID),
+    hasRecipient: Boolean(env.WHATSAPP_TO),
+    graphVersion: env.WHATSAPP_GRAPH_VERSION || "v23.0"
   };
 }
 
