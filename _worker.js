@@ -1,3 +1,6 @@
+const DEFAULT_WHATSAPP_PHONE_NUMBER_ID = "1181224611746758";
+const DEFAULT_WHATSAPP_GRAPH_VERSION = "v25.0";
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -54,8 +57,9 @@ async function sendWhatsAppReport(request, env) {
   if (!to) return json({ error: "Recipient phone number is required." }, 400);
   if (!message) return json({ error: "Message is required." }, 400);
 
-  const graphVersion = env.WHATSAPP_GRAPH_VERSION || "v23.0";
-  const graphUrl = `https://graph.facebook.com/${graphVersion}/${env.WHATSAPP_PHONE_NUMBER_ID}/messages`;
+  const graphVersion = env.WHATSAPP_GRAPH_VERSION || DEFAULT_WHATSAPP_GRAPH_VERSION;
+  const phoneNumberId = getWhatsAppPhoneNumberId(env);
+  const graphUrl = `https://graph.facebook.com/${graphVersion}/${phoneNumberId}/messages`;
 
   const textResult = await sendWhatsApp(graphUrl, env.WHATSAPP_ACCESS_TOKEN, {
     messaging_product: "whatsapp",
@@ -121,12 +125,18 @@ async function sendWhatsApp(url, accessToken, body) {
 }
 
 function whatsappRuntimeStatus(env) {
+  const phoneNumberId = getWhatsAppPhoneNumberId(env);
   return {
     hasAccessToken: Boolean(env.WHATSAPP_ACCESS_TOKEN),
-    hasPhoneNumberId: Boolean(env.WHATSAPP_PHONE_NUMBER_ID),
+    hasPhoneNumberId: Boolean(phoneNumberId),
+    phoneNumberIdSource: env.WHATSAPP_PHONE_NUMBER_ID ? "env" : "fallback",
     hasRecipient: Boolean(env.WHATSAPP_TO),
-    graphVersion: env.WHATSAPP_GRAPH_VERSION || "v23.0"
+    graphVersion: env.WHATSAPP_GRAPH_VERSION || DEFAULT_WHATSAPP_GRAPH_VERSION
   };
+}
+
+function getWhatsAppPhoneNumberId(env) {
+  return env.WHATSAPP_PHONE_NUMBER_ID || env.PHONE_NUMBER_ID || env.WHATSAPP_PHONE_ID || DEFAULT_WHATSAPP_PHONE_NUMBER_ID;
 }
 
 function json(body, status = 200) {
