@@ -248,9 +248,9 @@
           <p class="eyebrow">Camera 2 report</p>
           <h2>Live Detection</h2>
           <div class="people-split">
-            <article><span>Customers</span><strong>${analytics.customers || "9-10"}</strong></article>
+            <article><span>Customers</span><strong>${analytics.customers || 5}</strong></article>
             <article><span>Staff</span><strong>${analytics.staff || 3}</strong></article>
-            <article><span>Bottles</span><strong>${analytics.bottles || "6-7"}</strong></article>
+            <article><span>Bottles</span><strong>${analytics.bottles || 2}</strong></article>
           </div>
         </aside>
       </div>

@@ -35,9 +35,9 @@ window.SNAPKEY_CONFIG = {
       status: "amber",
       video: "https://res.cloudinary.com/dhluqyjl5/video/upload/v1784119579/cam_2_fasvxn.mp4",
       analytics: {
-        customers: "9-10",
+        customers: 5,
         staff: 3,
-        bottles: "6-7"
+        bottles: 2
       }
     },
     {
