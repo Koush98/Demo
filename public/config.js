@@ -33,16 +33,11 @@ window.SNAPKEY_CONFIG = {
       location: "Billing Counter",
       detail: "Queue active",
       status: "amber",
-      video: "https://res.cloudinary.com/dhluqyjl5/video/upload/v1784113871/2_annotated_annotated_gogl94.mp4",
+      video: "https://res.cloudinary.com/dhluqyjl5/video/upload/v1784119579/cam_2_fasvxn.mp4",
       analytics: {
-        totalPeople: "9-10",
-        staffVisible: 3,
-        bottlesOnTable: "6-7",
-        counterStatus: "Active",
-        queueLength: "5-6",
-        averageWait: "2 min 10 sec",
-        transactions: 57,
-        alert: "Bottles detected on table"
+        customers: "9-10",
+        staff: 3,
+        bottles: "6-7"
       }
     },
     {
