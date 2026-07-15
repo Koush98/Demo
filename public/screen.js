@@ -321,13 +321,49 @@
       if (!response.ok) throw new Error(formatWhatsappError(response.status, result));
       status.textContent = "Today's sales report was accepted by WhatsApp.";
       title.textContent = "Report submitted";
-      detail.textContent = "WhatsApp returned message IDs for the sales summary and CSV report.";
+      detail.textContent = "Waiting for WhatsApp delivery confirmation...";
+      pollWhatsappStatus(whatsapp, status, title, detail);
     } catch (error) {
       console.warn(error);
       status.textContent = "Automatic WhatsApp send failed. Open WhatsApp to send manually.";
       title.textContent = "Delivery needs attention";
       detail.textContent = error.message || "Check the WhatsApp API endpoint or use the Open WhatsApp button.";
     }
+  }
+
+  function pollWhatsappStatus(whatsapp, status, title, detail) {
+    let attempts = 0;
+    const to = encodeURIComponent(whatsapp.phoneNumber || "");
+    const timer = window.setInterval(async () => {
+      attempts += 1;
+
+      try {
+        const response = await fetch(`/api/whatsapp-status?to=${to}`);
+        const result = await response.json();
+        const summary = result.summary || {};
+
+        if (summary.status && summary.status !== "waiting") {
+          title.textContent = `WhatsApp ${summary.label}`;
+          detail.textContent = whatsappStatusDetail(summary.status, result.records || []);
+        }
+
+        if (["delivered", "read", "failed"].includes(summary.status) || attempts >= 24) {
+          window.clearInterval(timer);
+        }
+      } catch (error) {
+        console.warn(error);
+        if (attempts >= 24) window.clearInterval(timer);
+      }
+    }, 2500);
+  }
+
+  function whatsappStatusDetail(status, records) {
+    const reportRecord = records.find((record) => record.kind === "report") || records[0];
+    if (status === "read") return "The recipient opened the WhatsApp report message.";
+    if (status === "delivered") return "The CSV report reached the recipient's WhatsApp.";
+    if (status === "sent") return "WhatsApp has sent the report toward the recipient.";
+    if (status === "failed") return reportRecord?.errorMessage || "WhatsApp reported that delivery failed.";
+    return "WhatsApp accepted the sales summary and CSV report.";
   }
 
   function formatWhatsappError(statusCode, result) {

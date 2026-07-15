@@ -1,5 +1,6 @@
 const DEFAULT_WHATSAPP_PHONE_NUMBER_ID = "1181224611746758";
 const DEFAULT_WHATSAPP_GRAPH_VERSION = "v25.0";
+const whatsappMessageStatuses = new Map();
 
 export default {
   async fetch(request, env) {
@@ -41,6 +42,14 @@ export default {
       return json({ error: "Method not allowed." }, 405);
     }
 
+    if (url.pathname === "/api/whatsapp-status") {
+      if (request.method !== "GET") {
+        return json({ error: "Method not allowed." }, 405);
+      }
+
+      return getWhatsAppStatus(url);
+    }
+
     return env.ASSETS.fetch(request);
   }
 };
@@ -76,6 +85,8 @@ async function receiveWhatsAppWebhook(request) {
   const statuses = extractWhatsAppStatuses(payload);
   const messages = extractWhatsAppMessages(payload);
 
+  statuses.forEach((status) => updateWhatsAppStatus(status));
+
   console.log("whatsapp-webhook", JSON.stringify({ statuses, messages }));
 
   return json({
@@ -86,6 +97,59 @@ async function receiveWhatsAppWebhook(request) {
     },
     statuses
   });
+}
+
+function getWhatsAppStatus(url) {
+  const to = String(url.searchParams.get("to") || "").replace(/\D/g, "");
+  const records = Array.from(whatsappMessageStatuses.values())
+    .filter((record) => !to || record.recipientId === to)
+    .sort((a, b) => b.updatedAt - a.updatedAt)
+    .slice(0, 12);
+
+  return json({
+    ok: true,
+    records,
+    summary: summarizeWhatsAppRecords(records)
+  });
+}
+
+function rememberWhatsAppMessages(kind, result, recipientId) {
+  (result?.messages || []).forEach((message) => {
+    whatsappMessageStatuses.set(message.id, {
+      id: message.id,
+      kind,
+      status: "accepted",
+      recipientId,
+      updatedAt: Date.now()
+    });
+  });
+}
+
+function updateWhatsAppStatus(status) {
+  if (!status.id) return;
+
+  const previous = whatsappMessageStatuses.get(status.id) || {};
+  whatsappMessageStatuses.set(status.id, {
+    ...previous,
+    id: status.id,
+    kind: previous.kind || "message",
+    status: status.status || previous.status || "unknown",
+    recipientId: status.recipientId || previous.recipientId || "",
+    timestamp: status.timestamp || previous.timestamp,
+    conversationId: status.conversationId || previous.conversationId,
+    errorCode: status.errorCode || previous.errorCode,
+    errorMessage: status.errorMessage || previous.errorMessage,
+    updatedAt: Date.now()
+  });
+}
+
+function summarizeWhatsAppRecords(records) {
+  if (!records.length) return { status: "waiting", label: "Waiting for WhatsApp status" };
+  if (records.some((record) => record.status === "failed")) return { status: "failed", label: "Failed" };
+  if (records.some((record) => record.status === "read")) return { status: "read", label: "Read" };
+  if (records.some((record) => record.status === "delivered")) return { status: "delivered", label: "Delivered" };
+  if (records.some((record) => record.status === "sent")) return { status: "sent", label: "Sent" };
+  return { status: "accepted", label: "Accepted by WhatsApp" };
 }
 
 function extractWhatsAppStatuses(payload) {
@@ -177,6 +241,8 @@ async function sendWhatsAppReport(request, env) {
       return json({ error: "WhatsApp report template send failed.", details: templateResult.body }, 502);
     }
 
+    rememberWhatsAppMessages("report", templateResult.body, to);
+
     return json({ ok: true, mode: "document_template", template: templateResult.body });
   }
 
@@ -194,6 +260,7 @@ async function sendWhatsAppReport(request, env) {
   if (!textResult.ok) {
     return json({ error: "WhatsApp text send failed.", details: textResult.body }, 502);
   }
+  rememberWhatsAppMessages("summary", textResult.body, to);
 
   let documentResult = null;
   if (reportFileUrl) {
@@ -212,6 +279,7 @@ async function sendWhatsAppReport(request, env) {
     if (!documentResult.ok) {
       return json({ error: "WhatsApp document send failed.", details: documentResult.body }, 502);
     }
+    rememberWhatsAppMessages("report", documentResult.body, to);
   }
 
   return json({ ok: true, text: textResult.body, document: documentResult?.body || null });
