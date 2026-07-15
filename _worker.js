@@ -46,7 +46,7 @@ async function sendWhatsAppReport(request, env) {
     return json({ error: "Invalid JSON body." }, 400);
   }
 
-  const to = String(env.WHATSAPP_TO || payload.phoneNumber || "").replace(/\D/g, "");
+  const to = String(payload.phoneNumber || env.WHATSAPP_TO || "").replace(/\D/g, "");
   const message = String(payload.message || "").trim();
   const reportFileUrl = String(payload.reportFileUrl || "").trim();
   const reportFileName = String(payload.reportFileName || "Madhushala_Sales_Report_Today.csv").trim();
