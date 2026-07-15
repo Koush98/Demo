@@ -2144,12 +2144,16 @@ body.screen-page {
 
 @media (max-width: 820px) {
   body.screen-page {
+    width: 100% !important;
     height: auto !important;
     min-height: 100dvh !important;
-    overflow: auto !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
   }
 
   .screen-page .screen-shell {
+    display: block !important;
+    width: 100% !important;
     height: auto !important;
     min-height: 100dvh !important;
     padding: 10px !important;
@@ -2166,6 +2170,7 @@ body.screen-page {
   .screen-page .scene,
   .screen-page .scene > * {
     height: auto !important;
+    min-height: 280px !important;
     overflow: visible !important;
   }
 
@@ -2186,7 +2191,53 @@ body.screen-page {
     grid-template-rows: none !important;
   }
 
+  .screen-page .camera-card {
+    display: block !important;
+  }
+
+  .screen-page .camera-feed,
+  .screen-page .camera-feed.large {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 220px !important;
+    aspect-ratio: 16 / 9 !important;
+  }
+
+  .screen-page .dashboard-image-frame {
+    min-height: 220px !important;
+    overflow: visible !important;
+  }
+
+  .screen-page .dashboard-image-frame img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+
+  .screen-page .report-panel,
+  .screen-page .chart-panel,
+  .screen-page .table-panel,
+  .screen-page .whatsapp-panel aside,
+  .screen-page .focus-layout .report-panel {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .screen-page .phone-shell {
+    height: auto !important;
+    min-height: 260px !important;
+  }
+
+  .screen-page .idle-panel,
+  .screen-page .welcome-panel,
+  .screen-page .processing-panel {
+    padding: 22px !important;
+  }
+
   .screen-page .madhushala-dashboard {
-    min-height: auto;
+    min-height: 320px !important;
+    height: auto !important;
+    overflow: visible !important;
   }
 }
