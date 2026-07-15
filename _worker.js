@@ -4,7 +4,11 @@ export default {
 
     if (url.pathname === "/api/send-whatsapp") {
       if (request.method === "GET") {
-        return json({ ok: true, service: "snapkey-whatsapp-report" });
+        return json({
+          ok: true,
+          service: "snapkey-whatsapp-report",
+          version: "whatsapp-debug-2026-07-15"
+        });
       }
 
       if (request.method !== "POST") {
