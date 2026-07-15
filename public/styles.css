@@ -971,7 +971,9 @@ h2 {
 
 .camera-feed.large {
   min-height: 0;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  max-height: 58vh;
   border: 1px solid var(--line);
   border-radius: 8px;
 }
@@ -1005,9 +1007,10 @@ h2 {
 .focus-layout,
 .whatsapp-panel {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.8fr);
+  grid-template-columns: minmax(0, 1.65fr) minmax(300px, 0.7fr);
   gap: 18px;
-  height: 100%;
+  align-items: start;
+  height: auto;
 }
 
 .report-panel,
@@ -1017,21 +1020,27 @@ h2 {
   padding: 24px;
 }
 
+.focus-layout .report-panel {
+  max-height: 58vh;
+  overflow: auto;
+  padding: 18px;
+}
+
 .report-list {
   display: grid;
-  gap: 12px;
-  margin-top: 24px;
+  gap: 8px;
+  margin-top: 14px;
 }
 
 .people-split {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 20px;
+  gap: 8px;
+  margin-top: 14px;
 }
 
 .people-split article {
-  padding: 14px;
+  padding: 10px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #f8fbff;
@@ -1048,14 +1057,14 @@ h2 {
   display: block;
   margin-top: 6px;
   color: var(--text);
-  font-size: 26px;
+  font-size: 22px;
 }
 
 .report-list div {
   display: flex;
   justify-content: space-between;
   gap: 18px;
-  padding: 14px 0;
+  padding: 10px 0;
   border-bottom: 1px solid var(--line);
 }
 
