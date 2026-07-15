@@ -230,7 +230,7 @@
   }
 
   function renderCameras() {
-    const cameraList = getCameras();
+    const cameraList = getCameras().slice(0, 4);
     scene.innerHTML = `
       <div class="camera-grid">
         ${cameraList.map((camera) => cameraCard(camera)).join("")}
