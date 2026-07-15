@@ -24,6 +24,7 @@ Notes:
 - The CSV file must be public. This project sends `/assets/reports/Madhushala_Sales_Report_Today.csv`.
 - For a permanent token, create a Meta Business system user token with WhatsApp permissions and save it as `WHATSAPP_ACCESS_TOKEN`.
 - If you are using Meta's test phone number, the recipient must be added in the WhatsApp API setup page.
+- For business-initiated CSV delivery, create an approved WhatsApp template with a document header, then set `WHATSAPP_REPORT_TEMPLATE_NAME` to that template name. Without this template, WhatsApp may accept free-form text/document API calls but not display them on the phone outside an active customer-service conversation.
 
 Quick endpoint check after deployment:
 

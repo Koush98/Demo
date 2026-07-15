@@ -53,6 +53,7 @@ async function sendWhatsAppReport(request, env) {
   const message = String(payload.message || "").trim();
   const reportFileUrl = String(payload.reportFileUrl || "").trim();
   const reportFileName = String(payload.reportFileName || "Madhushala_Sales_Report_Today.csv").trim();
+  const absoluteReportUrl = reportFileUrl ? new URL(reportFileUrl, request.url).toString() : "";
 
   if (!to) return json({ error: "Recipient phone number is required." }, 400);
   if (!message) return json({ error: "Message is required." }, 400);
@@ -60,6 +61,40 @@ async function sendWhatsAppReport(request, env) {
   const graphVersion = env.WHATSAPP_GRAPH_VERSION || DEFAULT_WHATSAPP_GRAPH_VERSION;
   const phoneNumberId = getWhatsAppPhoneNumberId(env);
   const graphUrl = `https://graph.facebook.com/${graphVersion}/${phoneNumberId}/messages`;
+  const templateName = String(env.WHATSAPP_REPORT_TEMPLATE_NAME || payload.templateName || "").trim();
+
+  if (templateName && absoluteReportUrl) {
+    const templateResult = await sendWhatsApp(graphUrl, env.WHATSAPP_ACCESS_TOKEN, {
+      messaging_product: "whatsapp",
+      recipient_type: "individual",
+      to,
+      type: "template",
+      template: {
+        name: templateName,
+        language: { code: env.WHATSAPP_TEMPLATE_LANGUAGE || "en_US" },
+        components: [
+          {
+            type: "header",
+            parameters: [
+              {
+                type: "document",
+                document: {
+                  link: absoluteReportUrl,
+                  filename: reportFileName
+                }
+              }
+            ]
+          }
+        ]
+      }
+    });
+
+    if (!templateResult.ok) {
+      return json({ error: "WhatsApp report template send failed.", details: templateResult.body }, 502);
+    }
+
+    return json({ ok: true, mode: "document_template", template: templateResult.body });
+  }
 
   const textResult = await sendWhatsApp(graphUrl, env.WHATSAPP_ACCESS_TOKEN, {
     messaging_product: "whatsapp",
@@ -78,7 +113,6 @@ async function sendWhatsAppReport(request, env) {
 
   let documentResult = null;
   if (reportFileUrl) {
-    const absoluteReportUrl = new URL(reportFileUrl, request.url).toString();
     documentResult = await sendWhatsApp(graphUrl, env.WHATSAPP_ACCESS_TOKEN, {
       messaging_product: "whatsapp",
       recipient_type: "individual",

@@ -319,9 +319,9 @@
 
       const result = await response.json().catch(() => null);
       if (!response.ok) throw new Error(formatWhatsappError(response.status, result));
-      status.textContent = "Today's sales report has been sent on WhatsApp.";
-      title.textContent = "Report sent";
-      detail.textContent = "The sales summary message and CSV report file were delivered.";
+      status.textContent = "Today's sales report was accepted by WhatsApp.";
+      title.textContent = "Report submitted";
+      detail.textContent = "WhatsApp returned message IDs for the sales summary and CSV report.";
     } catch (error) {
       console.warn(error);
       status.textContent = "Automatic WhatsApp send failed. Open WhatsApp to send manually.";
