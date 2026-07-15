@@ -730,6 +730,18 @@ h2 {
   align-items: center;
 }
 
+.screen-page .processing-panel {
+  position: relative;
+  display: grid;
+  min-height: 100%;
+  place-items: center;
+  padding: 0;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(201, 162, 39, 0.18), transparent 32%),
+    radial-gradient(circle at 50% 50%, rgba(0, 208, 132, 0.1), transparent 48%),
+    #f4f5f7;
+}
+
 .processing-panel p:last-child {
   margin-top: 12px;
   color: var(--muted);
@@ -742,6 +754,39 @@ h2 {
   width: 238px;
   min-height: 238px;
   place-items: center;
+}
+
+.fullscreen-loader {
+  width: min(54vw, 520px);
+  min-height: min(54vw, 520px);
+}
+
+.fullscreen-loader .loader-orbit {
+  inset: 0;
+  border-color: rgba(201, 162, 39, 0.26);
+  border-width: 2px;
+}
+
+.fullscreen-loader .loader-wave {
+  width: min(24vw, 230px);
+  height: min(13vw, 124px);
+}
+
+.fullscreen-loader .loader-wave i {
+  width: clamp(7px, 0.9vw, 12px);
+  height: clamp(26px, 3.2vw, 54px);
+}
+
+.fullscreen-loader .loader-grid {
+  grid-template-columns: repeat(4, minmax(42px, 1fr));
+  width: min(42vw, 380px);
+  gap: clamp(8px, 1.3vw, 18px);
+}
+
+.fullscreen-loader .loader-grid span {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
 }
 
 .loader-orbit {
@@ -2009,6 +2054,11 @@ body.screen-page {
   overflow: hidden !important;
 }
 
+.screen-page .processing-panel {
+  padding: 0 !important;
+  place-items: center !important;
+}
+
 .screen-page .camera-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
@@ -2233,6 +2283,25 @@ body.screen-page {
   .screen-page .welcome-panel,
   .screen-page .processing-panel {
     padding: 22px !important;
+  }
+
+  .screen-page .processing-panel {
+    min-height: 58dvh !important;
+    padding: 0 !important;
+  }
+
+  .screen-page .fullscreen-loader {
+    width: min(78vw, 360px) !important;
+    min-height: min(78vw, 360px) !important;
+  }
+
+  .screen-page .fullscreen-loader .loader-wave {
+    width: min(42vw, 180px) !important;
+    height: min(24vw, 96px) !important;
+  }
+
+  .screen-page .fullscreen-loader .loader-grid {
+    width: min(62vw, 280px) !important;
   }
 
   .screen-page .madhushala-dashboard {

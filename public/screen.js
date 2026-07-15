@@ -56,7 +56,7 @@
       const render = scenes[action.scene] || renderIdle;
       render();
       setAgentState("complete", "Task Complete", "The requested screen is now live.");
-    }, 900);
+    }, 1450);
     activityTimers.push(timer);
   }
 
@@ -177,7 +177,7 @@
   function renderProcessing(action) {
     scene.innerHTML = `
       <div class="processing-panel">
-        <div class="agent-loader">
+        <div class="agent-loader fullscreen-loader" aria-label="Loading ${action.scene} view">
           <div class="loader-orbit">
             <span></span><span></span><span></span>
           </div>
@@ -189,11 +189,6 @@
             <span></span><span></span><span></span><span></span>
             <span></span><span></span><span></span><span></span>
           </div>
-        </div>
-        <div>
-          <p class="eyebrow">Live action</p>
-          <h2>${action.trigger}</h2>
-          <p>SnapKey is listening, reasoning, and preparing the ${action.scene} view.</p>
         </div>
       </div>
     `;
