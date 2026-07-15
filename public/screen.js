@@ -242,7 +242,6 @@
           ${videoMarkup(camera)}
           <div class="scan-lines"></div>
           <span class="camera-title">${camera.title} - ${camera.location}</span>
-          <span class="timestamp">${new Date().toLocaleTimeString()}</span>
         </div>
         <aside class="report-panel">
           <p class="eyebrow">Camera 2 report</p>

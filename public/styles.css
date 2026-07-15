@@ -1029,8 +1029,7 @@ h2 {
   background: repeating-linear-gradient(0deg, transparent 0 12px, rgba(255, 255, 255, 0.05) 12px 13px);
 }
 
-.camera-title,
-.timestamp {
+.camera-title {
   position: absolute;
   left: 14px;
   z-index: 1;
@@ -1043,10 +1042,6 @@ h2 {
 
 .camera-title {
   top: 14px;
-}
-
-.timestamp {
-  bottom: 14px;
 }
 
 .focus-layout,
