@@ -279,7 +279,7 @@
         <div class="phone-shell">
           <div class="chat-header">WhatsApp - Mr. Tiwari</div>
           <div class="message" id="whatsappStatus">Sending today's sales report...</div>
-          <div class="message document">Madhushala_Sales_Report_Today.pdf</div>
+          <div class="message document">Madhushala_Sales_Report_Today.csv</div>
           <a class="send-whatsapp" href="${sendUrl}" target="_blank" rel="noopener">Open WhatsApp</a>
         </div>
         <aside>
@@ -320,7 +320,7 @@
       if (!response.ok) throw new Error(`WhatsApp endpoint failed: ${response.status}`);
       status.textContent = "Today's sales report has been sent on WhatsApp.";
       title.textContent = "Report sent";
-      detail.textContent = "Beer, whisky, vodka, rum, wine, total bills, and top item summary were delivered.";
+      detail.textContent = "The sales summary message and CSV report file were delivered.";
     } catch (error) {
       console.warn(error);
       status.textContent = "Automatic WhatsApp send failed. Open WhatsApp to send manually.";
