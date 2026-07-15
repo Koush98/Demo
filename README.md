@@ -13,7 +13,7 @@ Set these Cloudflare Worker secrets/variables before testing:
 ```text
 WHATSAPP_ACCESS_TOKEN=your_meta_access_token
 WHATSAPP_PHONE_NUMBER_ID=your_whatsapp_phone_number_id
-WHATSAPP_TO=916290664570
+WHATSAPP_TO=919831004803
 WHATSAPP_GRAPH_VERSION=v23.0
 ```
 
@@ -29,5 +29,5 @@ Notes:
 Quick endpoint check after deployment:
 
 ```powershell
-Invoke-RestMethod -Uri "https://snapkey-assistant.k-kbiswas8.workers.dev/api/send-whatsapp" -Method Post -ContentType "application/json" -Body '{"phoneNumber":"916290664570","message":"Madhushala POS sales report test","reportFileUrl":"/assets/reports/Madhushala_Sales_Report_Today.csv","reportFileName":"Madhushala_Sales_Report_Today.csv"}'
+Invoke-RestMethod -Uri "https://snapkey-assistant.k-kbiswas8.workers.dev/api/send-whatsapp" -Method Post -ContentType "application/json" -Body '{"phoneNumber":"919831004803","message":"Madhushala POS sales report test","reportFileUrl":"/assets/reports/Madhushala_Sales_Report_Today.csv","reportFileName":"Madhushala_Sales_Report_Today.csv"}'
 ```

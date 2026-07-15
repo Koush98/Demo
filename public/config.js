@@ -9,7 +9,7 @@ window.SNAPKEY_CONFIG = {
 
   whatsapp: {
     // Add country code without +. Example India: "919876543210"
-    phoneNumber: "916290664570",
+    phoneNumber: "919831004803",
     // Optional: add a backend URL that sends through WhatsApp Cloud API.
     // The browser will POST { phoneNumber, message } and mark the report sent only when it returns OK.
     autoSendEndpoint: "/api/send-whatsapp",
