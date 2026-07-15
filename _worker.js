@@ -29,9 +29,92 @@ export default {
       }
     }
 
+    if (url.pathname === "/api/whatsapp-webhook") {
+      if (request.method === "GET") {
+        return verifyWhatsAppWebhook(url, env);
+      }
+
+      if (request.method === "POST") {
+        return receiveWhatsAppWebhook(request);
+      }
+
+      return json({ error: "Method not allowed." }, 405);
+    }
+
     return env.ASSETS.fetch(request);
   }
 };
+
+function verifyWhatsAppWebhook(url, env) {
+  const mode = url.searchParams.get("hub.mode");
+  const token = url.searchParams.get("hub.verify_token");
+  const challenge = url.searchParams.get("hub.challenge");
+  const expectedToken = env.WHATSAPP_WEBHOOK_VERIFY_TOKEN;
+
+  if (mode === "subscribe" && token && token === expectedToken && challenge) {
+    return new Response(challenge, {
+      status: 200,
+      headers: { "Content-Type": "text/plain" }
+    });
+  }
+
+  return json({
+    error: "Webhook verification failed.",
+    hasVerifyToken: Boolean(expectedToken)
+  }, 403);
+}
+
+async function receiveWhatsAppWebhook(request) {
+  let payload;
+  try {
+    payload = await request.json();
+  } catch {
+    return json({ error: "Invalid webhook JSON body." }, 400);
+  }
+
+  const statuses = extractWhatsAppStatuses(payload);
+  const messages = extractWhatsAppMessages(payload);
+
+  console.log("whatsapp-webhook", JSON.stringify({ statuses, messages }));
+
+  return json({
+    ok: true,
+    received: {
+      statuses: statuses.length,
+      messages: messages.length
+    },
+    statuses
+  });
+}
+
+function extractWhatsAppStatuses(payload) {
+  return (payload?.entry || []).flatMap((entry) =>
+    (entry?.changes || []).flatMap((change) =>
+      (change?.value?.statuses || []).map((status) => ({
+        id: status.id,
+        status: status.status,
+        recipientId: status.recipient_id,
+        timestamp: status.timestamp,
+        conversationId: status.conversation?.id,
+        errorCode: status.errors?.[0]?.code,
+        errorMessage: status.errors?.[0]?.message
+      }))
+    )
+  );
+}
+
+function extractWhatsAppMessages(payload) {
+  return (payload?.entry || []).flatMap((entry) =>
+    (entry?.changes || []).flatMap((change) =>
+      (change?.value?.messages || []).map((message) => ({
+        id: message.id,
+        from: message.from,
+        type: message.type,
+        timestamp: message.timestamp
+      }))
+    )
+  );
+}
 
 async function sendWhatsAppReport(request, env) {
   const runtime = whatsappRuntimeStatus(env);
