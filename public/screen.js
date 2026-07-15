@@ -317,7 +317,8 @@
         })
       });
 
-      if (!response.ok) throw new Error(`WhatsApp endpoint failed: ${response.status}`);
+      const result = await response.json().catch(() => null);
+      if (!response.ok) throw new Error(formatWhatsappError(response.status, result));
       status.textContent = "Today's sales report has been sent on WhatsApp.";
       title.textContent = "Report sent";
       detail.textContent = "The sales summary message and CSV report file were delivered.";
@@ -325,8 +326,20 @@
       console.warn(error);
       status.textContent = "Automatic WhatsApp send failed. Open WhatsApp to send manually.";
       title.textContent = "Delivery needs attention";
-      detail.textContent = "Check the WhatsApp API endpoint or use the Open WhatsApp button.";
+      detail.textContent = error.message || "Check the WhatsApp API endpoint or use the Open WhatsApp button.";
     }
+  }
+
+  function formatWhatsappError(statusCode, result) {
+    const metaError = result?.details?.error;
+    if (metaError?.message) {
+      const code = metaError.code ? ` Code ${metaError.code}.` : "";
+      const subcode = metaError.error_subcode ? ` Subcode ${metaError.error_subcode}.` : "";
+      return `${result.error || "WhatsApp send failed."} ${metaError.message}.${code}${subcode}`;
+    }
+
+    if (result?.error) return `${result.error} Status ${statusCode}.`;
+    return `WhatsApp endpoint failed with status ${statusCode}.`;
   }
 
   function itemRows() {

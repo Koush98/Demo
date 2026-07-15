@@ -11,7 +11,14 @@ export default {
         return json({ error: "Method not allowed." }, 405);
       }
 
-      return sendWhatsAppReport(request, env);
+      try {
+        return await sendWhatsAppReport(request, env);
+      } catch (error) {
+        return json({
+          error: "WhatsApp worker crashed.",
+          message: error?.message || String(error)
+        }, 500);
+      }
     }
 
     return env.ASSETS.fetch(request);
@@ -89,9 +96,18 @@ async function sendWhatsApp(url, accessToken, body) {
     body: JSON.stringify(body)
   });
 
+  const responseText = await response.text();
+  let responseBody;
+  try {
+    responseBody = responseText ? JSON.parse(responseText) : null;
+  } catch {
+    responseBody = { raw: responseText };
+  }
+
   return {
     ok: response.ok,
-    body: await response.json()
+    status: response.status,
+    body: responseBody
   };
 }
 
