@@ -35,15 +35,14 @@ window.SNAPKEY_CONFIG = {
       status: "amber",
       video: "https://res.cloudinary.com/dhluqyjl5/video/upload/v1784113871/2_annotated_annotated_gogl94.mp4",
       analytics: {
-        totalPeople: 18,
-        male: 11,
-        female: 7,
-        nearCounter: 6,
-        queueLength: 6,
-        averageWait: "3 min 20 sec",
-        staffVisible: 2,
+        totalPeople: "9-10",
+        staffVisible: 3,
+        bottlesOnTable: "6-7",
+        counterStatus: "Active",
+        queueLength: "5-6",
+        averageWait: "2 min 10 sec",
         transactions: 57,
-        alert: "Counter busy"
+        alert: "Bottles detected on table"
       }
     },
     {

@@ -253,15 +253,16 @@
           <p class="eyebrow">Camera 2 report</p>
           <h2>People Analytics</h2>
           <div class="people-split">
-            <article><span>Total People</span><strong>${analytics.totalPeople || 18}</strong></article>
-            <article><span>Male</span><strong>${analytics.male || 11}</strong></article>
-            <article><span>Female</span><strong>${analytics.female || 7}</strong></article>
-            <article><span>Near Counter</span><strong>${analytics.nearCounter || 6}</strong></article>
+            <article><span>Total People</span><strong>${analytics.totalPeople || "9-10"}</strong></article>
+            <article><span>Staff</span><strong>${analytics.staffVisible || 3}</strong></article>
+            <article><span>Bottles on Table</span><strong>${analytics.bottlesOnTable || "6-7"}</strong></article>
+            <article><span>Counter Zone</span><strong>${analytics.counterStatus || "Active"}</strong></article>
           </div>
           <div class="report-list">
             <div><span>Queue length</span><strong>${analytics.queueLength || 6} people</strong></div>
             <div><span>Average wait</span><strong>${analytics.averageWait || "3 min 20 sec"}</strong></div>
-            <div><span>Staff visible</span><strong>${analytics.staffVisible || 2}</strong></div>
+            <div><span>Staff visible</span><strong>${analytics.staffVisible || 3}</strong></div>
+            <div><span>Bottles detected</span><strong>${analytics.bottlesOnTable || "6-7"} bottles</strong></div>
             <div><span>Transactions</span><strong>${analytics.transactions || 57} today</strong></div>
             <div><span>Alert</span><strong>${analytics.alert || "Counter busy"}</strong></div>
           </div>
