@@ -25,7 +25,7 @@ window.SNAPKEY_CONFIG = {
       location: "Entrance",
       detail: "Customers entering",
       status: "green",
-      video: "assets/videos/camera1.mp4"
+      video: "https://res.cloudinary.com/dhluqyjl5/video/upload/v1784113768/1_annotated_annotated_kfcm96.mp4"
     },
     {
       id: "camera2",
@@ -33,7 +33,7 @@ window.SNAPKEY_CONFIG = {
       location: "Billing Counter",
       detail: "Queue active",
       status: "amber",
-      video: "assets/videos/camera2.mp4",
+      video: "https://res.cloudinary.com/dhluqyjl5/video/upload/v1784113871/2_annotated_annotated_gogl94.mp4",
       analytics: {
         totalPeople: 18,
         male: 11,
@@ -52,7 +52,7 @@ window.SNAPKEY_CONFIG = {
       location: "Premium Shelf",
       detail: "Normal movement",
       status: "green",
-      video: "assets/videos/camera3.mp4"
+      video: "https://res.cloudinary.com/dhluqyjl5/video/upload/v1784113768/3_annotated_annotated_viied5.mp4"
     },
     {
       id: "camera4",
@@ -60,7 +60,7 @@ window.SNAPKEY_CONFIG = {
       location: "Stock Room",
       detail: "No alerts",
       status: "green",
-      video: "assets/videos/camera4.mp4"
+      video: "https://res.cloudinary.com/dhluqyjl5/video/upload/v1784113876/4_annotated_annotated_pijjk4.mp4"
     },
     {
       id: "camera5",
