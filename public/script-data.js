@@ -21,7 +21,7 @@ window.SNAPKEY_ACTIONS = [
     response: "Opening camera 2 with the latest activity report.",
     scene: "camera2",
     steps: ["Camera 2 selected", "Reading billing counter activity", "Estimating queue length", "Report generated"],
-    audio: "assets/videos/cam.mp3"
+    audio: "assets/videos/camera2-report.mp3"
   },
   {
     id: "today-report",
