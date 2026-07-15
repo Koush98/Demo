@@ -49,7 +49,7 @@ function verifyWhatsAppWebhook(url, env) {
   const mode = url.searchParams.get("hub.mode");
   const token = url.searchParams.get("hub.verify_token");
   const challenge = url.searchParams.get("hub.challenge");
-  const expectedToken = env.WHATSAPP_WEBHOOK_VERIFY_TOKEN;
+  const expectedToken = getWhatsAppWebhookVerifyToken(env);
 
   if (mode === "subscribe" && token && token === expectedToken && challenge) {
     return new Response(challenge, {
@@ -60,7 +60,8 @@ function verifyWhatsAppWebhook(url, env) {
 
   return json({
     error: "Webhook verification failed.",
-    hasVerifyToken: Boolean(expectedToken)
+    hasVerifyToken: Boolean(expectedToken),
+    acceptedVariableNames: ["WHATSAPP_WEBHOOK_VERIFY_TOKEN", "WEBHOOK_VERIFY_TOKEN", "VERIFY_TOKEN"]
   }, 403);
 }
 
@@ -254,6 +255,10 @@ function whatsappRuntimeStatus(env) {
 
 function getWhatsAppPhoneNumberId(env) {
   return env.WHATSAPP_PHONE_NUMBER_ID || env.PHONE_NUMBER_ID || env.WHATSAPP_PHONE_ID || DEFAULT_WHATSAPP_PHONE_NUMBER_ID;
+}
+
+function getWhatsAppWebhookVerifyToken(env) {
+  return env.WHATSAPP_WEBHOOK_VERIFY_TOKEN || env.WEBHOOK_VERIFY_TOKEN || env.VERIFY_TOKEN;
 }
 
 function json(body, status = 200) {
