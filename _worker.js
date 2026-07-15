@@ -1,5 +1,7 @@
 const DEFAULT_WHATSAPP_PHONE_NUMBER_ID = "1181224611746758";
 const DEFAULT_WHATSAPP_GRAPH_VERSION = "v25.0";
+const DEFAULT_SUPABASE_URL = "https://bsfwffwsmpkijfhcnjzp.supabase.co";
+const DEFAULT_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXAiLCJyZWYiOiJic2Z3ZmZ3c21wa2lqZmhjbmp6cCIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzg0MDEyNjk1LCJleHAiOjIwOTk1ODg2OTV9.VoNM0SwG9jZzmcJ5MNVoOKRG1clsOUgv6K7VBVpUVKU";
 const whatsappMessageStatuses = new Map();
 
 export default {
@@ -36,7 +38,7 @@ export default {
       }
 
       if (request.method === "POST") {
-        return receiveWhatsAppWebhook(request);
+        return receiveWhatsAppWebhook(request, env);
       }
 
       return json({ error: "Method not allowed." }, 405);
@@ -47,7 +49,7 @@ export default {
         return json({ error: "Method not allowed." }, 405);
       }
 
-      return getWhatsAppStatus(url);
+      return getWhatsAppStatus(url, env);
     }
 
     return env.ASSETS.fetch(request);
@@ -74,7 +76,7 @@ function verifyWhatsAppWebhook(url, env) {
   }, 403);
 }
 
-async function receiveWhatsAppWebhook(request) {
+async function receiveWhatsAppWebhook(request, env) {
   let payload;
   try {
     payload = await request.json();
@@ -86,6 +88,7 @@ async function receiveWhatsAppWebhook(request) {
   const messages = extractWhatsAppMessages(payload);
 
   statuses.forEach((status) => updateWhatsAppStatus(status));
+  await Promise.all(statuses.map((status) => saveWhatsAppStatus(env, normalizeStatusRecord(status))));
 
   console.log("whatsapp-webhook", JSON.stringify({ statuses, messages }));
 
@@ -99,30 +102,35 @@ async function receiveWhatsAppWebhook(request) {
   });
 }
 
-function getWhatsAppStatus(url) {
+async function getWhatsAppStatus(url, env) {
   const to = String(url.searchParams.get("to") || "").replace(/\D/g, "");
-  const records = Array.from(whatsappMessageStatuses.values())
+  const storedRecords = await loadWhatsAppStatuses(env, to);
+  const memoryRecords = Array.from(whatsappMessageStatuses.values())
     .filter((record) => !to || record.recipientId === to)
     .sort((a, b) => b.updatedAt - a.updatedAt)
     .slice(0, 12);
+  const records = storedRecords.length ? storedRecords : memoryRecords;
 
   return json({
     ok: true,
     records,
-    summary: summarizeWhatsAppRecords(records)
+    summary: summarizeWhatsAppRecords(records),
+    source: storedRecords.length ? "supabase" : "memory"
   });
 }
 
-function rememberWhatsAppMessages(kind, result, recipientId) {
-  (result?.messages || []).forEach((message) => {
-    whatsappMessageStatuses.set(message.id, {
+async function rememberWhatsAppMessages(env, kind, result, recipientId) {
+  await Promise.all((result?.messages || []).map((message) => {
+    const record = {
       id: message.id,
       kind,
       status: "accepted",
       recipientId,
       updatedAt: Date.now()
-    });
-  });
+    };
+    whatsappMessageStatuses.set(message.id, record);
+    return saveWhatsAppStatus(env, record);
+  }));
 }
 
 function updateWhatsAppStatus(status) {
@@ -150,6 +158,66 @@ function summarizeWhatsAppRecords(records) {
   if (records.some((record) => record.status === "delivered")) return { status: "delivered", label: "Delivered" };
   if (records.some((record) => record.status === "sent")) return { status: "sent", label: "Sent" };
   return { status: "accepted", label: "Accepted by WhatsApp" };
+}
+
+function normalizeStatusRecord(status) {
+  return {
+    id: status.id,
+    kind: "message",
+    status: status.status || "unknown",
+    recipientId: status.recipientId || "",
+    timestamp: status.timestamp,
+    conversationId: status.conversationId,
+    errorCode: status.errorCode,
+    errorMessage: status.errorMessage,
+    updatedAt: Date.now()
+  };
+}
+
+async function saveWhatsAppStatus(env, record) {
+  const supabase = getSupabase(env);
+  if (!supabase || !record.id) return false;
+
+  const response = await fetch(`${supabase.url}/rest/v1/whatsapp_statuses?on_conflict=id`, {
+    method: "POST",
+    headers: supabaseHeaders(supabase.key, { Prefer: "resolution=merge-duplicates" }),
+    body: JSON.stringify({
+      id: record.id,
+      kind: record.kind,
+      status: record.status,
+      recipient_id: record.recipientId,
+      conversation_id: record.conversationId || null,
+      error_code: record.errorCode || null,
+      error_message: record.errorMessage || null,
+      payload: record,
+      updated_at: new Date(record.updatedAt || Date.now()).toISOString()
+    })
+  });
+
+  return response.ok;
+}
+
+async function loadWhatsAppStatuses(env, recipientId) {
+  const supabase = getSupabase(env);
+  if (!supabase) return [];
+
+  const recipientFilter = recipientId ? `&recipient_id=eq.${encodeURIComponent(recipientId)}` : "";
+  const response = await fetch(`${supabase.url}/rest/v1/whatsapp_statuses?select=*&order=updated_at.desc&limit=12${recipientFilter}`, {
+    headers: supabaseHeaders(supabase.key)
+  });
+
+  if (!response.ok) return [];
+  const rows = await response.json();
+  return rows.map((row) => ({
+    id: row.id,
+    kind: row.kind,
+    status: row.status,
+    recipientId: row.recipient_id,
+    conversationId: row.conversation_id,
+    errorCode: row.error_code,
+    errorMessage: row.error_message,
+    updatedAt: new Date(row.updated_at).getTime()
+  }));
 }
 
 function extractWhatsAppStatuses(payload) {
@@ -241,7 +309,7 @@ async function sendWhatsAppReport(request, env) {
       return json({ error: "WhatsApp report template send failed.", details: templateResult.body }, 502);
     }
 
-    rememberWhatsAppMessages("report", templateResult.body, to);
+    await rememberWhatsAppMessages(env, "report", templateResult.body, to);
 
     return json({ ok: true, mode: "document_template", template: templateResult.body });
   }
@@ -260,7 +328,7 @@ async function sendWhatsAppReport(request, env) {
   if (!textResult.ok) {
     return json({ error: "WhatsApp text send failed.", details: textResult.body }, 502);
   }
-  rememberWhatsAppMessages("summary", textResult.body, to);
+  await rememberWhatsAppMessages(env, "summary", textResult.body, to);
 
   let documentResult = null;
   if (reportFileUrl) {
@@ -279,7 +347,7 @@ async function sendWhatsAppReport(request, env) {
     if (!documentResult.ok) {
       return json({ error: "WhatsApp document send failed.", details: documentResult.body }, 502);
     }
-    rememberWhatsAppMessages("report", documentResult.body, to);
+    await rememberWhatsAppMessages(env, "report", documentResult.body, to);
   }
 
   return json({ ok: true, text: textResult.body, document: documentResult?.body || null });
@@ -327,6 +395,22 @@ function getWhatsAppPhoneNumberId(env) {
 
 function getWhatsAppWebhookVerifyToken(env) {
   return env.WHATSAPP_WEBHOOK_VERIFY_TOKEN || env.WEBHOOK_VERIFY_TOKEN || env.VERIFY_TOKEN;
+}
+
+function getSupabase(env) {
+  const url = env.SUPABASE_URL || DEFAULT_SUPABASE_URL;
+  const key = env.SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_ANON_KEY || DEFAULT_SUPABASE_ANON_KEY;
+  if (!url || !key) return null;
+  return { url, key };
+}
+
+function supabaseHeaders(key, extra = {}) {
+  return {
+    apikey: key,
+    Authorization: `Bearer ${key}`,
+    "Content-Type": "application/json",
+    ...extra
+  };
 }
 
 function json(body, status = 200) {

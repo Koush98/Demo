@@ -31,3 +31,36 @@ Quick endpoint check after deployment:
 ```powershell
 Invoke-RestMethod -Uri "https://snapkey-assistant.k-kbiswas8.workers.dev/api/send-whatsapp" -Method Post -ContentType "application/json" -Body '{"phoneNumber":"919831004803","message":"Madhushala POS sales report test","reportFileUrl":"/assets/reports/Madhushala_Sales_Report_Today.csv","reportFileName":"Madhushala_Sales_Report_Today.csv"}'
 ```
+
+### Supabase table for WhatsApp delivery status
+
+Run this once in Supabase SQL Editor:
+
+```sql
+create table if not exists public.whatsapp_statuses (
+  id text primary key,
+  kind text,
+  status text not null,
+  recipient_id text,
+  conversation_id text,
+  error_code text,
+  error_message text,
+  payload jsonb,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.whatsapp_statuses enable row level security;
+
+create policy "allow whatsapp status reads"
+on public.whatsapp_statuses
+for select
+to anon
+using (true);
+
+create policy "allow whatsapp status upserts"
+on public.whatsapp_statuses
+for all
+to anon
+using (true)
+with check (true);
+```
