@@ -7,7 +7,9 @@
   const previewStage = document.getElementById("previewStage");
   const previewResponse = document.getElementById("previewResponse");
   const csrSlideList = document.getElementById("csrSlideList");
+  const cameraControlList = document.getElementById("cameraControlList");
   const csrSlides = window.SNAPKEY_CONFIG?.csrSlides || [];
+  const cameras = window.SNAPKEY_CONFIG?.cameras || [];
 
   try {
     await window.SnapKeySync.init();
@@ -51,6 +53,21 @@
     csrSlideList.appendChild(button);
   });
 
+  cameras.forEach((camera, index) => {
+    const button = document.createElement("button");
+    button.className = "csr-slide-button camera-control-button";
+    button.type = "button";
+    button.innerHTML = `
+      <span class="camera-control-thumb"><i></i></span>
+      <span>
+        <b>${index + 1}. ${camera.title}</b>
+        <small>${camera.location} - ${camera.detail}</small>
+      </span>
+    `;
+    button.addEventListener("click", () => changeCamera(camera));
+    cameraControlList.appendChild(button);
+  });
+
   window.addEventListener("keydown", (event) => {
     const number = Number(event.key);
     if (!number || !actions[number - 1]) return;
@@ -69,6 +86,19 @@
     previewTitle.textContent = slide.title;
     previewResponse.textContent = slide.subtitle;
     previewStage.innerHTML = `<div class="mini-csr-slide" style="background-image: url('${slide.image}')"></div>`;
+  }
+
+  async function changeCamera(camera) {
+    await window.SnapKeySync.publish({ cameraId: camera.id });
+    lastTrigger.textContent = `Camera: ${camera.title}`;
+    previewTitle.textContent = `${camera.title} - ${camera.location}`;
+    previewResponse.textContent = camera.detail;
+    previewStage.innerHTML = `
+      <div class="mini-focus">
+        <span></span>
+        <div><b></b><b></b><b></b></div>
+      </div>
+    `;
   }
 
   window.SnapKeySync.subscribe((payload) => {

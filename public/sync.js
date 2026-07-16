@@ -12,6 +12,7 @@
     return {
       actionId: payload.actionId,
       csrSlideId: payload.csrSlideId,
+      cameraId: payload.cameraId,
       at: Date.now()
     };
   }

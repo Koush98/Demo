@@ -19,6 +19,7 @@
   let voiceReady = false;
   let currentSceneName = "idle";
   let activeCsrSlideId = null;
+  let activeCameraId = null;
   let csrTransitionTimer = null;
 
   const scenes = {
@@ -53,6 +54,14 @@
       } else {
         activeCsrSlideId = payload.csrSlideId;
       }
+      return;
+    }
+    if (payload.cameraId) {
+      activeCameraId = payload.cameraId;
+      renderSingleCamera(activeCameraId);
+      currentSceneName = "singleCamera";
+      setAgentState("complete", "Camera Live", "Showing selected camera feed.");
+      setVoiceMode("complete");
       return;
     }
     const action = actions.find((item) => item.id === payload.actionId);
@@ -254,23 +263,36 @@
   }
 
   function renderCamera2() {
-    const camera = getCameras().find((item) => item.id === "camera2") || getCameras()[1];
+    renderSingleCamera("camera2");
+  }
+
+  function renderSingleCamera(cameraId) {
+    const camera = getCameras().find((item) => item.id === cameraId) || getCameras()[0];
     const analytics = camera.analytics || {};
+    const showReport = camera.id === "camera2" || camera.analytics;
     scene.innerHTML = `
-      <div class="focus-layout">
+      <div class="focus-layout single-camera-layout">
         <div class="camera-feed large ${camera.status || ""}">
           ${videoMarkup(camera)}
           <div class="scan-lines"></div>
           <span class="camera-title">${camera.title} - ${camera.location}</span>
         </div>
         <aside class="report-panel">
-          <p class="eyebrow">Camera 2 report</p>
-          <h2>Live Detection</h2>
-          <div class="people-split">
-            <article><span>Customers</span><strong>${analytics.customers || 5}</strong></article>
-            <article><span>Staff</span><strong>${analytics.staff || 3}</strong></article>
-            <article><span>Bottles</span><strong>${analytics.bottles || 2}</strong></article>
-          </div>
+          <p class="eyebrow">${camera.title} report</p>
+          <h2>${camera.location}</h2>
+          ${showReport ? `
+            <div class="people-split">
+              <article><span>Customers</span><strong>${analytics.customers || 5}</strong></article>
+              <article><span>Staff</span><strong>${analytics.staff || 3}</strong></article>
+              <article><span>Bottles</span><strong>${analytics.bottles || 2}</strong></article>
+            </div>
+          ` : `
+            <div class="report-list">
+              <div><span>Status</span><strong>Live</strong></div>
+              <div><span>Area</span><strong>${camera.location}</strong></div>
+              <div><span>Activity</span><strong>${camera.detail}</strong></div>
+            </div>
+          `}
         </aside>
       </div>
     `;
