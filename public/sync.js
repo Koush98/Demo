@@ -13,6 +13,7 @@
       actionId: payload.actionId,
       csrSlideId: payload.csrSlideId,
       cameraId: payload.cameraId,
+      reload: payload.reload,
       at: Date.now()
     };
   }

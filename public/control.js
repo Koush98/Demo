@@ -6,6 +6,7 @@
   const previewTitle = document.getElementById("previewTitle");
   const previewStage = document.getElementById("previewStage");
   const previewResponse = document.getElementById("previewResponse");
+  const reloadScreen = document.getElementById("reloadScreen");
   const csrSlideList = document.getElementById("csrSlideList");
   const cameraControlList = document.getElementById("cameraControlList");
   const csrSlides = window.SNAPKEY_CONFIG?.csrSlides || [];
@@ -36,6 +37,19 @@
     `;
     button.addEventListener("click", () => runAction(action));
     list.appendChild(button);
+  });
+
+  reloadScreen.addEventListener("click", async () => {
+    await window.SnapKeySync.publish({ reload: true });
+    lastTrigger.textContent = "Pause / Reload";
+    previewTitle.textContent = "Standby";
+    previewResponse.textContent = "Screen returned to reload page.";
+    previewStage.innerHTML = `
+      <div class="preview-idle">
+        <span></span>
+        <p>Standby page</p>
+      </div>
+    `;
   });
 
   csrSlides.forEach((slide, index) => {

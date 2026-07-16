@@ -318,6 +318,44 @@ h2 {
   margin-top: 4px;
 }
 
+.quick-control-panel {
+  display: grid;
+}
+
+.reload-screen-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 72px;
+  padding: 18px 22px;
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #071323, #1d1602);
+  color: #ffffff;
+  box-shadow: 0 16px 46px rgba(7, 19, 35, 0.16);
+  cursor: pointer;
+}
+
+.reload-screen-button:hover {
+  box-shadow: 0 18px 48px rgba(201, 162, 39, 0.22);
+}
+
+.reload-screen-button span,
+.reload-screen-button small {
+  display: block;
+}
+
+.reload-screen-button span {
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.reload-screen-button small {
+  color: rgba(255, 255, 255, 0.68);
+  font-weight: 800;
+}
+
 .csr-control-panel {
   display: grid;
   gap: 14px;

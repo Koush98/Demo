@@ -48,6 +48,12 @@
   window.SnapKeySync.subscribe((payload) => {
     if (!payload || payload.at <= lastActionAt) return;
     lastActionAt = payload.at;
+    if (payload.reload) {
+      clearActivityTimers();
+      if (currentAudio) currentAudio.pause();
+      renderIdle();
+      return;
+    }
     if (payload.csrSlideId) {
       if (currentSceneName === "donatingSociety") {
         updateCsrSlide(payload.csrSlideId);
