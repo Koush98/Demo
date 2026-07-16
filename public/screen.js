@@ -93,7 +93,8 @@
   });
 
   function runAction(action) {
-    clearActivityTimers();
+    const isVideoPresentation = action.scene?.startsWith("videoPresentation");
+    clearActivityTimers({ stopPresentation: !isVideoPresentation });
     setVoiceMode("listening");
     heardText.textContent = action.trigger;
     responseText.textContent = action.response;
@@ -179,10 +180,11 @@
     });
   }
 
-  function clearActivityTimers() {
+  function clearActivityTimers(options = {}) {
+    const { stopPresentation = true } = options;
     activityTimers.forEach((timer) => window.clearTimeout(timer));
     activityTimers = [];
-    stopPresentationVideo();
+    if (stopPresentation) stopPresentationVideo();
     if (currentStandbyVideo) {
       currentStandbyVideo.muted = true;
       currentStandbyVideo.pause();
@@ -598,11 +600,13 @@
       previousVideo.pause();
     }
     stopPresentationVideo();
+    const poster = videoPosterFromUrl(video.video);
+    const outgoingPoster = videoPosterFromUrl(previousSrc);
     scene.innerHTML = `
-      <section class="video-presentation-screen ${hasPreviousVideo ? "has-outgoing" : ""}">
-        ${hasPreviousVideo ? `<div class="presentation-video outgoing visual-only"></div>` : ""}
+      <section class="video-presentation-screen ${hasPreviousVideo ? "has-outgoing" : ""}" style="--video-poster: url('${poster}')">
+        ${hasPreviousVideo ? `<div class="presentation-video outgoing visual-only" style="--outgoing-video-image: url('${outgoingPoster}')"></div>` : ""}
         ${video.video ? `
-          <video class="presentation-video incoming" src="${video.video}" autoplay playsinline preload="auto"></video>
+          <video class="presentation-video incoming" src="${video.video}" poster="${poster}" autoplay playsinline preload="auto"></video>
         ` : `
           <div class="video-placeholder">
             <div class="agent-loader">
@@ -615,9 +619,14 @@
         `}
       </section>
     `;
-    const outgoing = scene.querySelector(".presentation-video.outgoing");
-    if (outgoing) outgoing.style.setProperty("--outgoing-video-image", `url("${previousSrc.replace("/video/upload/", "/video/upload/so_0/").replace(/\.[a-z0-9]+($|\?)/i, ".jpg$1")}")`);
     keepPresentationVideosReady();
+  }
+
+  function videoPosterFromUrl(url) {
+    if (!url) return "";
+    return url
+      .replace("/video/upload/", "/video/upload/so_0/")
+      .replace(/\.[a-z0-9]+($|\?)/i, ".jpg$1");
   }
 
   function updateCsrSlide(nextSlideId) {
@@ -875,6 +884,12 @@
       video.addEventListener("ended", () => {
         video.pause();
         video.classList.add("ended");
+      });
+      video.addEventListener("loadeddata", () => video.classList.add("ready"));
+      video.addEventListener("error", () => {
+        video.muted = true;
+        video.pause();
+        video.classList.add("playback-error");
       });
       video.play().catch(() => {
         video.muted = true;

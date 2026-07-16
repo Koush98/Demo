@@ -2439,7 +2439,9 @@ h2 {
   min-height: 640px;
   overflow: hidden;
   border-radius: 8px;
-  background: #05070b;
+  background:
+    var(--video-poster, none) center / contain no-repeat,
+    #05070b;
   animation: videoScreenIn 1100ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -2450,7 +2452,13 @@ h2 {
   height: 100%;
   min-height: 0;
   object-fit: contain;
-  background: #05070b;
+  background:
+    var(--video-poster, none) center / contain no-repeat,
+    #05070b;
+}
+
+.presentation-video.playback-error {
+  opacity: 0;
 }
 
 .presentation-video.incoming {
