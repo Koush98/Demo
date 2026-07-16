@@ -463,6 +463,34 @@ h2 {
   height: 54px;
 }
 
+.slide-deck-thumb {
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(135deg, rgba(201, 162, 39, 0.88), rgba(7, 19, 35, 0.92)),
+    #071323;
+}
+
+.slide-deck-thumb i {
+  width: 34px;
+  height: 26px;
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  border-radius: 4px;
+  box-shadow:
+    8px 7px 0 rgba(255, 255, 255, 0.28),
+    -8px -7px 0 rgba(255, 255, 255, 0.18);
+}
+
+.open-slide-deck-button {
+  border-color: rgba(201, 162, 39, 0.72);
+  background: linear-gradient(135deg, #071323, #231a04);
+  color: #ffffff;
+}
+
+.open-slide-deck-button small {
+  color: rgba(255, 255, 255, 0.72);
+}
+
 .camera-control-thumb {
   display: grid;
   width: 68px;
@@ -2389,7 +2417,7 @@ h2 {
   overflow: hidden;
   border-radius: 8px;
   background: #05070b;
-  animation: videoScreenIn 900ms ease both;
+  animation: videoScreenIn 1100ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .presentation-video {
@@ -3281,12 +3309,12 @@ th {
 @keyframes videoScreenIn {
   from {
     opacity: 0;
-    transform: scale(1.018);
+    transform: translateX(3.8%) scale(1.012);
   }
 
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: translateX(0) scale(1);
   }
 }
 

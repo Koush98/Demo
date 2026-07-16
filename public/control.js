@@ -12,6 +12,7 @@
   const cameraControlList = document.getElementById("cameraControlList");
   const csrSlides = window.SNAPKEY_CONFIG?.csrSlides || [];
   const cameras = window.SNAPKEY_CONFIG?.cameras || [];
+  const imageSlidesAction = actions.find((action) => action.id === "donating-society");
 
   try {
     await window.SnapKeySync.init();
@@ -45,6 +46,21 @@
     lastTrigger.textContent = "Voice paused";
     previewResponse.textContent = "Current voiceover paused. Screen view was not changed.";
   });
+
+  if (imageSlidesAction) {
+    const button = document.createElement("button");
+    button.className = "csr-slide-button open-slide-deck-button";
+    button.type = "button";
+    button.innerHTML = `
+      <span class="csr-thumb slide-deck-thumb"><i></i></span>
+      <span>
+        <b>Open image slides</b>
+        <small>Show the manual image slide screen</small>
+      </span>
+    `;
+    button.addEventListener("click", () => runAction(imageSlidesAction));
+    csrSlideList.appendChild(button);
+  }
 
   csrSlides.forEach((slide, index) => {
     const button = document.createElement("button");
@@ -184,7 +200,7 @@
     const used = new Set();
     list.className = "action-groups";
     list.innerHTML = groups.map(([groupId, label]) => {
-      const groupActions = actions.filter((action) => (action.group || "core") === groupId);
+      const groupActions = actions.filter((action) => action.id !== "donating-society" && (action.group || "core") === groupId);
       if (!groupActions.length) return "";
       groupActions.forEach((action) => used.add(action.id));
       return `
@@ -200,7 +216,7 @@
       `;
     }).join("");
 
-    const uncategorized = actions.filter((action) => !used.has(action.id));
+    const uncategorized = actions.filter((action) => action.id !== "donating-society" && !used.has(action.id));
     if (uncategorized.length) {
       list.insertAdjacentHTML("beforeend", `
         <section class="action-group">

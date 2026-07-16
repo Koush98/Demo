@@ -133,14 +133,14 @@ window.SNAPKEY_ACTIONS = [
   },
   {
     id: "donating-society",
-    trigger: "Show me donating society",
-    response: "Opening the donating society dashboard.",
+    trigger: "Show me image slides",
+    response: "Opening manual image slides.",
     scene: "donatingSociety",
-    steps: ["Society command received", "Loading donation records", "Preparing community metrics", "Society dashboard opened"],
+    steps: ["Image slide command received", "Preparing manual slide deck", "Opening image controls", "Image slides opened"],
     audio: "",
     presentationMode: true,
     group: "presentation",
-    aliases: ["show donating society", "donating society", "open donating society"]
+    aliases: ["show image slides", "show me image slides", "open image slides", "show donating society", "donating society", "open donating society"]
   },
   {
     id: "presentation-video-1",
@@ -149,6 +149,7 @@ window.SNAPKEY_ACTIONS = [
     scene: "videoPresentation1",
     steps: ["Video command received", "Preparing media player", "Loading Cloudinary stream", "Video screen opened"],
     audio: "",
+    presentationMode: true,
     group: "videos",
     aliases: ["play video 1", "play abm video 1", "show video 1"]
   },
@@ -159,6 +160,7 @@ window.SNAPKEY_ACTIONS = [
     scene: "videoPresentation2",
     steps: ["Video command received", "Preparing media player", "Loading Cloudinary stream", "Video screen opened"],
     audio: "",
+    presentationMode: true,
     group: "videos",
     aliases: ["play video 2", "play abm video 2", "show video 2"]
   },
@@ -169,6 +171,7 @@ window.SNAPKEY_ACTIONS = [
     scene: "videoPresentation3",
     steps: ["Video command received", "Preparing media player", "Loading Cloudinary stream", "Video screen opened"],
     audio: "",
+    presentationMode: true,
     group: "videos",
     aliases: ["play video 3", "play lions video", "show lions video"]
   }
