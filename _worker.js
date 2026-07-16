@@ -157,7 +157,7 @@ function summarizeWhatsAppRecords(records) {
   if (records.some((record) => record.status === "read")) return { status: "read", label: "Read" };
   if (records.some((record) => record.status === "delivered")) return { status: "delivered", label: "Delivered" };
   if (records.some((record) => record.status === "sent")) return { status: "sent", label: "Sent" };
-  return { status: "accepted", label: "Accepted by WhatsApp" };
+  return { status: "accepted", label: "Accepted, waiting for delivery webhook" };
 }
 
 function normalizeStatusRecord(status) {

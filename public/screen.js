@@ -347,6 +347,11 @@
           detail.textContent = whatsappStatusDetail(summary.status, result.records || []);
         }
 
+        if (attempts >= 24 && ["accepted", "waiting"].includes(summary.status)) {
+          title.textContent = "Delivery status pending";
+          detail.textContent = "WhatsApp accepted the report, but Meta has not sent a delivery webhook yet.";
+        }
+
         if (["delivered", "read", "failed"].includes(summary.status) || attempts >= 24) {
           window.clearInterval(timer);
         }
@@ -363,7 +368,7 @@
     if (status === "delivered") return "The CSV report reached the recipient's WhatsApp.";
     if (status === "sent") return "WhatsApp has sent the report toward the recipient.";
     if (status === "failed") return reportRecord?.errorMessage || "WhatsApp reported that delivery failed.";
-    return "WhatsApp accepted the sales summary and CSV report.";
+    return "WhatsApp accepted the sales summary and CSV report. Waiting for Meta delivery webhook.";
   }
 
   function formatWhatsappError(statusCode, result) {
