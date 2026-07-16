@@ -94,7 +94,6 @@
 
   function runAction(action) {
     clearActivityTimers();
-    currentPresentationVideo = null;
     setVoiceMode("listening");
     heardText.textContent = action.trigger;
     responseText.textContent = action.response;
@@ -183,10 +182,21 @@
   function clearActivityTimers() {
     activityTimers.forEach((timer) => window.clearTimeout(timer));
     activityTimers = [];
+    stopPresentationVideo();
     if (currentStandbyVideo) {
+      currentStandbyVideo.muted = true;
       currentStandbyVideo.pause();
       currentStandbyVideo = null;
     }
+  }
+
+  function stopPresentationVideo() {
+    if (!currentPresentationVideo) return;
+    currentPresentationVideo.muted = true;
+    currentPresentationVideo.pause();
+    currentPresentationVideo.removeAttribute("src");
+    currentPresentationVideo.load();
+    currentPresentationVideo = null;
   }
 
   function setAgentState(state, title, detail) {
@@ -583,9 +593,14 @@
     const previousVideo = scene.querySelector(".presentation-video");
     const previousSrc = previousVideo?.currentSrc || previousVideo?.src || "";
     const hasPreviousVideo = currentSceneName?.startsWith("videoPresentation") && previousSrc && previousSrc !== video.video;
+    if (previousVideo) {
+      previousVideo.muted = true;
+      previousVideo.pause();
+    }
+    stopPresentationVideo();
     scene.innerHTML = `
       <section class="video-presentation-screen ${hasPreviousVideo ? "has-outgoing" : ""}">
-        ${hasPreviousVideo ? `<video class="presentation-video outgoing" src="${previousSrc}" playsinline muted></video>` : ""}
+        ${hasPreviousVideo ? `<div class="presentation-video outgoing visual-only"></div>` : ""}
         ${video.video ? `
           <video class="presentation-video incoming" src="${video.video}" autoplay playsinline preload="auto"></video>
         ` : `
@@ -600,6 +615,8 @@
         `}
       </section>
     `;
+    const outgoing = scene.querySelector(".presentation-video.outgoing");
+    if (outgoing) outgoing.style.setProperty("--outgoing-video-image", `url("${previousSrc.replace("/video/upload/", "/video/upload/so_0/").replace(/\.[a-z0-9]+($|\?)/i, ".jpg$1")}")`);
     keepPresentationVideosReady();
   }
 
@@ -850,7 +867,7 @@
   }
 
   function keepPresentationVideosReady() {
-    scene.querySelectorAll(".presentation-video").forEach((video) => {
+    scene.querySelectorAll("video.presentation-video").forEach((video) => {
       currentPresentationVideo = video;
       video.volume = 1;
       video.muted = false;
