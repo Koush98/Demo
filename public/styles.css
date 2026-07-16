@@ -1975,9 +1975,9 @@ h2 {
   animation: none;
   transform: translateX(0) scale(1.025);
   transition:
-    opacity 1.25s ease,
-    transform 1.35s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 1.25s ease;
+    opacity 2.4s ease,
+    transform 2.8s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 2.4s ease;
   filter: saturate(0.92) brightness(0.86);
   will-change: opacity, transform, filter;
 }
@@ -1990,22 +1990,22 @@ h2 {
 }
 
 .csr-presentation-screen.manual .csr-slide.enter-from-right {
-  transform: translateX(8%) scale(1.035);
+  transform: translateX(14%) scale(1.045);
 }
 
 .csr-presentation-screen.manual .csr-slide.enter-from-left {
-  transform: translateX(-8%) scale(1.035);
+  transform: translateX(-14%) scale(1.045);
 }
 
 .csr-presentation-screen.manual .csr-slide.exit-to-left {
   opacity: 0;
-  transform: translateX(-7%) scale(1.02);
+  transform: translateX(-12%) scale(1.025);
   filter: saturate(0.92) brightness(0.82);
 }
 
 .csr-presentation-screen.manual .csr-slide.exit-to-right {
   opacity: 0;
-  transform: translateX(7%) scale(1.02);
+  transform: translateX(12%) scale(1.025);
   filter: saturate(0.92) brightness(0.82);
 }
 

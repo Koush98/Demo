@@ -518,7 +518,7 @@
         if (slide !== next) slide.classList.remove("active");
         slide.classList.remove("enter-from-left", "enter-from-right", "exit-to-left", "exit-to-right");
       });
-    }, 1400);
+    }, 3000);
   }
 
   function getCsrSlides() {
