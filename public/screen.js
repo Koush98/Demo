@@ -29,6 +29,7 @@
     camera2: renderCamera2,
     dashboard: renderDashboard,
     whatsapp: renderWhatsapp,
+    broadcastMessage: renderBroadcastMessage,
     proDashboard: renderProDashboard,
     sales: renderSales,
     reportCenter: renderReportCenter,
@@ -292,6 +293,37 @@
           <p class="eyebrow">ABM Techno Matrix</p>
           <h2>SnapKey Assistant</h2>
           <span>Madhushala software presentation opening</span>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderBroadcastMessage() {
+    scene.innerHTML = `
+      <section class="broadcast-screen">
+        <div class="broadcast-bg" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="broadcast-core">
+          <div class="broadcast-orbit"></div>
+          <div class="broadcast-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="broadcast-copy">
+          <p class="eyebrow">WhatsApp broadcast</p>
+          <h2>Sending message to everyone</h2>
+          <p>SnapKey is preparing contact groups and coordinating backend delivery.</p>
+        </div>
+        <div class="broadcast-progress">
+          <div><span>Recipients scanned</span><strong>1,284</strong></div>
+          <div><span>Groups prepared</span><strong>12</strong></div>
+          <div><span>Status</span><strong id="broadcastStatusText">Sending...</strong></div>
+        </div>
+        <div class="broadcast-rail" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="broadcast-done">
+          <strong>Done</strong>
+          <span>Message delivered request sent to everyone. Please check WhatsApp.</span>
         </div>
       </section>
     `;

@@ -61,6 +61,20 @@ window.SNAPKEY_ACTIONS = [
     aliases: ["send sales report on whatsapp", "send me sales report on whatsapp", "send report on whatsapp"]
   },
   {
+    id: "broadcast-message",
+    trigger: "Hey SnapKey, can you send this message to everyone?",
+    response: "Yes sir, I can send this message to everyone. Please wait.",
+    scene: "broadcastMessage",
+    steps: ["Broadcast command received", "Preparing recipient groups", "Backend send window opened", "Delivery status updating"],
+    audio: "assets/videos/broadcast-confirm.mp3",
+    audioQueue: [
+      "assets/videos/broadcast-confirm.mp3",
+      "assets/videos/broadcast-wait.mp3",
+      "assets/videos/broadcast-done.mp3"
+    ],
+    aliases: ["send this message to everyone", "message everyone", "send message to everyone", "broadcast this message"]
+  },
+  {
     id: "pro-new-dashboard",
     trigger: "Show me pro new dashboard",
     response: "Opening the new pro dashboard view.",
