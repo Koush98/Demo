@@ -14,6 +14,7 @@
       csrSlideId: payload.csrSlideId,
       cameraId: payload.cameraId,
       reload: payload.reload,
+      voicePause: payload.voicePause,
       at: Date.now()
     };
   }

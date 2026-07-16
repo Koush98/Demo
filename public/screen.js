@@ -56,6 +56,11 @@
       renderIdle();
       return;
     }
+    if (payload.voicePause) {
+      if (currentAudio) currentAudio.pause();
+      setVoiceMode("complete");
+      return;
+    }
     if (payload.csrSlideId) {
       if (currentSceneName === "donatingSociety") {
         updateCsrSlide(payload.csrSlideId);

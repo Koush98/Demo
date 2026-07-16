@@ -7,6 +7,7 @@
   const previewStage = document.getElementById("previewStage");
   const previewResponse = document.getElementById("previewResponse");
   const reloadScreen = document.getElementById("reloadScreen");
+  const pauseVoice = document.getElementById("pauseVoice");
   const csrSlideList = document.getElementById("csrSlideList");
   const cameraControlList = document.getElementById("cameraControlList");
   const csrSlides = window.SNAPKEY_CONFIG?.csrSlides || [];
@@ -50,6 +51,12 @@
         <p>Standby page</p>
       </div>
     `;
+  });
+
+  pauseVoice.addEventListener("click", async () => {
+    await window.SnapKeySync.publish({ voicePause: true });
+    lastTrigger.textContent = "Voice paused";
+    previewResponse.textContent = "Current voiceover paused. Screen view was not changed.";
   });
 
   csrSlides.forEach((slide, index) => {
