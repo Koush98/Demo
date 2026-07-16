@@ -24,6 +24,7 @@
   let csrTransitionTimer = null;
   let currentPresentationVideo = null;
   let currentStandbyVideo = null;
+  let mediaPaused = false;
 
   const scenes = {
     introduction: renderIntroduction,
@@ -67,6 +68,10 @@
       if (currentPresentationVideo) currentPresentationVideo.muted = true;
       if (currentStandbyVideo) currentStandbyVideo.muted = true;
       setVoiceMode("complete");
+      return;
+    }
+    if (payload.mediaToggle) {
+      toggleCurrentMedia();
       return;
     }
     if (payload.csrSlideId) {
@@ -198,6 +203,24 @@
     currentPresentationVideo.removeAttribute("src");
     currentPresentationVideo.load();
     currentPresentationVideo = null;
+    mediaPaused = false;
+  }
+
+  function toggleCurrentMedia() {
+    const media = currentAudio || currentPresentationVideo || currentStandbyVideo;
+    if (!media) return;
+
+    if (mediaPaused || media.paused) {
+      media.muted = false;
+      media.play().catch(() => {});
+      mediaPaused = false;
+      setVoiceMode("speaking");
+      return;
+    }
+
+    media.pause();
+    mediaPaused = true;
+    setVoiceMode("complete");
   }
 
   function stopAllSceneMedia() {
@@ -879,6 +902,7 @@
   function keepPresentationVideosReady() {
     scene.querySelectorAll("video.presentation-video").forEach((video) => {
       currentPresentationVideo = video;
+      mediaPaused = false;
       video.volume = 1;
       video.muted = false;
       video.currentTime = 0;
@@ -941,6 +965,7 @@
       videoIndex += 1;
       standby.classList.add("video-mode");
       currentStandbyVideo = video;
+      mediaPaused = false;
       video.src = item.video;
       video.currentTime = 0;
       video.muted = false;

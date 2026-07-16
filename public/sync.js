@@ -16,6 +16,7 @@
       cameraActionId: payload.cameraActionId,
       reload: payload.reload,
       voicePause: payload.voicePause,
+      mediaToggle: payload.mediaToggle,
       at: Date.now()
     };
   }

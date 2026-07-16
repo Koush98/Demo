@@ -53,9 +53,9 @@
   });
 
   pauseVoice.addEventListener("click", async () => {
-    await window.SnapKeySync.publish({ voicePause: true });
-    lastTrigger.textContent = "Voice paused";
-    previewResponse.textContent = "Current voiceover paused. Screen view was not changed.";
+    await window.SnapKeySync.publish({ mediaToggle: true });
+    lastTrigger.textContent = "Pause / Play";
+    previewResponse.textContent = "Current voice or video playback toggled. Screen view was not changed.";
   });
 
   if (imageSlidesAction) {
