@@ -19,6 +19,7 @@
   let voiceReady = false;
   let currentSceneName = "idle";
   let activeCsrSlideId = null;
+  let csrTransitionTimer = null;
 
   const scenes = {
     welcome: renderWelcome,
@@ -47,8 +48,11 @@
     if (!payload || payload.at <= lastActionAt) return;
     lastActionAt = payload.at;
     if (payload.csrSlideId) {
-      activeCsrSlideId = payload.csrSlideId;
-      if (currentSceneName === "donatingSociety") renderDonatingSociety(activeCsrSlideId);
+      if (currentSceneName === "donatingSociety") {
+        updateCsrSlide(payload.csrSlideId);
+      } else {
+        activeCsrSlideId = payload.csrSlideId;
+      }
       return;
     }
     const action = actions.find((item) => item.id === payload.actionId);
@@ -466,12 +470,55 @@
       <section class="csr-impact-screen csr-presentation-screen manual">
         <div class="csr-backdrop" aria-hidden="true">
           ${slides.map((slide, index) => `
-            <article class="csr-slide ${slide.id === activeSlide ? "active" : ""}" style="--slide-image: url('${slide.image}'); --slide-tone: ${slide.tone}; --slide-delay: ${index * 7}s">
+            <article class="csr-slide ${slide.id === activeSlide ? "active" : ""}" data-slide-id="${slide.id}" style="--slide-image: url('${slide.image}'); --slide-tone: ${slide.tone}; --slide-delay: ${index * 7}s">
             </article>
           `).join("")}
         </div>
       </section>
     `;
+  }
+
+  function updateCsrSlide(nextSlideId) {
+    const slides = getCsrSlides();
+    if (!nextSlideId || nextSlideId === activeCsrSlideId) return;
+
+    const currentId = activeCsrSlideId || slides[0]?.id;
+    const currentIndex = slides.findIndex((slide) => slide.id === currentId);
+    const nextIndex = slides.findIndex((slide) => slide.id === nextSlideId);
+    if (nextIndex < 0) return;
+
+    const direction = nextIndex >= currentIndex ? "right" : "left";
+    const current = scene.querySelector(`.csr-slide[data-slide-id="${currentId}"]`);
+    const next = scene.querySelector(`.csr-slide[data-slide-id="${nextSlideId}"]`);
+    if (!next) {
+      activeCsrSlideId = nextSlideId;
+      renderDonatingSociety(activeCsrSlideId);
+      return;
+    }
+
+    scene.querySelectorAll(".csr-slide").forEach((slide) => {
+      slide.classList.remove("enter-from-left", "enter-from-right", "exit-to-left", "exit-to-right");
+    });
+
+    if (current) {
+      current.classList.remove("active");
+      current.classList.add(direction === "right" ? "exit-to-left" : "exit-to-right");
+    }
+
+    next.classList.add(direction === "right" ? "enter-from-right" : "enter-from-left");
+    window.requestAnimationFrame(() => {
+      next.classList.add("active");
+    });
+
+    activeCsrSlideId = nextSlideId;
+
+    if (csrTransitionTimer) window.clearTimeout(csrTransitionTimer);
+    csrTransitionTimer = window.setTimeout(() => {
+      scene.querySelectorAll(".csr-slide").forEach((slide) => {
+        if (slide !== next) slide.classList.remove("active");
+        slide.classList.remove("enter-from-left", "enter-from-right", "exit-to-left", "exit-to-right");
+      });
+    }, 1400);
   }
 
   function getCsrSlides() {
