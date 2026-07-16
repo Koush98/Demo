@@ -83,6 +83,8 @@
       return;
     }
     if (payload.cameraId) {
+      clearActivityTimers();
+      if (currentAudio) currentAudio.pause();
       activeCameraId = payload.cameraId;
       renderSingleCamera(activeCameraId);
       currentSceneName = "singleCamera";
