@@ -17,6 +17,8 @@
   let currentAudio = null;
   let activityTimers = [];
   let voiceReady = false;
+  let recognition = null;
+  let lastVoiceActionAt = 0;
 
   const scenes = {
     welcome: renderWelcome,
@@ -62,6 +64,7 @@
       const render = scenes[action.scene] || renderIdle;
       render();
       setAgentState("complete", "Task Complete", "The requested screen is now live.");
+      openExternalAction(action);
     }, 1450);
     activityTimers.push(timer);
   }
@@ -75,6 +78,15 @@
     if (currentAudio) currentAudio.pause();
     const queue = action.audioQueue && action.audioQueue.length ? action.audioQueue : [action.audio];
     playAudioQueue(queue, action.response, 0);
+  }
+
+  function openExternalAction(action) {
+    if (!action.externalUrl || action.externalMode !== "navigate") return;
+
+    const timer = window.setTimeout(() => {
+      window.location.href = action.externalUrl;
+    }, 900);
+    activityTimers.push(timer);
   }
 
   function playAudioQueue(queue, fallbackText, index) {
@@ -133,7 +145,66 @@
       voiceReady = true;
       permissionGate.classList.add("hidden");
       renderIdle();
+      setupVoiceCommands();
     });
+  }
+
+  function setupVoiceCommands() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition || recognition) return;
+
+    recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = false;
+    recognition.lang = "en-IN";
+
+    recognition.addEventListener("result", (event) => {
+      const latest = event.results[event.results.length - 1];
+      const transcript = latest?.[0]?.transcript || "";
+      const action = matchVoiceAction(transcript);
+      if (!action) return;
+
+      const now = Date.now();
+      if (now - lastVoiceActionAt < 2200) return;
+      lastVoiceActionAt = now;
+      runAction(action);
+    });
+
+    recognition.addEventListener("end", () => {
+      if (!voiceReady) return;
+      window.setTimeout(() => {
+        try {
+          recognition.start();
+        } catch (error) {
+          console.warn("Voice command restart skipped.", error);
+        }
+      }, 600);
+    });
+
+    try {
+      recognition.start();
+      setAgentState("idle", "SnapKey AI Assistant", "Listening for fixed voice commands.");
+    } catch (error) {
+      console.warn("Voice command listener could not start.", error);
+    }
+  }
+
+  function matchVoiceAction(transcript) {
+    const spoken = normalizeCommand(transcript);
+    if (!spoken) return null;
+
+    return actions.find((action) => {
+      const phrases = [action.trigger, ...(action.aliases || [])].map(normalizeCommand);
+      return phrases.some((phrase) => phrase && (spoken.includes(phrase) || phrase.includes(spoken)));
+    });
+  }
+
+  function normalizeCommand(value) {
+    return String(value || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9 ]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
   }
 
   function clearActivityTimers() {
@@ -351,10 +422,10 @@
         <div class="browser-search">
           <p class="eyebrow">Chrome Search</p>
           <h2>${query}</h2>
-          <a href="${url}" target="_blank" rel="noopener">Open live search</a>
+          <a href="${url}" target="_blank" rel="noopener">Opening live search...</a>
         </div>
         <div class="search-results">
-          <article><b>Excise revenue - latest official sources</b><span>Search result preview will be replaced with live browser content during presentation.</span></article>
+          <article><b>Excise revenue - latest official sources</b><span>The projector tab will navigate to the live Chrome search page.</span></article>
           <article><b>Government revenue reports</b><span>Annual revenue, tax collection, and department updates.</span></article>
           <article><b>Web excise analytics</b><span>Previous year trends and comparative summaries.</span></article>
         </div>
