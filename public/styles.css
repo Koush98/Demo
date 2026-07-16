@@ -1256,6 +1256,7 @@ h2 {
   font-size: clamp(38px, 6vw, 92px);
   line-height: 0.95;
   text-shadow: 0 16px 52px rgba(0, 0, 0, 0.42);
+  animation: standbyTitleFade 4s ease-in-out 2s both;
 }
 
 .camera-grid {
@@ -2442,6 +2443,18 @@ th {
   100% {
     opacity: 0;
     transform: translateY(-8px);
+  }
+}
+
+@keyframes standbyTitleFade {
+  0%,
+  35% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
   }
 }
 
