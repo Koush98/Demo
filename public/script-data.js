@@ -7,6 +7,7 @@ window.SNAPKEY_ACTIONS = [
     steps: ["Introduction selected", "Voiceover ready", "ABM and Madhushala context loaded", "Presentation opening"],
     audio: "assets/videos/intro-bengali.mp3",
     returnToIdleOnAudioEnd: true,
+    group: "core",
     aliases: ["start introduction", "play introduction", "about us", "introduce snapkey"]
   },
   {
@@ -16,6 +17,7 @@ window.SNAPKEY_ACTIONS = [
     scene: "welcome",
     steps: ["Voice command received", "Identity matched: Mr. Tiwari", "Shop systems checked", "Assistant response ready"],
     audio: "assets/videos/hii.mp3",
+    group: "core",
     aliases: ["hi snapkey", "who are you"]
   },
   {
@@ -25,6 +27,7 @@ window.SNAPKEY_ACTIONS = [
     scene: "cameras",
     steps: ["Voice command received", "Connecting to shop CCTV feed", "Checking 5 camera streams", "Camera wall opened"],
     audio: "assets/videos/dukan.mp3",
+    group: "camera",
     aliases: ["show my shop camera", "show me my shop camera", "show cameras"]
   },
   {
@@ -34,6 +37,7 @@ window.SNAPKEY_ACTIONS = [
     scene: "camera2",
     steps: ["Camera 2 selected", "Reading billing counter activity", "Estimating queue length", "Report generated"],
     audio: "assets/videos/camera2-report.mp3",
+    group: "camera",
     aliases: ["show camera 2", "show camera two", "show camera 2 report", "show camera two report"]
   },
   {
@@ -49,6 +53,7 @@ window.SNAPKEY_ACTIONS = [
       "assets/videos/dashboard/2.mp3",
       "assets/videos/dashboard/3.mp3"
     ],
+    group: "business",
     aliases: ["show today's report", "show todays report", "open dashboard", "show dashboard"]
   },
   {
@@ -58,6 +63,7 @@ window.SNAPKEY_ACTIONS = [
     scene: "whatsapp",
     steps: ["Sales report compiled", "PDF summary prepared", "WhatsApp contact selected", "Message queued"],
     audio: "assets/videos/report.mp3",
+    group: "business",
     aliases: ["send sales report on whatsapp", "send me sales report on whatsapp", "send report on whatsapp"]
   },
   {
@@ -72,6 +78,7 @@ window.SNAPKEY_ACTIONS = [
       "assets/videos/broadcast-wait.mp3",
       "assets/videos/broadcast-done.mp3"
     ],
+    group: "business",
     aliases: ["send this message to everyone", "message everyone", "send message to everyone", "broadcast this message"]
   },
   {
@@ -81,6 +88,7 @@ window.SNAPKEY_ACTIONS = [
     scene: "proDashboard",
     steps: ["Command received", "Loading pro dashboard", "Preparing executive tiles", "Dashboard opened"],
     audio: "",
+    group: "business",
     aliases: ["show pro dashboard", "show new dashboard", "show pro new dashboard"]
   },
   {
@@ -90,6 +98,7 @@ window.SNAPKEY_ACTIONS = [
     scene: "sales",
     steps: ["Sales command received", "Collecting sales indicators", "Preparing charts", "Sales screen opened"],
     audio: "",
+    group: "business",
     aliases: ["show sales", "show me sales", "open sales"]
   },
   {
@@ -99,6 +108,7 @@ window.SNAPKEY_ACTIONS = [
     scene: "reportCenter",
     steps: ["Report command received", "Reading report modules", "Preparing report summary", "Report center opened"],
     audio: "",
+    group: "business",
     aliases: ["show report", "show me report", "open report"]
   },
   {
@@ -108,6 +118,7 @@ window.SNAPKEY_ACTIONS = [
     scene: "webExcise",
     steps: ["Revenue command received", "Preparing excise revenue report", "Opening verified report visual", "Report screen opened"],
     audio: "assets/videos/excise.mp3",
+    group: "presentation",
     aliases: ["show last year web excise revenue", "last year web excise revenue", "open chrome excise revenue", "search excise revenue"]
   },
   {
@@ -117,6 +128,7 @@ window.SNAPKEY_ACTIONS = [
     scene: "socialMedia",
     steps: ["Social command received", "Checking social channels", "Preparing engagement view", "Social screen opened"],
     audio: "",
+    group: "presentation",
     aliases: ["show social media", "show social media screen", "open social media"]
   },
   {
@@ -127,33 +139,37 @@ window.SNAPKEY_ACTIONS = [
     steps: ["Society command received", "Loading donation records", "Preparing community metrics", "Society dashboard opened"],
     audio: "",
     presentationMode: true,
+    group: "presentation",
     aliases: ["show donating society", "donating society", "open donating society"]
   },
   {
     id: "presentation-video-1",
-    trigger: "Play video presentation 1",
-    response: "Opening video presentation one.",
+    trigger: "Play ABM video 1",
+    response: "Opening ABM video one.",
     scene: "videoPresentation1",
     steps: ["Video command received", "Preparing media player", "Loading Cloudinary stream", "Video screen opened"],
     audio: "",
-    aliases: ["play video 1", "play video presentation one", "show video 1"]
+    group: "videos",
+    aliases: ["play video 1", "play abm video 1", "show video 1"]
   },
   {
     id: "presentation-video-2",
-    trigger: "Play video presentation 2",
-    response: "Opening video presentation two.",
+    trigger: "Play ABM video 2",
+    response: "Opening ABM video two.",
     scene: "videoPresentation2",
     steps: ["Video command received", "Preparing media player", "Loading Cloudinary stream", "Video screen opened"],
     audio: "",
-    aliases: ["play video 2", "play video presentation two", "show video 2"]
+    group: "videos",
+    aliases: ["play video 2", "play abm video 2", "show video 2"]
   },
   {
     id: "presentation-video-3",
-    trigger: "Play video presentation 3",
-    response: "Opening video presentation three.",
+    trigger: "Play Lions video",
+    response: "Opening Lions association video.",
     scene: "videoPresentation3",
     steps: ["Video command received", "Preparing media player", "Loading Cloudinary stream", "Video screen opened"],
     audio: "",
-    aliases: ["play video 3", "play video presentation three", "show video 3"]
+    group: "videos",
+    aliases: ["play video 3", "play lions video", "show lions video"]
   }
 ];

@@ -69,21 +69,52 @@ window.SNAPKEY_CONFIG = {
   presentationVideos: [
     {
       id: "video1",
-      title: "Video Presentation 1",
-      subtitle: "Cloudinary video slot 1",
-      video: ""
+      title: "ABM Video 1",
+      subtitle: "ABM Techno Matrix presentation",
+      video: "https://res.cloudinary.com/dhluqyjl5/video/upload/v1784236566/abm1_mmksar.mp4"
     },
     {
       id: "video2",
-      title: "Video Presentation 2",
-      subtitle: "Cloudinary video slot 2",
-      video: ""
+      title: "ABM Video 2",
+      subtitle: "ABM Techno Matrix showcase",
+      video: "https://res.cloudinary.com/dhluqyjl5/video/upload/v1784236704/abm2_b9vwts.mp4"
     },
     {
       id: "video3",
-      title: "Video Presentation 3",
-      subtitle: "Cloudinary video slot 3",
-      video: ""
+      title: "Lions Association",
+      subtitle: "Community service presentation",
+      video: "https://res.cloudinary.com/dhluqyjl5/video/upload/v1784236804/lions_v2mrzf.mp4"
+    }
+  ],
+
+  standbySlides: [
+    {
+      id: "abm",
+      title: "ABM Techno Matrix",
+      subtitle: "Technology, service, and business growth",
+      image: "https://res.cloudinary.com/dhluqyjl5/image/upload/v1784233304/abm_meviav.png",
+      tone: "#e5b72f"
+    },
+    {
+      id: "madhushalapro",
+      title: "Madhushala Pro",
+      subtitle: "Smart software for wine shop operations",
+      image: "https://res.cloudinary.com/dhluqyjl5/image/upload/v1784233302/madhusalapro_q39hnx.png",
+      tone: "#25b87b"
+    },
+    {
+      id: "abmai",
+      title: "ABM AI",
+      subtitle: "Automation-led business assistance",
+      image: "https://res.cloudinary.com/dhluqyjl5/image/upload/v1784233773/abmai_skp1w1.png",
+      tone: "#48a7ff"
+    },
+    {
+      id: "thanku",
+      title: "Thank You",
+      subtitle: "For the opportunity to serve",
+      image: "https://res.cloudinary.com/dhluqyjl5/image/upload/v1784233310/thanku_p0q8qv.png",
+      tone: "#f0c935"
     }
   ],
 

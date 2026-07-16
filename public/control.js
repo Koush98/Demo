@@ -25,20 +25,7 @@
       ? "Firebase live"
       : "Local fallback";
 
-  actions.forEach((action, index) => {
-    const button = document.createElement("button");
-    button.className = "action-button";
-    button.type = "button";
-    button.innerHTML = `
-      <span class="key">${index + 1}</span>
-      <span>
-        <span class="trigger">${action.trigger}</span>
-        <span class="response">${action.response}</span>
-      </span>
-    `;
-    button.addEventListener("click", () => runAction(action));
-    list.appendChild(button);
-  });
+  renderActionGroups();
 
   reloadScreen.addEventListener("click", async () => {
     await window.SnapKeySync.publish({ reload: true });
@@ -183,6 +170,66 @@
         <span></span>
         <p>Assistant active</p>
       </div>
+    `;
+  }
+
+  function renderActionGroups() {
+    const groups = [
+      ["core", "Core commands"],
+      ["business", "Business screens"],
+      ["camera", "Camera screens"],
+      ["presentation", "Presentation slides"],
+      ["videos", "Video playback"]
+    ];
+    const used = new Set();
+    list.className = "action-groups";
+    list.innerHTML = groups.map(([groupId, label]) => {
+      const groupActions = actions.filter((action) => (action.group || "core") === groupId);
+      if (!groupActions.length) return "";
+      groupActions.forEach((action) => used.add(action.id));
+      return `
+        <section class="action-group">
+          <div class="action-group-heading">
+            <span class="label">${label}</span>
+            <strong>${groupActions.length}</strong>
+          </div>
+          <div class="operator-grid">
+            ${groupActions.map((action) => actionButtonMarkup(action, actions.indexOf(action))).join("")}
+          </div>
+        </section>
+      `;
+    }).join("");
+
+    const uncategorized = actions.filter((action) => !used.has(action.id));
+    if (uncategorized.length) {
+      list.insertAdjacentHTML("beforeend", `
+        <section class="action-group">
+          <div class="action-group-heading">
+            <span class="label">Other commands</span>
+            <strong>${uncategorized.length}</strong>
+          </div>
+          <div class="operator-grid">
+            ${uncategorized.map((action) => actionButtonMarkup(action, actions.indexOf(action))).join("")}
+          </div>
+        </section>
+      `);
+    }
+
+    list.querySelectorAll("[data-action-id]").forEach((button) => {
+      const action = actions.find((item) => item.id === button.dataset.actionId);
+      if (action) button.addEventListener("click", () => runAction(action));
+    });
+  }
+
+  function actionButtonMarkup(action, index) {
+    return `
+      <button class="action-button" type="button" data-action-id="${action.id}">
+        <span class="key">${index + 1}</span>
+        <span>
+          <span class="trigger">${action.trigger}</span>
+          <span class="response">${action.response}</span>
+        </span>
+      </button>
     `;
   }
 })();

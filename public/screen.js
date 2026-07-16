@@ -23,6 +23,7 @@
   let activeCameraId = null;
   let csrTransitionTimer = null;
   let currentPresentationVideo = null;
+  let currentStandbyVideo = null;
 
   const scenes = {
     introduction: renderIntroduction,
@@ -64,6 +65,7 @@
     if (payload.voicePause) {
       if (currentAudio) currentAudio.pause();
       if (currentPresentationVideo) currentPresentationVideo.muted = true;
+      if (currentStandbyVideo) currentStandbyVideo.muted = true;
       setVoiceMode("complete");
       return;
     }
@@ -179,6 +181,10 @@
   function clearActivityTimers() {
     activityTimers.forEach((timer) => window.clearTimeout(timer));
     activityTimers = [];
+    if (currentStandbyVideo) {
+      currentStandbyVideo.pause();
+      currentStandbyVideo = null;
+    }
   }
 
   function setAgentState(state, title, detail) {
@@ -233,7 +239,9 @@
   }
 
   function renderIdle() {
-    const slides = getCsrSlides();
+    clearActivityTimers();
+    const slides = getStandbySlides();
+    const videos = presentationVideos.filter((item) => item.video);
     currentSceneName = "idle";
     setAgentState("idle", "SnapKey AI Assistant", "Standing by for the next scripted command.");
     setVoiceMode("idle");
@@ -246,11 +254,14 @@
         </div>
         <div class="standby-carousel" aria-hidden="true">
           ${slides.map((slide, index) => `
-            <article class="standby-slide standby-image-slide" style="--standby-image: url('${slide.image}'); --standby-tone: ${slide.tone}; --slide-delay: ${index * 7}s">
+            <article class="standby-slide standby-image-slide ${index === 0 ? "active" : ""}" data-standby-slide="${index}" style="--standby-image: url('${slide.image}'); --standby-tone: ${slide.tone};">
               <strong>${slide.title}</strong>
               <span>${slide.subtitle}</span>
             </article>
           `).join("")}
+        </div>
+        <div class="standby-video-stage" aria-hidden="true">
+          <video class="standby-video" playsinline preload="auto"></video>
         </div>
         <div class="standby-grid" aria-hidden="true"></div>
         <div class="standby-core" aria-hidden="true">
@@ -262,6 +273,7 @@
         <h2>SnapKey Assistant</h2>
       </div>
     `;
+    startStandbySequence(slides, videos);
   }
 
   function renderWelcome() {
@@ -632,6 +644,10 @@
     return appConfig.csrSlides || [];
   }
 
+  function getStandbySlides() {
+    return appConfig.standbySlides?.length ? appConfig.standbySlides : getCsrSlides();
+  }
+
   function renderWhatsapp() {
     const whatsapp = appConfig.whatsapp || {};
     const phoneNumber = whatsapp.phoneNumber || "";
@@ -838,5 +854,80 @@
         video.play().catch(() => {});
       });
     });
+  }
+
+  function startStandbySequence(slides, videos) {
+    const standby = scene.querySelector(".assistant-standby");
+    const slideNodes = Array.from(scene.querySelectorAll(".standby-slide"));
+    const video = scene.querySelector(".standby-video");
+    if (!standby || !slideNodes.length) return;
+
+    let slideIndex = 0;
+    let videoIndex = 0;
+    const slideDuration = 5200;
+
+    const showSlide = (index) => {
+      standby.classList.remove("video-mode");
+      if (video) {
+        video.pause();
+        video.removeAttribute("src");
+        video.load();
+      }
+      currentStandbyVideo = null;
+      slideNodes.forEach((slide, currentIndex) => {
+        slide.classList.toggle("active", currentIndex === index);
+      });
+    };
+
+    const playNextVideo = () => {
+      if (!video || !videos.length) {
+        scheduleSlides();
+        return;
+      }
+
+      const item = videos[videoIndex];
+      videoIndex += 1;
+      standby.classList.add("video-mode");
+      currentStandbyVideo = video;
+      video.src = item.video;
+      video.currentTime = 0;
+      video.muted = false;
+      video.volume = 1;
+
+      const onEnded = () => {
+        video.removeEventListener("ended", onEnded);
+        if (videoIndex < videos.length) {
+          const timer = window.setTimeout(playNextVideo, 700);
+          activityTimers.push(timer);
+          return;
+        }
+        videoIndex = 0;
+        slideIndex = 0;
+        showSlide(slideIndex);
+        scheduleSlides();
+      };
+
+      video.addEventListener("ended", onEnded);
+      video.play().catch(() => {
+        video.muted = true;
+        video.play().catch(onEnded);
+      });
+    };
+
+    const scheduleSlides = () => {
+      const timer = window.setTimeout(() => {
+        slideIndex += 1;
+        if (slideIndex < slides.length) {
+          showSlide(slideIndex);
+          scheduleSlides();
+          return;
+        }
+        playNextVideo();
+      }, slideDuration);
+      activityTimers.push(timer);
+    };
+
+    showSlide(slideIndex);
+    scheduleSlides();
   }
 })();
