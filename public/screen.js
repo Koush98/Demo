@@ -194,6 +194,7 @@
   }
 
   function renderIdle() {
+    const slides = getCsrSlides();
     setAgentState("idle", "SnapKey AI Assistant", "Standing by for the next scripted command.");
     setVoiceMode("idle");
     heardText.textContent = "";
@@ -204,26 +205,12 @@
           <span></span><span></span><span></span><span></span>
         </div>
         <div class="standby-carousel" aria-hidden="true">
-          <article class="standby-slide slide-command">
-            <strong>Live Command</strong>
-            <span>Operator controlled presentation flow</span>
-          </article>
-          <article class="standby-slide slide-impact">
-            <strong>2000+</strong>
-            <span>Food camps across 10 years</span>
-          </article>
-          <article class="standby-slide slide-health">
-            <strong>Health Camps</strong>
-            <span>Eye testing and child care initiatives</span>
-          </article>
-          <article class="standby-slide slide-training">
-            <strong>500</strong>
-            <span>Students trained and placed</span>
-          </article>
-          <article class="standby-slide slide-research">
-            <strong>Live Research</strong>
-            <span>Excise revenue and web intelligence mode</span>
-          </article>
+          ${slides.map((slide, index) => `
+            <article class="standby-slide standby-image-slide" style="--standby-image: url('${slide.image}'); --standby-tone: ${slide.tone}; --slide-delay: ${index * 7}s">
+              <strong>${slide.title}</strong>
+              <span>${slide.subtitle}</span>
+            </article>
+          `).join("")}
         </div>
         <div class="standby-grid" aria-hidden="true"></div>
         <div class="standby-core" aria-hidden="true">

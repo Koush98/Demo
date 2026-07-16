@@ -1012,8 +1012,11 @@ h2 {
   justify-items: start;
   padding: clamp(28px, 5vw, 82px);
   opacity: 0;
+  background-position: center;
+  background-size: cover;
   transform: scale(1.035);
   animation: standbySlideShow 35s ease-in-out infinite;
+  animation-delay: var(--slide-delay, 0s);
 }
 
 .standby-slide::before {
@@ -1037,6 +1040,30 @@ h2 {
     linear-gradient(45deg, transparent 46%, rgba(255, 255, 255, 0.18) 46% 54%, transparent 54%);
   clip-path: polygon(14% 0, 100% 0, 86% 100%, 0 100%);
   opacity: 0.62;
+}
+
+.standby-image-slide {
+  background-image: var(--standby-image);
+}
+
+.standby-image-slide::before {
+  background:
+    linear-gradient(90deg, rgba(7, 19, 35, 0.9), rgba(7, 19, 35, 0.34) 52%, rgba(7, 19, 35, 0.88)),
+    linear-gradient(0deg, rgba(7, 19, 35, 0.76), transparent 48%, rgba(7, 19, 35, 0.22));
+}
+
+.standby-image-slide::after {
+  inset: 0;
+  width: auto;
+  height: auto;
+  border: 0;
+  background:
+    linear-gradient(118deg, transparent 0 24%, rgba(229, 183, 47, 0.26) 42%, transparent 62%),
+    repeating-linear-gradient(110deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 32px);
+  clip-path: none;
+  mix-blend-mode: screen;
+  opacity: 0.55;
+  animation: csrColorSweep 7s ease-in-out infinite;
 }
 
 .standby-slide strong,
