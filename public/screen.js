@@ -266,19 +266,21 @@
   function renderIdle() {
     setAgentState("idle", "SnapKey AI Assistant", "Standing by for the next scripted command.");
     setVoiceMode("idle");
-    heardText.textContent = "Standing by...";
-    responseText.textContent = "SnapKey AI Assistant is ready.";
+    heardText.textContent = "";
+    responseText.textContent = "SnapKey Assistant";
     scene.innerHTML = `
-      <div class="idle-panel">
-        <div>
-          <p class="eyebrow">SnapKey AI Assistant</p>
-          <h2>Standing by</h2>
+      <div class="idle-panel assistant-standby">
+        <div class="standby-bg">
+          <span></span><span></span><span></span><span></span>
         </div>
-        <div class="metric-row">
-          <article><span>Mode</span><strong>Presentation</strong></article>
-          <article><span>Status</span><strong>Ready</strong></article>
-          <article><span>Controls</span><strong>Live</strong></article>
+        <div class="standby-grid" aria-hidden="true"></div>
+        <div class="standby-core" aria-hidden="true">
+          <div class="standby-orbit orbit-one"><i></i><i></i><i></i></div>
+          <div class="standby-orbit orbit-two"><i></i><i></i><i></i></div>
+          <div class="standby-pulse"></div>
+          <div class="standby-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
         </div>
+        <h2>SnapKey Assistant</h2>
       </div>
     `;
   }

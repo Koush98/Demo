@@ -930,6 +930,190 @@ h2 {
   background: var(--green);
 }
 
+.assistant-standby {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-height: 100%;
+  place-items: center;
+  overflow: hidden;
+  background: #071323;
+  color: #ffffff;
+  text-align: center;
+}
+
+.standby-bg,
+.standby-bg span,
+.standby-grid,
+.standby-core,
+.standby-orbit,
+.standby-pulse {
+  position: absolute;
+}
+
+.standby-bg {
+  inset: 0;
+  z-index: -3;
+  background:
+    radial-gradient(circle at 24% 26%, rgba(201, 162, 39, 0.28), transparent 30%),
+    radial-gradient(circle at 78% 36%, rgba(0, 208, 132, 0.2), transparent 30%),
+    linear-gradient(135deg, #071323, #201907 50%, #071323);
+  animation: standbyHue 12s ease-in-out infinite;
+}
+
+.standby-bg span {
+  width: 34vmax;
+  height: 34vmax;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.14), transparent 64%);
+  filter: blur(10px);
+  animation: standbyDrift 14s ease-in-out infinite;
+}
+
+.standby-bg span:nth-child(1) {
+  top: -12vmax;
+  left: -6vmax;
+}
+
+.standby-bg span:nth-child(2) {
+  right: -10vmax;
+  bottom: -8vmax;
+  animation-delay: -4s;
+}
+
+.standby-bg span:nth-child(3) {
+  top: 24%;
+  right: 12%;
+  width: 20vmax;
+  height: 20vmax;
+  animation-delay: -8s;
+}
+
+.standby-bg span:nth-child(4) {
+  bottom: 18%;
+  left: 16%;
+  width: 18vmax;
+  height: 18vmax;
+  animation-delay: -10s;
+}
+
+.standby-grid {
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(circle at center, black, transparent 72%);
+  animation: standbyGrid 10s linear infinite;
+}
+
+.standby-core {
+  z-index: -1;
+  display: grid;
+  width: min(46vw, 520px);
+  height: min(46vw, 520px);
+  place-items: center;
+}
+
+.standby-orbit {
+  inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  animation: rotateOrbit 7s linear infinite;
+}
+
+.standby-orbit.orbit-two {
+  inset: 12%;
+  border-color: rgba(201, 162, 39, 0.36);
+  animation-direction: reverse;
+  animation-duration: 5s;
+}
+
+.standby-orbit i {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border-radius: 999px;
+  background: var(--gold);
+  box-shadow: 0 0 24px rgba(201, 162, 39, 0.75);
+}
+
+.standby-orbit i:nth-child(1) {
+  top: -6px;
+  left: calc(50% - 6px);
+}
+
+.standby-orbit i:nth-child(2) {
+  right: 12%;
+  bottom: 12%;
+  background: var(--green);
+}
+
+.standby-orbit i:nth-child(3) {
+  bottom: 12%;
+  left: 12%;
+  background: #4aa3ff;
+}
+
+.standby-pulse {
+  width: 42%;
+  height: 42%;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.86), rgba(201, 162, 39, 0.6) 34%, rgba(201, 162, 39, 0.08) 70%);
+  box-shadow:
+    0 0 60px rgba(201, 162, 39, 0.48),
+    0 0 110px rgba(0, 208, 132, 0.22);
+  animation: standbyPulse 2.8s ease-in-out infinite;
+}
+
+.standby-bars {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  width: 190px;
+  height: 82px;
+  border-radius: 999px;
+  background: rgba(7, 19, 35, 0.58);
+  backdrop-filter: blur(10px);
+}
+
+.standby-bars i {
+  width: 8px;
+  height: 22px;
+  border-radius: 999px;
+  background: #ffffff;
+  animation: speakBar 840ms ease-in-out infinite;
+}
+
+.standby-bars i:nth-child(2),
+.standby-bars i:nth-child(6) {
+  animation-delay: 90ms;
+}
+
+.standby-bars i:nth-child(3),
+.standby-bars i:nth-child(5) {
+  animation-delay: 180ms;
+}
+
+.standby-bars i:nth-child(4) {
+  animation-delay: 270ms;
+}
+
+.assistant-standby h2 {
+  position: relative;
+  z-index: 2;
+  margin-top: min(46vw, 520px);
+  color: #ffffff;
+  font-size: clamp(38px, 6vw, 92px);
+  line-height: 0.95;
+  text-shadow: 0 16px 52px rgba(0, 0, 0, 0.42);
+}
+
 .camera-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1770,6 +1954,47 @@ th {
   }
 }
 
+@keyframes standbyHue {
+  0%,
+  100% {
+    filter: hue-rotate(0deg) saturate(1);
+  }
+  45% {
+    filter: hue-rotate(16deg) saturate(1.16);
+  }
+  70% {
+    filter: hue-rotate(-12deg) saturate(1.05);
+  }
+}
+
+@keyframes standbyDrift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(8vw, -5vh, 0) scale(1.14);
+  }
+}
+
+@keyframes standbyGrid {
+  to {
+    background-position: 64px 64px;
+  }
+}
+
+@keyframes standbyPulse {
+  0%,
+  100% {
+    transform: scale(0.92);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
 @keyframes sceneIn {
   from {
     opacity: 0;
@@ -2253,6 +2478,16 @@ body.screen-page {
   place-items: center !important;
 }
 
+.screen-page .assistant-standby {
+  height: calc(100dvh - 20px) !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+}
+
+.screen-page .assistant-standby h2 {
+  margin-top: min(44vw, 470px) !important;
+}
+
 .screen-page .camera-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
@@ -2498,6 +2733,25 @@ body.screen-page {
   .screen-page .welcome-panel,
   .screen-page .processing-panel {
     padding: 22px !important;
+  }
+
+  .screen-page .assistant-standby {
+    min-height: 74dvh !important;
+    padding: 0 !important;
+  }
+
+  .screen-page .standby-core {
+    width: min(78vw, 340px) !important;
+    height: min(78vw, 340px) !important;
+  }
+
+  .screen-page .standby-bars {
+    width: 150px !important;
+    height: 68px !important;
+  }
+
+  .screen-page .assistant-standby h2 {
+    margin-top: min(80vw, 360px) !important;
   }
 
   .screen-page .processing-panel {
