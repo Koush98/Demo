@@ -17,6 +17,8 @@
   let currentAudio = null;
   let activityTimers = [];
   let voiceReady = false;
+  let currentSceneName = "idle";
+  let activeCsrSlideId = null;
 
   const scenes = {
     welcome: renderWelcome,
@@ -44,6 +46,11 @@
   window.SnapKeySync.subscribe((payload) => {
     if (!payload || payload.at <= lastActionAt) return;
     lastActionAt = payload.at;
+    if (payload.csrSlideId) {
+      activeCsrSlideId = payload.csrSlideId;
+      if (currentSceneName === "donatingSociety") renderDonatingSociety(activeCsrSlideId);
+      return;
+    }
     const action = actions.find((item) => item.id === payload.actionId);
     if (!action) return;
     runAction(action);
@@ -57,6 +64,7 @@
     const render = scenes[action.scene] || renderIdle;
 
     if (action.presentationMode) {
+      currentSceneName = action.scene;
       render();
       setAgentState("complete", "Presentation Mode", "Showing the selected slide presentation.");
       setVoiceMode("complete");
@@ -69,6 +77,7 @@
     playResponse(action);
 
     const timer = window.setTimeout(() => {
+      currentSceneName = action.scene;
       render();
       setAgentState("complete", "Task Complete", "The requested screen is now live.");
     }, 1450);
@@ -188,6 +197,7 @@
 
   function renderIdle() {
     const slides = getCsrSlides();
+    currentSceneName = "idle";
     setAgentState("idle", "SnapKey AI Assistant", "Standing by for the next scripted command.");
     setVoiceMode("idle");
     heardText.textContent = "";
@@ -448,13 +458,15 @@
     `;
   }
 
-  function renderDonatingSociety() {
+  function renderDonatingSociety(selectedSlideId) {
     const slides = getCsrSlides();
+    const activeSlide = selectedSlideId || activeCsrSlideId || slides[0]?.id;
+    activeCsrSlideId = activeSlide;
     scene.innerHTML = `
-      <section class="csr-impact-screen csr-presentation-screen">
+      <section class="csr-impact-screen csr-presentation-screen manual">
         <div class="csr-backdrop" aria-hidden="true">
           ${slides.map((slide, index) => `
-            <article class="csr-slide" style="--slide-image: url('${slide.image}'); --slide-tone: ${slide.tone}; --slide-delay: ${index * 7}s">
+            <article class="csr-slide ${slide.id === activeSlide ? "active" : ""}" style="--slide-image: url('${slide.image}'); --slide-tone: ${slide.tone}; --slide-delay: ${index * 7}s">
             </article>
           `).join("")}
         </div>

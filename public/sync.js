@@ -11,6 +11,7 @@
   function cleanPayload(payload) {
     return {
       actionId: payload.actionId,
+      csrSlideId: payload.csrSlideId,
       at: Date.now()
     };
   }

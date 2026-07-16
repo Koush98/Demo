@@ -6,6 +6,8 @@
   const previewTitle = document.getElementById("previewTitle");
   const previewStage = document.getElementById("previewStage");
   const previewResponse = document.getElementById("previewResponse");
+  const csrSlideList = document.getElementById("csrSlideList");
+  const csrSlides = window.SNAPKEY_CONFIG?.csrSlides || [];
 
   try {
     await window.SnapKeySync.init();
@@ -34,6 +36,21 @@
     list.appendChild(button);
   });
 
+  csrSlides.forEach((slide, index) => {
+    const button = document.createElement("button");
+    button.className = "csr-slide-button";
+    button.type = "button";
+    button.innerHTML = `
+      <span class="csr-thumb" style="background-image: url('${slide.image}')"></span>
+      <span>
+        <b>${index + 1}. ${slide.title}</b>
+        <small>${slide.subtitle}</small>
+      </span>
+    `;
+    button.addEventListener("click", () => changeCsrSlide(slide));
+    csrSlideList.appendChild(button);
+  });
+
   window.addEventListener("keydown", (event) => {
     const number = Number(event.key);
     if (!number || !actions[number - 1]) return;
@@ -44,6 +61,14 @@
     updatePreview(action);
     await window.SnapKeySync.publish({ actionId: action.id });
     lastTrigger.textContent = action.trigger;
+  }
+
+  async function changeCsrSlide(slide) {
+    await window.SnapKeySync.publish({ csrSlideId: slide.id });
+    lastTrigger.textContent = `CSR slide: ${slide.title}`;
+    previewTitle.textContent = slide.title;
+    previewResponse.textContent = slide.subtitle;
+    previewStage.innerHTML = `<div class="mini-csr-slide" style="background-image: url('${slide.image}')"></div>`;
   }
 
   window.SnapKeySync.subscribe((payload) => {
