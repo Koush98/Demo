@@ -13,6 +13,7 @@
       actionId: payload.actionId,
       csrSlideId: payload.csrSlideId,
       cameraId: payload.cameraId,
+      cameraActionId: payload.cameraActionId,
       reload: payload.reload,
       voicePause: payload.voicePause,
       at: Date.now()

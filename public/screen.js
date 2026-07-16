@@ -83,6 +83,8 @@
       currentSceneName = "singleCamera";
       setAgentState("complete", "Camera Live", "Showing selected camera feed.");
       setVoiceMode("complete");
+      const cameraAction = actions.find((item) => item.id === payload.cameraActionId);
+      if (cameraAction) playResponse(cameraAction);
       return;
     }
     const action = actions.find((item) => item.id === payload.actionId);
@@ -578,10 +580,14 @@
 
   function renderVideoPresentation(videoId) {
     const video = presentationVideos.find((item) => item.id === videoId) || presentationVideos[0] || {};
+    const previousVideo = scene.querySelector(".presentation-video");
+    const previousSrc = previousVideo?.currentSrc || previousVideo?.src || "";
+    const hasPreviousVideo = currentSceneName?.startsWith("videoPresentation") && previousSrc && previousSrc !== video.video;
     scene.innerHTML = `
-      <section class="video-presentation-screen">
+      <section class="video-presentation-screen ${hasPreviousVideo ? "has-outgoing" : ""}">
+        ${hasPreviousVideo ? `<video class="presentation-video outgoing" src="${previousSrc}" playsinline muted></video>` : ""}
         ${video.video ? `
-          <video class="presentation-video" src="${video.video}" autoplay playsinline preload="auto"></video>
+          <video class="presentation-video incoming" src="${video.video}" autoplay playsinline preload="auto"></video>
         ` : `
           <div class="video-placeholder">
             <div class="agent-loader">

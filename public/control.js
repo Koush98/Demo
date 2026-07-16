@@ -14,6 +14,7 @@
   const cameras = window.SNAPKEY_CONFIG?.cameras || [];
   const imageSlidesAction = actions.find((action) => action.id === "donating-society");
   const cameraWallAction = actions.find((action) => action.id === "shop-cameras");
+  const camera2ReportAction = actions.find((action) => action.id === "camera-2-report");
   const hiddenMainActionIds = new Set([
     "shop-cameras",
     "camera-2-report",
@@ -138,7 +139,10 @@
   }
 
   async function changeCamera(camera) {
-    await window.SnapKeySync.publish({ cameraId: camera.id });
+    await window.SnapKeySync.publish({
+      cameraId: camera.id,
+      cameraActionId: camera.id === "camera2" ? camera2ReportAction?.id : undefined
+    });
     lastTrigger.textContent = `Camera: ${camera.title}`;
     previewTitle.textContent = `${camera.title} - ${camera.location}`;
     previewResponse.textContent = camera.detail;
