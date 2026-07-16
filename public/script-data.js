@@ -104,10 +104,10 @@ window.SNAPKEY_ACTIONS = [
   {
     id: "web-excise-revenue",
     trigger: "Show me last year web excise revenue",
-    response: "Opening a live web search for last year web excise revenue.",
+    response: "Opening last year excise revenue report.",
     scene: "webExcise",
-    steps: ["Search command received", "Opening browser workspace", "Searching excise revenue", "Results screen opened"],
-    audio: "",
+    steps: ["Revenue command received", "Preparing excise revenue report", "Opening verified report visual", "Report screen opened"],
+    audio: "assets/videos/excise.mp3",
     aliases: ["show last year web excise revenue", "last year web excise revenue", "open chrome excise revenue", "search excise revenue"]
   },
   {

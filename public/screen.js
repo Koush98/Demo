@@ -507,22 +507,11 @@
   }
 
   function renderWebExcise() {
-    const query = "last year web excise revenue";
+    const image = "assets/images/lastyear%20revenue.png";
     scene.innerHTML = `
-      <section class="browser-screen fake-research-screen">
-        <div class="browser-top">
-          <span></span><span></span><span></span>
-          <div>snapkey://live-research/west-bengal-excise-revenue</div>
-        </div>
-        <div class="browser-search">
-          <p class="eyebrow">Live Research</p>
-          <h2>${query}</h2>
-          <span>Searching public web sources and preparing a presentation summary...</span>
-        </div>
-        <div class="search-results">
-          <article><b>Query Parsed</b><span>West Bengal excise revenue, previous financial year.</span></article>
-          <article><b>Source Scan</b><span>Government revenue reports, department updates, and public finance summaries.</span></article>
-          <article><b>Live Summary</b><span>Result cards can be updated later with the final verified text.</span></article>
+      <section class="excise-revenue-screen">
+        <div class="excise-image-frame">
+          <img src="${image}" alt="Last year West Bengal excise revenue report">
         </div>
       </section>
     `;
