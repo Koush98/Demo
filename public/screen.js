@@ -23,7 +23,13 @@
     cameras: renderCameras,
     camera2: renderCamera2,
     dashboard: renderDashboard,
-    whatsapp: renderWhatsapp
+    whatsapp: renderWhatsapp,
+    proDashboard: renderProDashboard,
+    sales: renderSales,
+    reportCenter: renderReportCenter,
+    webExcise: renderWebExcise,
+    socialMedia: renderSocialMedia,
+    donatingSociety: renderDonatingSociety
   };
 
   try {
@@ -263,6 +269,143 @@
       <div class="dashboard-image-frame">
         <img src="assets/images/madhushala-pro-screen.png?v=20260714-pro" alt="Madhushala Pro business dashboard">
       </div>
+    `;
+  }
+
+  function renderProDashboard() {
+    scene.innerHTML = `
+      <section class="command-screen pro-view">
+        <div class="command-hero">
+          <p class="eyebrow">Madhushala Pro</p>
+          <h2>Executive Dashboard</h2>
+          <span>Live business command view</span>
+        </div>
+        <div class="command-kpis">
+          <article><span>Today Sales</span><strong>Rs. 45,806</strong></article>
+          <article><span>Stock Items</span><strong>843</strong></article>
+          <article><span>AMC Remaining</span><strong>124 days</strong></article>
+          <article><span>Low Stock Alerts</span><strong>05</strong></article>
+        </div>
+        <div class="command-grid two">
+          <article>
+            <h3>Business Modules</h3>
+            <div class="module-strip"><span>Sales Entry</span><span>Item Master</span><span>Reports</span><span>Admin</span></div>
+          </article>
+          <article>
+            <h3>Low Stock Items</h3>
+            <div class="rank-list"><span>McDowell's No.1 Whisky</span><b>26</b><span>Bacardi Rum</span><b>17</b><span>Smirnoff Vodka</span><b>12</b></div>
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderSales() {
+    scene.innerHTML = `
+      <section class="command-screen sales-view">
+        <div class="command-hero">
+          <p class="eyebrow">Sales</p>
+          <h2>Live Sales Performance</h2>
+          <span>Current billing and category movement</span>
+        </div>
+        <div class="command-kpis">
+          <article><span>Net Sales</span><strong>Rs. 84,250</strong></article>
+          <article><span>Bills</span><strong>183</strong></article>
+          <article><span>Avg Bill</span><strong>Rs. 460</strong></article>
+          <article><span>Top Item</span><strong>Kingfisher</strong></article>
+        </div>
+        <div class="sales-bars">
+          <span style="--h: 74%"><b>Beer</b></span>
+          <span style="--h: 62%"><b>Whisky</b></span>
+          <span style="--h: 34%"><b>Vodka</b></span>
+          <span style="--h: 28%"><b>Rum</b></span>
+          <span style="--h: 18%"><b>Wine</b></span>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderReportCenter() {
+    scene.innerHTML = `
+      <section class="command-screen report-view">
+        <div class="command-hero">
+          <p class="eyebrow">Reports</p>
+          <h2>Report Center</h2>
+          <span>Item, category, customer, and sale summary reports</span>
+        </div>
+        <div class="report-board">
+          <article><b>Item Wise Report</b><span>Ready</span></article>
+          <article><b>Category Wise Report</b><span>Ready</span></article>
+          <article><b>Store Wise Report</b><span>Ready</span></article>
+          <article><b>Sale Summary Report</b><span>Ready</span></article>
+          <article><b>Sale Statement Report</b><span>Ready</span></article>
+          <article><b>Date Wise Sale Summary</b><span>Ready</span></article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderWebExcise() {
+    const query = "last year web excise revenue";
+    const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+    scene.innerHTML = `
+      <section class="browser-screen">
+        <div class="browser-top">
+          <span></span><span></span><span></span>
+          <div>${url}</div>
+        </div>
+        <div class="browser-search">
+          <p class="eyebrow">Chrome Search</p>
+          <h2>${query}</h2>
+          <a href="${url}" target="_blank" rel="noopener">Open live search</a>
+        </div>
+        <div class="search-results">
+          <article><b>Excise revenue - latest official sources</b><span>Search result preview will be replaced with live browser content during presentation.</span></article>
+          <article><b>Government revenue reports</b><span>Annual revenue, tax collection, and department updates.</span></article>
+          <article><b>Web excise analytics</b><span>Previous year trends and comparative summaries.</span></article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderSocialMedia() {
+    scene.innerHTML = `
+      <section class="command-screen social-view">
+        <div class="command-hero">
+          <p class="eyebrow">Social Media</p>
+          <h2>Engagement Command Center</h2>
+          <span>Campaign performance and audience response</span>
+        </div>
+        <div class="command-kpis">
+          <article><span>Reach</span><strong>48.2K</strong></article>
+          <article><span>Engagement</span><strong>8.7K</strong></article>
+          <article><span>Leads</span><strong>312</strong></article>
+          <article><span>Sentiment</span><strong>Positive</strong></article>
+        </div>
+        <div class="social-columns"><article>Instagram</article><article>Facebook</article><article>YouTube</article><article>WhatsApp</article></div>
+      </section>
+    `;
+  }
+
+  function renderDonatingSociety() {
+    scene.innerHTML = `
+      <section class="command-screen society-view">
+        <div class="command-hero">
+          <p class="eyebrow">Donating Society</p>
+          <h2>Community Donation Dashboard</h2>
+          <span>Members, collections, and impact tracking</span>
+        </div>
+        <div class="command-kpis">
+          <article><span>Total Donations</span><strong>Rs. 12.4L</strong></article>
+          <article><span>Active Donors</span><strong>428</strong></article>
+          <article><span>Campaigns</span><strong>12</strong></article>
+          <article><span>Beneficiaries</span><strong>1,860</strong></article>
+        </div>
+        <div class="command-grid two">
+          <article><h3>Recent Campaigns</h3><p>Education support, medical relief, winter drive, food distribution.</p></article>
+          <article><h3>Impact Summary</h3><p>Donation utilization and society activity can be shown here during discussion.</p></article>
+        </div>
+      </section>
     `;
   }
 

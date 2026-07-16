@@ -44,5 +44,53 @@ window.SNAPKEY_ACTIONS = [
     scene: "whatsapp",
     steps: ["Sales report compiled", "PDF summary prepared", "WhatsApp contact selected", "Message queued"],
     audio: "assets/videos/report.mp3"
+  },
+  {
+    id: "pro-new-dashboard",
+    trigger: "Show me pro new dashboard",
+    response: "Opening the new pro dashboard view.",
+    scene: "proDashboard",
+    steps: ["Command received", "Loading pro dashboard", "Preparing executive tiles", "Dashboard opened"],
+    audio: ""
+  },
+  {
+    id: "sales-screen",
+    trigger: "Show me sales",
+    response: "Opening sales performance screen.",
+    scene: "sales",
+    steps: ["Sales command received", "Collecting sales indicators", "Preparing charts", "Sales screen opened"],
+    audio: ""
+  },
+  {
+    id: "report-screen",
+    trigger: "Show me report",
+    response: "Opening the report center.",
+    scene: "reportCenter",
+    steps: ["Report command received", "Reading report modules", "Preparing report summary", "Report center opened"],
+    audio: ""
+  },
+  {
+    id: "web-excise-revenue",
+    trigger: "Show me last year web excise revenue",
+    response: "Opening a live web search for last year web excise revenue.",
+    scene: "webExcise",
+    steps: ["Search command received", "Opening browser workspace", "Searching excise revenue", "Results screen opened"],
+    audio: ""
+  },
+  {
+    id: "social-media",
+    trigger: "Show me social media screen",
+    response: "Opening the social media monitoring screen.",
+    scene: "socialMedia",
+    steps: ["Social command received", "Checking social channels", "Preparing engagement view", "Social screen opened"],
+    audio: ""
+  },
+  {
+    id: "donating-society",
+    trigger: "Show me donating society",
+    response: "Opening the donating society dashboard.",
+    scene: "donatingSociety",
+    steps: ["Society command received", "Loading donation records", "Preparing community metrics", "Society dashboard opened"],
+    audio: ""
   }
 ];

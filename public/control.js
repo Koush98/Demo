@@ -93,6 +93,15 @@
       `;
     }
 
+    if (["proDashboard", "sales", "reportCenter", "webExcise", "socialMedia", "donatingSociety"].includes(scene)) {
+      return `
+        <div class="mini-dashboard">
+          <div><span></span><span></span><span></span></div>
+          <p></p>
+        </div>
+      `;
+    }
+
     return `
       <div class="preview-idle">
         <span></span>

@@ -1136,6 +1136,205 @@ h2 {
   margin: 0 auto;
 }
 
+.command-screen,
+.browser-screen {
+  display: grid;
+  gap: 18px;
+  width: 100%;
+  min-height: 640px;
+  padding: 28px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 16px 46px rgba(7, 19, 35, 0.07);
+}
+
+.command-hero {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.command-hero h2,
+.browser-search h2 {
+  font-size: clamp(36px, 5vw, 72px);
+  line-height: 0.98;
+}
+
+.command-hero span,
+.browser-search span,
+.browser-search a {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.command-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.command-kpis article,
+.command-grid article,
+.report-board article,
+.search-results article,
+.social-columns article {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fffdf4;
+}
+
+.command-kpis span {
+  display: block;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.command-kpis strong {
+  display: block;
+  margin-top: 8px;
+  font-size: clamp(24px, 3.2vw, 44px);
+}
+
+.command-grid.two {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.module-strip,
+.social-columns,
+.report-board {
+  display: grid;
+  gap: 12px;
+}
+
+.module-strip {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.module-strip span {
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--gold);
+  color: #1d1602;
+  font-weight: 900;
+}
+
+.rank-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px 16px;
+  align-items: center;
+}
+
+.rank-list b {
+  font-size: 28px;
+}
+
+.sales-bars {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  align-items: end;
+  min-height: 280px;
+}
+
+.sales-bars span {
+  display: grid;
+  align-items: end;
+  height: var(--h);
+  min-height: 72px;
+  padding: 12px;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(180deg, var(--gold), var(--gold-dark));
+}
+
+.sales-bars b {
+  color: #1d1602;
+}
+
+.report-board {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.report-board article {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.report-board span {
+  color: var(--green);
+  font-weight: 900;
+}
+
+.browser-screen {
+  grid-template-rows: auto auto minmax(0, 1fr);
+  background: #eef3f7;
+}
+
+.browser-top {
+  display: grid;
+  grid-template-columns: auto auto auto minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.browser-top span {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--red);
+}
+
+.browser-top span:nth-child(2) {
+  background: var(--amber);
+}
+
+.browser-top span:nth-child(3) {
+  background: var(--green);
+}
+
+.browser-top div {
+  min-width: 0;
+  padding: 10px 14px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #f1f4f8;
+  color: var(--muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.browser-search {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.search-results {
+  display: grid;
+  gap: 12px;
+}
+
+.social-columns {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.social-columns article {
+  min-height: 160px;
+  font-size: 24px;
+  font-weight: 900;
+}
+
 .madhushala-dashboard {
   display: grid;
   grid-template-columns: 136px minmax(0, 1fr);
@@ -2178,6 +2377,27 @@ body.screen-page {
   overflow: hidden !important;
 }
 
+.screen-page .command-screen,
+.screen-page .browser-screen {
+  height: calc(100dvh - 20px) !important;
+  min-height: 0 !important;
+  padding: 22px !important;
+  overflow: hidden !important;
+}
+
+.screen-page .command-hero h2,
+.screen-page .browser-search h2 {
+  font-size: clamp(32px, 4.2vw, 62px) !important;
+}
+
+.screen-page .command-kpis article,
+.screen-page .command-grid article,
+.screen-page .report-board article,
+.screen-page .search-results article,
+.screen-page .social-columns article {
+  padding: 14px !important;
+}
+
 .screen-page .madhushala-dashboard {
   min-height: 0 !important;
 }
@@ -2303,5 +2523,32 @@ body.screen-page {
     min-height: 320px !important;
     height: auto !important;
     overflow: visible !important;
+  }
+
+  .screen-page .command-screen,
+  .screen-page .browser-screen {
+    height: auto !important;
+    min-height: 320px !important;
+    padding: 16px !important;
+    overflow: visible !important;
+  }
+
+  .screen-page .command-kpis,
+  .screen-page .command-grid.two,
+  .screen-page .module-strip,
+  .screen-page .report-board,
+  .screen-page .social-columns,
+  .screen-page .sales-bars {
+    grid-template-columns: 1fr !important;
+  }
+
+  .screen-page .sales-bars {
+    min-height: auto !important;
+    align-items: stretch !important;
+  }
+
+  .screen-page .sales-bars span {
+    height: auto !important;
+    min-height: 56px !important;
   }
 }
