@@ -128,5 +128,32 @@ window.SNAPKEY_ACTIONS = [
     audio: "",
     presentationMode: true,
     aliases: ["show donating society", "donating society", "open donating society"]
+  },
+  {
+    id: "presentation-video-1",
+    trigger: "Play video presentation 1",
+    response: "Opening video presentation one.",
+    scene: "videoPresentation1",
+    steps: ["Video command received", "Preparing media player", "Loading Cloudinary stream", "Video screen opened"],
+    audio: "",
+    aliases: ["play video 1", "play video presentation one", "show video 1"]
+  },
+  {
+    id: "presentation-video-2",
+    trigger: "Play video presentation 2",
+    response: "Opening video presentation two.",
+    scene: "videoPresentation2",
+    steps: ["Video command received", "Preparing media player", "Loading Cloudinary stream", "Video screen opened"],
+    audio: "",
+    aliases: ["play video 2", "play video presentation two", "show video 2"]
+  },
+  {
+    id: "presentation-video-3",
+    trigger: "Play video presentation 3",
+    response: "Opening video presentation three.",
+    scene: "videoPresentation3",
+    steps: ["Video command received", "Preparing media player", "Loading Cloudinary stream", "Video screen opened"],
+    audio: "",
+    aliases: ["play video 3", "play video presentation three", "show video 3"]
   }
 ];

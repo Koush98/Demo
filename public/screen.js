@@ -13,6 +13,7 @@
   const activityList = document.getElementById("activityList");
   const appConfig = window.SNAPKEY_CONFIG || {};
   const cameras = appConfig.cameras || [];
+  const presentationVideos = appConfig.presentationVideos || [];
   let lastActionAt = 0;
   let currentAudio = null;
   let activityTimers = [];
@@ -21,6 +22,7 @@
   let activeCsrSlideId = null;
   let activeCameraId = null;
   let csrTransitionTimer = null;
+  let currentPresentationVideo = null;
 
   const scenes = {
     introduction: renderIntroduction,
@@ -35,7 +37,10 @@
     reportCenter: renderReportCenter,
     webExcise: renderWebExcise,
     socialMedia: renderSocialMedia,
-    donatingSociety: renderDonatingSociety
+    donatingSociety: renderDonatingSociety,
+    videoPresentation1: () => renderVideoPresentation("video1"),
+    videoPresentation2: () => renderVideoPresentation("video2"),
+    videoPresentation3: () => renderVideoPresentation("video3")
   };
 
   try {
@@ -58,6 +63,7 @@
     }
     if (payload.voicePause) {
       if (currentAudio) currentAudio.pause();
+      if (currentPresentationVideo) currentPresentationVideo.muted = true;
       setVoiceMode("complete");
       return;
     }
@@ -84,6 +90,7 @@
 
   function runAction(action) {
     clearActivityTimers();
+    currentPresentationVideo = null;
     setVoiceMode("listening");
     heardText.textContent = action.trigger;
     responseText.textContent = action.response;
@@ -557,6 +564,27 @@
     `;
   }
 
+  function renderVideoPresentation(videoId) {
+    const video = presentationVideos.find((item) => item.id === videoId) || presentationVideos[0] || {};
+    scene.innerHTML = `
+      <section class="video-presentation-screen">
+        ${video.video ? `
+          <video class="presentation-video" src="${video.video}" autoplay playsinline preload="auto"></video>
+        ` : `
+          <div class="video-placeholder">
+            <div class="agent-loader">
+              <div class="loader-orbit"><span></span><span></span><span></span></div>
+              <div class="loader-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+            <h2>${video.title || "Video presentation"}</h2>
+            <p>Add the Cloudinary MP4 URL in config.js to play this screen.</p>
+          </div>
+        `}
+      </section>
+    `;
+    keepPresentationVideosReady();
+  }
+
   function updateCsrSlide(nextSlideId) {
     const slides = getCsrSlides();
     if (!nextSlideId || nextSlideId === activeCsrSlideId) return;
@@ -792,6 +820,23 @@
       });
       video.addEventListener("stalled", () => video.load());
       video.play().catch(() => {});
+    });
+  }
+
+  function keepPresentationVideosReady() {
+    scene.querySelectorAll(".presentation-video").forEach((video) => {
+      currentPresentationVideo = video;
+      video.volume = 1;
+      video.muted = false;
+      video.currentTime = 0;
+      video.addEventListener("ended", () => {
+        video.pause();
+        video.classList.add("ended");
+      });
+      video.play().catch(() => {
+        video.muted = true;
+        video.play().catch(() => {});
+      });
     });
   }
 })();

@@ -169,7 +169,7 @@
       `;
     }
 
-    if (["proDashboard", "sales", "reportCenter", "webExcise", "socialMedia", "donatingSociety"].includes(scene)) {
+    if (["proDashboard", "sales", "reportCenter", "webExcise", "socialMedia", "donatingSociety", "videoPresentation1", "videoPresentation2", "videoPresentation3"].includes(scene)) {
       return `
         <div class="mini-dashboard">
           <div><span></span><span></span><span></span></div>

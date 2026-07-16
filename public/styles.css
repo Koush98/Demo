@@ -2313,6 +2313,52 @@ h2 {
   animation: exciseReportIn 720ms ease-out both;
 }
 
+.video-presentation-screen {
+  display: grid;
+  width: 100%;
+  min-height: 640px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #05070b;
+  animation: videoScreenIn 900ms ease both;
+}
+
+.presentation-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: contain;
+  background: #05070b;
+}
+
+.presentation-video.ended {
+  filter: saturate(1.04) contrast(1.02);
+}
+
+.video-placeholder {
+  display: grid;
+  gap: 18px;
+  place-items: center;
+  align-content: center;
+  padding: 28px;
+  color: #ffffff;
+  text-align: center;
+  background:
+    radial-gradient(circle at center, rgba(201, 162, 39, 0.16), transparent 34%),
+    linear-gradient(135deg, #071323, #111820);
+}
+
+.video-placeholder h2 {
+  font-size: clamp(32px, 5vw, 72px);
+}
+
+.video-placeholder p {
+  max-width: 560px;
+  color: rgba(255, 255, 255, 0.68);
+  font-weight: 800;
+}
+
 .fake-research-screen {
   position: relative;
 }
@@ -3163,6 +3209,18 @@ th {
   }
 }
 
+@keyframes videoScreenIn {
+  from {
+    opacity: 0;
+    transform: scale(1.018);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @keyframes broadcastFill {
   0%,
   18% {
@@ -3829,6 +3887,7 @@ body.screen-page {
 .screen-page .command-screen,
 .screen-page .browser-screen,
 .screen-page .excise-revenue-screen,
+.screen-page .video-presentation-screen,
 .screen-page .broadcast-screen {
   height: calc(100dvh - 20px) !important;
   min-height: 0 !important;
@@ -3837,6 +3896,11 @@ body.screen-page {
 }
 
 .screen-page .excise-revenue-screen {
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+.screen-page .video-presentation-screen {
   padding: 0 !important;
   border-radius: 0 !important;
 }
@@ -4070,6 +4134,7 @@ body.screen-page {
   .screen-page .command-screen,
   .screen-page .browser-screen,
   .screen-page .excise-revenue-screen,
+  .screen-page .video-presentation-screen,
   .screen-page .broadcast-screen,
   .screen-page .csr-impact-screen {
     height: auto !important;
@@ -4079,6 +4144,12 @@ body.screen-page {
   }
 
   .screen-page .excise-revenue-screen {
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .screen-page .video-presentation-screen {
+    min-height: 72dvh !important;
     padding: 0 !important;
     overflow: hidden !important;
   }

@@ -66,6 +66,27 @@ window.SNAPKEY_CONFIG = {
     }
   ],
 
+  presentationVideos: [
+    {
+      id: "video1",
+      title: "Video Presentation 1",
+      subtitle: "Cloudinary video slot 1",
+      video: ""
+    },
+    {
+      id: "video2",
+      title: "Video Presentation 2",
+      subtitle: "Cloudinary video slot 2",
+      video: ""
+    },
+    {
+      id: "video3",
+      title: "Video Presentation 3",
+      subtitle: "Cloudinary video slot 3",
+      video: ""
+    }
+  ],
+
   csrSlides: [
     {
       id: "foodcamp",
