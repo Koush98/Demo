@@ -13,6 +13,16 @@
   const csrSlides = window.SNAPKEY_CONFIG?.csrSlides || [];
   const cameras = window.SNAPKEY_CONFIG?.cameras || [];
   const imageSlidesAction = actions.find((action) => action.id === "donating-society");
+  const cameraWallAction = actions.find((action) => action.id === "shop-cameras");
+  const hiddenMainActionIds = new Set([
+    "shop-cameras",
+    "camera-2-report",
+    "whatsapp-report",
+    "pro-new-dashboard",
+    "report-screen",
+    "social-media",
+    "donating-society"
+  ]);
 
   try {
     await window.SnapKeySync.init();
@@ -76,6 +86,21 @@
     button.addEventListener("click", () => changeCsrSlide(slide));
     csrSlideList.appendChild(button);
   });
+
+  if (cameraWallAction) {
+    const button = document.createElement("button");
+    button.className = "csr-slide-button camera-control-button open-camera-wall-button";
+    button.type = "button";
+    button.innerHTML = `
+      <span class="camera-control-thumb camera-wall-thumb"><i></i></span>
+      <span>
+        <b>Show all cameras</b>
+        <small>Open the live camera wall</small>
+      </span>
+    `;
+    button.addEventListener("click", () => runAction(cameraWallAction));
+    cameraControlList.appendChild(button);
+  }
 
   cameras.forEach((camera, index) => {
     const button = document.createElement("button");
@@ -200,7 +225,7 @@
     const used = new Set();
     list.className = "action-groups";
     list.innerHTML = groups.map(([groupId, label]) => {
-      const groupActions = actions.filter((action) => action.id !== "donating-society" && (action.group || "core") === groupId);
+      const groupActions = actions.filter((action) => !hiddenMainActionIds.has(action.id) && (action.group || "core") === groupId);
       if (!groupActions.length) return "";
       groupActions.forEach((action) => used.add(action.id));
       return `
@@ -216,7 +241,7 @@
       `;
     }).join("");
 
-    const uncategorized = actions.filter((action) => action.id !== "donating-society" && !used.has(action.id));
+    const uncategorized = actions.filter((action) => !hiddenMainActionIds.has(action.id) && !used.has(action.id));
     if (uncategorized.length) {
       list.insertAdjacentHTML("beforeend", `
         <section class="action-group">

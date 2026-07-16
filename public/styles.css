@@ -515,6 +515,28 @@ h2 {
   background: var(--gold);
 }
 
+.open-camera-wall-button {
+  border-color: rgba(201, 162, 39, 0.68);
+  background: linear-gradient(135deg, #071323, #172232);
+  color: #ffffff;
+}
+
+.open-camera-wall-button small {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.camera-wall-thumb {
+  background:
+    linear-gradient(135deg, rgba(201, 162, 39, 0.26), rgba(7, 19, 35, 0.82)),
+    repeating-linear-gradient(90deg, #132133 0 8px, #071323 8px 16px);
+}
+
+.camera-wall-thumb i {
+  width: 30px;
+  height: 22px;
+  border-radius: 3px;
+}
+
 .mini-csr-slide {
   width: 100%;
   min-height: 180px;
