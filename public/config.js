@@ -66,5 +66,48 @@ window.SNAPKEY_CONFIG = {
     }
   ],
 
+  csrSlides: [
+    {
+      id: "foodcamp",
+      title: "2000+ Food Camps",
+      subtitle: "Serving communities across the last 10 years",
+      metric: "10 Years",
+      image: "https://res.cloudinary.com/dhluqyjl5/image/upload/v1784206738/foodcamp_p1lhh7.png",
+      tone: "#e5b72f"
+    },
+    {
+      id: "eyetest",
+      title: "Eye Testing Camps",
+      subtitle: "Accessible healthcare support for communities",
+      metric: "Health",
+      image: "https://res.cloudinary.com/dhluqyjl5/image/upload/v1784206738/eyetest_bmvsxi.png",
+      tone: "#25b87b"
+    },
+    {
+      id: "childhealth",
+      title: "Child Health Camp",
+      subtitle: "Care, checkups, and welfare initiatives",
+      metric: "Child Care",
+      image: "https://res.cloudinary.com/dhluqyjl5/image/upload/v1784206738/childhealth_cj5e6q.png",
+      tone: "#48a7ff"
+    },
+    {
+      id: "training",
+      title: "Industrial Training",
+      subtitle: "Skill development for college pass students",
+      metric: "Training",
+      image: "https://res.cloudinary.com/dhluqyjl5/image/upload/v1784206746/training_x0ugyg.png",
+      tone: "#f0c935"
+    },
+    {
+      id: "placed",
+      title: "500 Students Placed",
+      subtitle: "Good salary opportunities in good companies",
+      metric: "500",
+      image: "https://res.cloudinary.com/dhluqyjl5/image/upload/v1784206737/placed_pacydy.png",
+      tone: "#6fd35f"
+    }
+  ],
+
   channelPath: "Demo/currentAction"
 };

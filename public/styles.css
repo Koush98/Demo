@@ -1630,6 +1630,151 @@ h2 {
   font-weight: 900;
 }
 
+.csr-impact-screen {
+  position: relative;
+  isolation: isolate;
+  min-height: 640px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #071323;
+  color: #ffffff;
+}
+
+.csr-backdrop,
+.csr-slide,
+.csr-slide::before,
+.csr-slide::after {
+  position: absolute;
+  inset: 0;
+}
+
+.csr-backdrop {
+  z-index: -1;
+  background: #071323;
+}
+
+.csr-slide {
+  display: grid;
+  align-content: end;
+  padding: clamp(28px, 5vw, 76px);
+  opacity: 0;
+  background-image: var(--slide-image);
+  background-position: center;
+  background-size: cover;
+  transform: scale(1.035);
+  animation: csrSlideFade 35s ease-in-out infinite;
+  animation-delay: var(--slide-delay);
+}
+
+.csr-slide::before {
+  content: "";
+  background:
+    linear-gradient(90deg, rgba(7, 19, 35, 0.92), rgba(7, 19, 35, 0.2) 52%, rgba(7, 19, 35, 0.82)),
+    linear-gradient(0deg, rgba(7, 19, 35, 0.72), transparent 48%, rgba(7, 19, 35, 0.24));
+}
+
+.csr-slide::after {
+  content: "";
+  background:
+    linear-gradient(120deg, transparent 0 24%, rgba(229, 183, 47, 0.3) 42%, transparent 62%),
+    repeating-linear-gradient(110deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 34px);
+  background:
+    linear-gradient(120deg, transparent 0 24%, color-mix(in srgb, var(--slide-tone), transparent 70%) 42%, transparent 62%),
+    repeating-linear-gradient(110deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 34px);
+  mix-blend-mode: screen;
+  opacity: 0.58;
+  transform: translateX(-8%);
+  animation: csrColorSweep 7s ease-in-out infinite;
+}
+
+.csr-slide-copy {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  max-width: min(720px, 72vw);
+  gap: 10px;
+  text-align: left;
+}
+
+.csr-slide-copy span {
+  width: max-content;
+  max-width: 100%;
+  padding: 9px 14px;
+  border: 1px solid rgba(229, 183, 47, 0.72);
+  border: 1px solid color-mix(in srgb, var(--slide-tone), white 20%);
+  border-radius: 999px;
+  background: rgba(229, 183, 47, 0.3);
+  background: color-mix(in srgb, var(--slide-tone), transparent 70%);
+  color: #ffffff;
+  font-size: clamp(15px, 1.5vw, 20px);
+  font-weight: 900;
+}
+
+.csr-slide-copy strong {
+  color: #ffffff;
+  font-size: clamp(42px, 6.8vw, 116px);
+  line-height: 0.9;
+  text-shadow: 0 20px 62px rgba(0, 0, 0, 0.52);
+}
+
+.csr-slide-copy small {
+  max-width: 640px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(17px, 2vw, 30px);
+  font-weight: 800;
+}
+
+.csr-content {
+  position: absolute;
+  top: clamp(24px, 4vw, 54px);
+  left: clamp(26px, 5vw, 76px);
+  z-index: 2;
+  display: grid;
+  max-width: min(720px, 70vw);
+  gap: 8px;
+}
+
+.csr-content .eyebrow {
+  color: color-mix(in srgb, var(--gold), white 20%);
+}
+
+.csr-content h2 {
+  color: #ffffff;
+  font-size: clamp(30px, 4.2vw, 68px);
+  line-height: 0.98;
+  text-shadow: 0 16px 48px rgba(0, 0, 0, 0.42);
+}
+
+.csr-content p:last-child {
+  max-width: 620px;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: clamp(15px, 1.5vw, 21px);
+  font-weight: 700;
+}
+
+.csr-impact-strip {
+  position: absolute;
+  right: clamp(18px, 3vw, 44px);
+  bottom: clamp(18px, 3vw, 44px);
+  z-index: 2;
+  display: flex;
+  max-width: min(760px, 78vw);
+  gap: 8px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.csr-impact-strip span {
+  padding: 8px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(7, 19, 35, 0.52);
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 12px;
+  font-weight: 900;
+  backdrop-filter: blur(12px);
+}
+
 .madhushala-dashboard {
   display: grid;
   grid-template-columns: 136px minmax(0, 1fr);
@@ -2092,6 +2237,35 @@ th {
   100% {
     opacity: 0;
     transform: scale(0.985);
+  }
+}
+
+@keyframes csrSlideFade {
+  0% {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+  5%,
+  17% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  23%,
+  100% {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+}
+
+@keyframes csrColorSweep {
+  0%,
+  100% {
+    opacity: 0.42;
+    transform: translateX(-10%);
+  }
+  50% {
+    opacity: 0.72;
+    transform: translateX(8%);
   }
 }
 

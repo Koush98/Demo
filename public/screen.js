@@ -407,25 +407,34 @@
   }
 
   function renderDonatingSociety() {
+    const slides = getCsrSlides();
     scene.innerHTML = `
-      <section class="command-screen society-view">
-        <div class="command-hero">
-          <p class="eyebrow">Donating Society</p>
-          <h2>Community Donation Dashboard</h2>
-          <span>Members, collections, and impact tracking</span>
+      <section class="csr-impact-screen">
+        <div class="csr-backdrop" aria-hidden="true">
+          ${slides.map((slide, index) => `
+            <article class="csr-slide" style="--slide-image: url('${slide.image}'); --slide-tone: ${slide.tone}; --slide-delay: ${index * 7}s">
+              <div class="csr-slide-copy">
+                <span>${slide.metric}</span>
+                <strong>${slide.title}</strong>
+                <small>${slide.subtitle}</small>
+              </div>
+            </article>
+          `).join("")}
         </div>
-        <div class="command-kpis">
-          <article><span>Total Donations</span><strong>Rs. 12.4L</strong></article>
-          <article><span>Active Donors</span><strong>428</strong></article>
-          <article><span>Campaigns</span><strong>12</strong></article>
-          <article><span>Beneficiaries</span><strong>1,860</strong></article>
+        <div class="csr-content">
+          <p class="eyebrow">ABM Social Impact</p>
+          <h2>Community Development Initiatives</h2>
+          <p>Healthcare, food support, training, and student placement programs presented as a live impact story.</p>
         </div>
-        <div class="command-grid two">
-          <article><h3>Recent Campaigns</h3><p>Education support, medical relief, winter drive, food distribution.</p></article>
-          <article><h3>Impact Summary</h3><p>Donation utilization and society activity can be shown here during discussion.</p></article>
+        <div class="csr-impact-strip" aria-hidden="true">
+          ${slides.map((slide) => `<span>${slide.title}</span>`).join("")}
         </div>
       </section>
     `;
+  }
+
+  function getCsrSlides() {
+    return appConfig.csrSlides || [];
   }
 
   function renderWhatsapp() {
