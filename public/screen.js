@@ -103,14 +103,6 @@
     window.speechSynthesis.speak(utterance);
   }
 
-  function runInitialGreeting() {
-    const greeting = actions.find((item) => item.id === "hi") || actions[0];
-    if (!greeting) return;
-
-    const timer = window.setTimeout(() => runAction(greeting), 450);
-    activityTimers.push(timer);
-  }
-
   function setupPermissionGate() {
     permissionStart.addEventListener("click", async () => {
       permissionStart.disabled = true;
@@ -140,7 +132,7 @@
 
       voiceReady = true;
       permissionGate.classList.add("hidden");
-      runInitialGreeting();
+      renderIdle();
     });
   }
 
@@ -201,18 +193,20 @@
   }
 
   function renderIdle() {
-    setAgentState("idle", "Idle", "Waiting for the next scripted command.");
+    setAgentState("idle", "SnapKey AI Assistant", "Standing by for the next scripted command.");
     setVoiceMode("idle");
+    heardText.textContent = "Standing by...";
+    responseText.textContent = "SnapKey AI Assistant is ready.";
     scene.innerHTML = `
       <div class="idle-panel">
         <div>
-          <p class="eyebrow">System status</p>
-          <h2>Ready for the next shop command</h2>
+          <p class="eyebrow">SnapKey AI Assistant</p>
+          <h2>Standing by</h2>
         </div>
         <div class="metric-row">
-          <article><span>Today Sales</span><strong>Rs. 84,250</strong></article>
-          <article><span>Orders</span><strong>183</strong></article>
-          <article><span>Cameras</span><strong>${cameras.length || 5} Online</strong></article>
+          <article><span>Mode</span><strong>Presentation</strong></article>
+          <article><span>Status</span><strong>Ready</strong></article>
+          <article><span>Controls</span><strong>Live</strong></article>
         </div>
       </div>
     `;
