@@ -17,8 +17,6 @@
   let currentAudio = null;
   let activityTimers = [];
   let voiceReady = false;
-  let recognition = null;
-  let lastVoiceActionAt = 0;
 
   const scenes = {
     welcome: renderWelcome,
@@ -120,16 +118,7 @@
       permissionStart.disabled = true;
       permissionStart.textContent = "Starting...";
 
-      try {
-        if (navigator.mediaDevices?.getUserMedia) {
-          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-          stream.getTracks().forEach((track) => track.stop());
-        }
-        permissionNote.textContent = "Voice session is ready.";
-      } catch (error) {
-        console.warn("Microphone permission was not granted.", error);
-        permissionNote.textContent = "Microphone was skipped. Speaker audio will still be enabled.";
-      }
+      permissionNote.textContent = "Speaker audio is ready.";
 
       try {
         const unlockAudio = new Audio(actions[0]?.audio || "");
@@ -145,66 +134,7 @@
       voiceReady = true;
       permissionGate.classList.add("hidden");
       renderIdle();
-      setupVoiceCommands();
     });
-  }
-
-  function setupVoiceCommands() {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition || recognition) return;
-
-    recognition = new SpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = false;
-    recognition.lang = "en-IN";
-
-    recognition.addEventListener("result", (event) => {
-      const latest = event.results[event.results.length - 1];
-      const transcript = latest?.[0]?.transcript || "";
-      const action = matchVoiceAction(transcript);
-      if (!action) return;
-
-      const now = Date.now();
-      if (now - lastVoiceActionAt < 2200) return;
-      lastVoiceActionAt = now;
-      runAction(action);
-    });
-
-    recognition.addEventListener("end", () => {
-      if (!voiceReady) return;
-      window.setTimeout(() => {
-        try {
-          recognition.start();
-        } catch (error) {
-          console.warn("Voice command restart skipped.", error);
-        }
-      }, 600);
-    });
-
-    try {
-      recognition.start();
-      setAgentState("idle", "SnapKey AI Assistant", "Listening for fixed voice commands.");
-    } catch (error) {
-      console.warn("Voice command listener could not start.", error);
-    }
-  }
-
-  function matchVoiceAction(transcript) {
-    const spoken = normalizeCommand(transcript);
-    if (!spoken) return null;
-
-    return actions.find((action) => {
-      const phrases = [action.trigger, ...(action.aliases || [])].map(normalizeCommand);
-      return phrases.some((phrase) => phrase && (spoken.includes(phrase) || phrase.includes(spoken)));
-    });
-  }
-
-  function normalizeCommand(value) {
-    return String(value || "")
-      .toLowerCase()
-      .replace(/[^a-z0-9 ]/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
   }
 
   function clearActivityTimers() {

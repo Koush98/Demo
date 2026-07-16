@@ -1,0 +1,89 @@
+{
+  "project": "ABM Techno Matrix Private Limited social impact presentation visuals",
+  "version": "2026-07-16",
+  "globalStyle": {
+    "format": "16:9 widescreen presentation image",
+    "quality": "premium corporate documentary, realistic, polished, high detail",
+    "lighting": "warm natural light, clean highlights, professional contrast",
+    "palette": "deep navy, clean white, warm gold accents, natural skin tones, hopeful greens",
+    "brandTone": "credible, humane, responsible corporate citizenship, technology with social purpose",
+    "avoid": [
+      "cartoon",
+      "overly dramatic poverty imagery",
+      "political symbols",
+      "religious symbols",
+      "visible brand logos unless provided",
+      "distorted hands",
+      "unreadable text",
+      "fake watermarks",
+      "AI artifacts"
+    ],
+    "textGuidance": "Leave clean negative space for headline overlay. Do not generate long text inside the image."
+  },
+  "slides": [
+    {
+      "id": "csr_hero",
+      "title": "ABM Social Commitment Hero",
+      "screenUse": "Opening hero for ABM Techno Matrix Private Limited CSR section",
+      "headlineOverlay": "Technology with Social Responsibility",
+      "prompt": "A premium corporate social responsibility hero image showing ABM Techno Matrix style professionals standing with community volunteers, healthcare workers, students, and families in a modern Indian community setting. The image should feel hopeful, organized, and credible, with a subtle technology motif such as transparent data lines or dashboard-like light patterns in the background. Leave clean space at the top-left for headline overlay. Realistic photography, 16:9 widescreen, warm natural light, high-end corporate presentation quality.",
+      "negativePrompt": "No visible real logos, no political flags, no sad exploitation imagery, no chaotic crowd, no generated text blocks, no watermark."
+    },
+    {
+      "id": "food_camps",
+      "title": "Food For Needy",
+      "screenUse": "Impact slide for 2000 food camps in last 10 years",
+      "headlineOverlay": "2000+ Food Camps in 10 Years",
+      "prompt": "A dignified food distribution camp in India, volunteers serving fresh cooked meals and packed food to needy people in an orderly community service setup. Show compassion, respect, hygiene, and organization. Include ABM-like corporate volunteers in simple professional clothing, tables with food packets, families receiving meals with dignity, and a warm hopeful atmosphere. Leave negative space for a large impact number overlay. Realistic documentary photography, 16:9 widescreen, premium presentation look.",
+      "negativePrompt": "No messy food, no distressing poverty closeups, no crowd pushing, no visible real brand logos, no text banners, no watermark."
+    },
+    {
+      "id": "eye_testing_camps",
+      "title": "Eye Testing Camps",
+      "screenUse": "Healthcare slide for eye screening initiatives",
+      "headlineOverlay": "Running Eye Testing Camps",
+      "prompt": "A clean community eye testing camp with doctors and volunteers conducting vision screening for elderly people and children. Include eye chart, portable ophthalmic equipment, clean registration desk, and caring healthcare professionals. The environment should look organized, safe, and socially responsible. Realistic Indian community healthcare photography, 16:9 widescreen, soft daylight, premium corporate CSR style, space for headline overlay.",
+      "negativePrompt": "No surgical gore, no scary medical imagery, no cluttered room, no illegible text, no real hospital logo."
+    },
+    {
+      "id": "child_health_camps",
+      "title": "Child Health Camps",
+      "screenUse": "Healthcare slide for child welfare and health camps",
+      "headlineOverlay": "Child Health Camps",
+      "prompt": "A warm child health camp scene in India with pediatric health workers checking children, parents waiting calmly, volunteers assisting with registration, and a clean community medical setup. The mood should be reassuring, caring, and optimistic. Include simple medical tools, health awareness posters without readable text, and natural smiles. Realistic documentary style, 16:9 widescreen, polished corporate presentation image.",
+      "negativePrompt": "No sick or crying children as main focus, no needles closeup, no fear, no readable generated text, no logos, no watermark."
+    },
+    {
+      "id": "industrial_training",
+      "title": "Industrial Training",
+      "screenUse": "Education and skill development slide",
+      "headlineOverlay": "Industrial Training for College Pass Students",
+      "prompt": "A modern industrial training classroom and lab for college pass students in India, with young students learning from an instructor using computers, electronics, industrial automation equipment, and practical workshop tools. The atmosphere should feel aspirational, professional, and job-oriented. Include subtle technology visuals and clean training infrastructure. Realistic photo, 16:9 widescreen, premium corporate education style, space for headline overlay.",
+      "negativePrompt": "No messy classroom, no unsafe machinery, no fake text, no brand logos, no distorted equipment."
+    },
+    {
+      "id": "student_placements",
+      "title": "Student Placement Success",
+      "screenUse": "Impact slide for 500 students placed",
+      "headlineOverlay": "500 Students Placed in Good Companies",
+      "prompt": "A professional placement success scene showing trained young Indian students in formal attire receiving job offer letters or celebrating career placement with mentors. Include a modern office or training campus background, confident expressions, and a sense of upward mobility and dignity. Leave clean space for '500 students placed' overlay. Realistic premium corporate photography, 16:9 widescreen.",
+      "negativePrompt": "No fake company logos, no unreadable certificates, no exaggerated celebration, no watermark, no distorted faces."
+    },
+    {
+      "id": "partnerships",
+      "title": "Community Partnerships",
+      "screenUse": "Partnership slide for Lions Club International and Child Health Foundation association",
+      "headlineOverlay": "Partnerships for Lasting Social Impact",
+      "prompt": "A professional partnership and community service image showing corporate leaders, healthcare volunteers, and community representatives in a respectful collaboration setting. Include symbolic elements of healthcare, education, child welfare, and community development without using real logos. The scene should feel formal, trustworthy, and socially committed. Realistic corporate documentary photography, 16:9 widescreen, warm lighting, clean background for title overlay.",
+      "negativePrompt": "No real organization logos, no political symbols, no fake readable certificates, no clutter, no watermark."
+    },
+    {
+      "id": "excise_revenue_research",
+      "title": "West Bengal Excise Revenue Research",
+      "screenUse": "Live research/search screen background",
+      "headlineOverlay": "West Bengal Excise Revenue Research",
+      "prompt": "A professional live research dashboard visual showing a modern browser search and data analysis workspace about West Bengal excise revenue. Include abstract charts, revenue bars, a map-like outline motif, and official-document style panels without readable fake text. The design should look like a credible research command center, not a decorative website. 16:9 widescreen, clean corporate analytics style, deep navy and gold accents.",
+      "negativePrompt": "No actual government logo, no fake revenue number, no unreadable text paragraphs, no political imagery, no watermark."
+    }
+  ]
+}
