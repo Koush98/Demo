@@ -54,15 +54,23 @@
     setVoiceMode("listening");
     heardText.textContent = action.trigger;
     responseText.textContent = action.response;
+    const render = scenes[action.scene] || renderIdle;
+
+    if (action.presentationMode) {
+      render();
+      setAgentState("complete", "Presentation Mode", "Showing the selected slide presentation.");
+      setVoiceMode("complete");
+      playResponse(action);
+      return;
+    }
+
     renderProcessing(action);
     runActivity(action);
     playResponse(action);
 
     const timer = window.setTimeout(() => {
-      const render = scenes[action.scene] || renderIdle;
       render();
       setAgentState("complete", "Task Complete", "The requested screen is now live.");
-      openExternalAction(action);
     }, 1450);
     activityTimers.push(timer);
   }
@@ -80,15 +88,6 @@
       return;
     }
     playAudioQueue(queue, action.response, 0);
-  }
-
-  function openExternalAction(action) {
-    if (!action.externalUrl || action.externalMode !== "navigate") return;
-
-    const timer = window.setTimeout(() => {
-      window.location.href = action.externalUrl;
-    }, 900);
-    activityTimers.push(timer);
   }
 
   function playAudioQueue(queue, fallbackText, index) {
@@ -410,22 +409,21 @@
 
   function renderWebExcise() {
     const query = "last year web excise revenue";
-    const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
     scene.innerHTML = `
-      <section class="browser-screen">
+      <section class="browser-screen fake-research-screen">
         <div class="browser-top">
           <span></span><span></span><span></span>
-          <div>${url}</div>
+          <div>snapkey://live-research/west-bengal-excise-revenue</div>
         </div>
         <div class="browser-search">
-          <p class="eyebrow">Chrome Search</p>
+          <p class="eyebrow">Live Research</p>
           <h2>${query}</h2>
-          <a href="${url}" target="_blank" rel="noopener">Opening live search...</a>
+          <span>Searching public web sources and preparing a presentation summary...</span>
         </div>
         <div class="search-results">
-          <article><b>Excise revenue - latest official sources</b><span>The projector tab will navigate to the live Chrome search page.</span></article>
-          <article><b>Government revenue reports</b><span>Annual revenue, tax collection, and department updates.</span></article>
-          <article><b>Web excise analytics</b><span>Previous year trends and comparative summaries.</span></article>
+          <article><b>Query Parsed</b><span>West Bengal excise revenue, previous financial year.</span></article>
+          <article><b>Source Scan</b><span>Government revenue reports, department updates, and public finance summaries.</span></article>
+          <article><b>Live Summary</b><span>Result cards can be updated later with the final verified text.</span></article>
         </div>
       </section>
     `;
@@ -453,25 +451,12 @@
   function renderDonatingSociety() {
     const slides = getCsrSlides();
     scene.innerHTML = `
-      <section class="csr-impact-screen">
+      <section class="csr-impact-screen csr-presentation-screen">
         <div class="csr-backdrop" aria-hidden="true">
           ${slides.map((slide, index) => `
             <article class="csr-slide" style="--slide-image: url('${slide.image}'); --slide-tone: ${slide.tone}; --slide-delay: ${index * 7}s">
-              <div class="csr-slide-copy">
-                <span>${slide.metric}</span>
-                <strong>${slide.title}</strong>
-                <small>${slide.subtitle}</small>
-              </div>
             </article>
           `).join("")}
-        </div>
-        <div class="csr-content">
-          <p class="eyebrow">ABM Social Impact</p>
-          <h2>Community Development Initiatives</h2>
-          <p>Healthcare, food support, training, and student placement programs presented as a live impact story.</p>
-        </div>
-        <div class="csr-impact-strip" aria-hidden="true">
-          ${slides.map((slide) => `<span>${slide.title}</span>`).join("")}
         </div>
       </section>
     `;

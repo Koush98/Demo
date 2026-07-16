@@ -84,8 +84,6 @@ window.SNAPKEY_ACTIONS = [
     scene: "webExcise",
     steps: ["Search command received", "Opening browser workspace", "Searching excise revenue", "Results screen opened"],
     audio: "",
-    externalUrl: "https://www.google.com/search?q=last%20year%20web%20excise%20revenue",
-    externalMode: "navigate",
     aliases: ["show last year web excise revenue", "last year web excise revenue", "open chrome excise revenue", "search excise revenue"]
   },
   {
@@ -104,6 +102,7 @@ window.SNAPKEY_ACTIONS = [
     scene: "donatingSociety",
     steps: ["Society command received", "Loading donation records", "Preparing community metrics", "Society dashboard opened"],
     audio: "",
+    presentationMode: true,
     aliases: ["show donating society", "donating society", "open donating society"]
   }
 ];
