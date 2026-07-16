@@ -645,7 +645,11 @@
   }
 
   function getStandbySlides() {
-    return appConfig.standbySlides?.length ? appConfig.standbySlides : getCsrSlides();
+    const slidesById = new Map();
+    [...getCsrSlides(), ...(appConfig.standbySlides || [])].forEach((slide) => {
+      if (slide?.id && !slidesById.has(slide.id)) slidesById.set(slide.id, slide);
+    });
+    return Array.from(slidesById.values());
   }
 
   function renderWhatsapp() {

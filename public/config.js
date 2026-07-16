@@ -158,6 +158,38 @@ window.SNAPKEY_CONFIG = {
       metric: "500",
       image: "https://res.cloudinary.com/dhluqyjl5/image/upload/v1784206737/placed_pacydy.png",
       tone: "#6fd35f"
+    },
+    {
+      id: "abm",
+      title: "ABM Techno Matrix",
+      subtitle: "Technology, service, and business growth",
+      metric: "ABM",
+      image: "https://res.cloudinary.com/dhluqyjl5/image/upload/v1784233304/abm_meviav.png",
+      tone: "#e5b72f"
+    },
+    {
+      id: "madhushalapro",
+      title: "Madhushala Pro",
+      subtitle: "Smart software for wine shop operations",
+      metric: "Pro",
+      image: "https://res.cloudinary.com/dhluqyjl5/image/upload/v1784233302/madhusalapro_q39hnx.png",
+      tone: "#25b87b"
+    },
+    {
+      id: "abmai",
+      title: "ABM AI",
+      subtitle: "Automation-led business assistance",
+      metric: "AI",
+      image: "https://res.cloudinary.com/dhluqyjl5/image/upload/v1784233773/abmai_skp1w1.png",
+      tone: "#48a7ff"
+    },
+    {
+      id: "thanku",
+      title: "Thank You",
+      subtitle: "For the opportunity to serve",
+      metric: "Thanks",
+      image: "https://res.cloudinary.com/dhluqyjl5/image/upload/v1784233310/thanku_p0q8qv.png",
+      tone: "#f0c935"
     }
   ],
 
