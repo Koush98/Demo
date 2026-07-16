@@ -1578,6 +1578,160 @@ h2 {
   color: #1d1602;
 }
 
+.sales-report-screen {
+  grid-template-rows: auto auto minmax(0, 0.85fr) minmax(0, 1.1fr);
+  gap: 14px;
+  background:
+    linear-gradient(180deg, #ffffff, #f6f7f9),
+    radial-gradient(circle at 80% 10%, rgba(201, 162, 39, 0.16), transparent 28%);
+}
+
+.sales-report-screen .command-hero h2 {
+  font-size: clamp(30px, 4.2vw, 58px);
+}
+
+.sales-report-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.55fr);
+  gap: 14px;
+  min-height: 0;
+}
+
+.sales-chart-panel,
+.sales-donut-panel {
+  display: grid;
+  min-height: 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fffdf4;
+}
+
+.sales-chart-panel {
+  gap: 12px;
+}
+
+.sales-chart-panel h3 {
+  font-size: 20px;
+}
+
+.sales-category-chart {
+  display: grid;
+  gap: 10px;
+  align-content: center;
+}
+
+.sales-category-row {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr) 120px;
+  gap: 12px;
+  align-items: center;
+}
+
+.sales-category-row span,
+.sales-category-row strong {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.sales-category-row div {
+  height: 18px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #ebe7d3;
+}
+
+.sales-category-row i {
+  display: block;
+  width: var(--w);
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--gold), var(--green));
+  animation: salesBarGrow 780ms ease-out both;
+}
+
+.sales-donut-panel {
+  place-items: center;
+  gap: 14px;
+}
+
+.sales-donut {
+  display: grid;
+  width: min(21vw, 220px);
+  aspect-ratio: 1;
+  place-items: center;
+  align-content: center;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, #fffdf4 0 54%, transparent 55%),
+    conic-gradient(var(--gold) 0 var(--beer), var(--green) 0 100%);
+  box-shadow: inset 0 0 0 1px var(--line), 0 18px 36px rgba(7, 19, 35, 0.1);
+}
+
+.sales-donut strong {
+  font-size: clamp(20px, 2.2vw, 30px);
+}
+
+.sales-donut span {
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.sales-mini-ledger {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  width: 100%;
+  gap: 8px 14px;
+  font-size: 13px;
+}
+
+.sales-mini-ledger span {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.sales-mini-ledger b {
+  text-align: right;
+}
+
+.sales-report-table {
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.sales-report-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: clamp(11px, 0.9vw, 14px);
+}
+
+.sales-report-table th,
+.sales-report-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid #e4e5e8;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.sales-report-table th {
+  background: #ff784e;
+  color: #ffffff;
+  font-weight: 900;
+}
+
+.sales-report-table td {
+  color: #111827;
+  font-weight: 800;
+}
+
+.sales-report-table td:nth-child(n+3),
+.sales-report-table th:nth-child(n+3) {
+  text-align: right;
+}
+
 .report-board {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -2296,6 +2450,17 @@ th {
   }
 }
 
+@keyframes salesBarGrow {
+  from {
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+  to {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+}
+
 @keyframes standbyDrift {
   0%,
   100% {
@@ -2954,6 +3119,29 @@ body.screen-page {
   font-size: clamp(32px, 4.2vw, 62px) !important;
 }
 
+.screen-page .sales-report-screen {
+  grid-template-rows: auto auto minmax(0, 0.8fr) minmax(0, 1.2fr) !important;
+  gap: 10px !important;
+}
+
+.screen-page .sales-report-layout {
+  min-height: 0 !important;
+}
+
+.screen-page .sales-chart-panel,
+.screen-page .sales-donut-panel {
+  padding: 12px !important;
+}
+
+.screen-page .sales-category-chart {
+  gap: 7px !important;
+}
+
+.screen-page .sales-report-table th,
+.screen-page .sales-report-table td {
+  padding: 6px 8px !important;
+}
+
 .screen-page .command-kpis article,
 .screen-page .command-grid article,
 .screen-page .report-board article,
@@ -3121,8 +3309,17 @@ body.screen-page {
   .screen-page .module-strip,
   .screen-page .report-board,
   .screen-page .social-columns,
+  .screen-page .sales-report-layout,
   .screen-page .sales-bars {
     grid-template-columns: 1fr !important;
+  }
+
+  .screen-page .sales-category-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .screen-page .sales-report-table {
+    overflow-x: auto !important;
   }
 
   .screen-page .sales-bars {

@@ -74,7 +74,11 @@
     }
 
     if (currentAudio) currentAudio.pause();
-    const queue = action.audioQueue && action.audioQueue.length ? action.audioQueue : [action.audio];
+    const queue = (action.audioQueue && action.audioQueue.length ? action.audioQueue : [action.audio]).filter(Boolean);
+    if (!queue.length) {
+      setVoiceMode("complete");
+      return;
+    }
     playAudioQueue(queue, action.response, 0);
   }
 
@@ -98,19 +102,9 @@
     currentAudio.addEventListener("play", () => setVoiceMode("speaking"));
     currentAudio.addEventListener("ended", () => playAudioQueue(queue, fallbackText, index + 1));
     currentAudio.play().catch(() => {
-      speakFallback(fallbackText);
+      console.warn("Recorded voice could not play; browser speech fallback is disabled.", fallbackText);
+      setVoiceMode("complete");
     });
-  }
-
-  function speakFallback(text) {
-    if (!("speechSynthesis" in window)) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.95;
-    utterance.pitch = 0.9;
-    utterance.onstart = () => setVoiceMode("speaking");
-    utterance.onend = () => setVoiceMode("complete");
-    window.speechSynthesis.speak(utterance);
   }
 
   function setupPermissionGate() {
@@ -307,25 +301,88 @@
   }
 
   function renderSales() {
+    const rows = [
+      { item: "5000(B)500ML", category: "BEER MADE IN INDIA", sold: 96, unit: 110, gross: 10560, discount: 0, net: 10560 },
+      { item: "5000(B)650ML", category: "BEER MADE IN INDIA", sold: 2, unit: 148, gross: 296, discount: 0, net: 296 },
+      { item: "5000(B)650ML", category: "BEER MADE IN INDIA", sold: 10, unit: 150, gross: 1500, discount: 0, net: 1500 },
+      { item: "BACARDI LIMON(R)375ML", category: "IMFL RUM", sold: 1, unit: 530, gross: 530, discount: 0, net: 530 },
+      { item: "BACARDI MANGO CHILLI(R)180ML", category: "IMFL RUM", sold: 8, unit: 287, gross: 2296, discount: 0, net: 2296 },
+      { item: "BACARDI MANGO CHILLI(R)180ML", category: "IMFL RUM", sold: 2, unit: 290, gross: 580, discount: 0, net: 580 },
+      { item: "BACARDI MANGO CHILLI(R)375ML", category: "IMFL RUM", sold: 6, unit: 524, gross: 3144, discount: 0, net: 3144 },
+      { item: "BACARDI MANGO CHILLI(R)375ML", category: "IMFL RUM", sold: 1, unit: 530, gross: 530, discount: 0, net: 530 },
+      { item: "BACARDI MANGO CHILLI(R)750ML", category: "IMFL RUM", sold: 1, unit: 1000, gross: 1000, discount: 0, net: 1000 },
+      { item: "BACARDI(R)180ML", category: "IMFL RUM", sold: 1, unit: 280, gross: 280, discount: 0, net: 280 }
+    ];
+    const money = (value) => value.toLocaleString("en-IN");
+    const totals = rows.reduce((summary, row) => {
+      summary.items += row.sold;
+      summary.gross += row.gross;
+      summary.discount += row.discount;
+      summary.net += row.net;
+      summary.categories[row.category] = (summary.categories[row.category] || 0) + row.net;
+      return summary;
+    }, { items: 0, gross: 0, discount: 0, net: 0, categories: {} });
+    const categoryRows = Object.entries(totals.categories);
+    const maxCategory = Math.max(...categoryRows.map(([, value]) => value));
+    const topRow = rows.reduce((top, row) => row.sold > top.sold ? row : top, rows[0]);
+
     scene.innerHTML = `
-      <section class="command-screen sales-view">
+      <section class="command-screen sales-view sales-report-screen">
         <div class="command-hero">
-          <p class="eyebrow">Sales</p>
-          <h2>Live Sales Performance</h2>
-          <span>Current billing and category movement</span>
+          <p class="eyebrow">Sales report</p>
+          <h2>Item Wise Sales Performance</h2>
+          <span>Live alcohol sales summary generated from item-wise report data</span>
         </div>
         <div class="command-kpis">
-          <article><span>Net Sales</span><strong>Rs. 84,250</strong></article>
-          <article><span>Bills</span><strong>183</strong></article>
-          <article><span>Avg Bill</span><strong>Rs. 460</strong></article>
-          <article><span>Top Item</span><strong>Kingfisher</strong></article>
+          <article><span>Net Total</span><strong>Rs. ${money(totals.net)}</strong></article>
+          <article><span>Items Sold</span><strong>${money(totals.items)}</strong></article>
+          <article><span>Gross Sales</span><strong>Rs. ${money(totals.gross)}</strong></article>
+          <article><span>Top Item</span><strong>${topRow.item}</strong></article>
         </div>
-        <div class="sales-bars">
-          <span style="--h: 74%"><b>Beer</b></span>
-          <span style="--h: 62%"><b>Whisky</b></span>
-          <span style="--h: 34%"><b>Vodka</b></span>
-          <span style="--h: 28%"><b>Rum</b></span>
-          <span style="--h: 18%"><b>Wine</b></span>
+        <div class="sales-report-layout">
+          <article class="sales-chart-panel">
+            <h3>Category Net Sales</h3>
+            <div class="sales-category-chart">
+              ${categoryRows.map(([category, value]) => `
+                <div class="sales-category-row">
+                  <span>${category}</span>
+                  <div><i style="--w: ${(value / maxCategory) * 100}%"></i></div>
+                  <strong>Rs. ${money(value)}</strong>
+                </div>
+              `).join("")}
+            </div>
+          </article>
+          <article class="sales-donut-panel">
+            <div class="sales-donut" style="--beer: ${(totals.categories["BEER MADE IN INDIA"] / totals.net) * 100}%">
+              <strong>Rs. ${money(totals.net)}</strong>
+              <span>Net Total</span>
+            </div>
+            <div class="sales-mini-ledger">
+              <span>Discounts</span><b>Rs. ${money(totals.discount)}</b>
+              <span>Rows Scanned</span><b>${rows.length}</b>
+              <span>Report Type</span><b>Item Wise</b>
+            </div>
+          </article>
+        </div>
+        <div class="sales-report-table">
+          <table>
+            <thead>
+              <tr><th>Item Name</th><th>Category</th><th>Items Sold</th><th>Unit Price</th><th>Gross Sales</th><th>Discounts</th><th>Net Total</th></tr>
+            </thead>
+            <tbody>
+              ${rows.map((row) => `
+                <tr>
+                  <td>${row.item}</td>
+                  <td>${row.category}</td>
+                  <td>${row.sold}</td>
+                  <td>${money(row.unit)}</td>
+                  <td>${money(row.gross)}</td>
+                  <td>${money(row.discount)}</td>
+                  <td>${money(row.net)}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
         </div>
       </section>
     `;
