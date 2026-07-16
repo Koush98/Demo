@@ -1,5 +1,15 @@
 window.SNAPKEY_ACTIONS = [
   {
+    id: "introduction",
+    trigger: "Start introduction",
+    response: "Playing SnapKey introduction.",
+    scene: "introduction",
+    steps: ["Introduction selected", "Voiceover ready", "ABM and Madhushala context loaded", "Presentation opening"],
+    audio: "assets/videos/intro-bengali.mp3",
+    returnToIdleOnAudioEnd: true,
+    aliases: ["start introduction", "play introduction", "about us", "introduce snapkey"]
+  },
+  {
     id: "hi",
     trigger: "Hi SnapKey",
     response: "Hello Mr. Tiwari, how can I help you?",

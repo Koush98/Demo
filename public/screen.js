@@ -23,6 +23,7 @@
   let csrTransitionTimer = null;
 
   const scenes = {
+    introduction: renderIntroduction,
     welcome: renderWelcome,
     cameras: renderCameras,
     camera2: renderCamera2,
@@ -115,21 +116,25 @@
       setVoiceMode("complete");
       return;
     }
-    playAudioQueue(queue, action.response, 0);
+    playAudioQueue(queue, action, 0);
   }
 
-  function playAudioQueue(queue, fallbackText, index) {
+  function playAudioQueue(queue, action, index) {
     if (!queue[index]) {
       setVoiceMode("complete");
+      if (action.returnToIdleOnAudioEnd) {
+        const timer = window.setTimeout(() => renderIdle(), 900);
+        activityTimers.push(timer);
+      }
       return;
     }
 
     currentAudio = new Audio(queue[index]);
     currentAudio.volume = 1;
     currentAudio.addEventListener("play", () => setVoiceMode("speaking"));
-    currentAudio.addEventListener("ended", () => playAudioQueue(queue, fallbackText, index + 1));
+    currentAudio.addEventListener("ended", () => playAudioQueue(queue, action, index + 1));
     currentAudio.play().catch(() => {
-      console.warn("Recorded voice could not play; browser speech fallback is disabled.", fallbackText);
+      console.warn("Recorded voice could not play; browser speech fallback is disabled.", action.response);
       setVoiceMode("complete");
     });
   }
@@ -270,6 +275,26 @@
 
   function renderCamera2() {
     renderSingleCamera("camera2");
+  }
+
+  function renderIntroduction() {
+    scene.innerHTML = `
+      <section class="intro-screen">
+        <div class="intro-backdrop" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="intro-voice-core" aria-hidden="true">
+          <div class="intro-ring"></div>
+          <div class="intro-ring two"></div>
+          <div class="intro-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="intro-copy">
+          <p class="eyebrow">ABM Techno Matrix</p>
+          <h2>SnapKey Assistant</h2>
+          <span>Madhushala software presentation opening</span>
+        </div>
+      </section>
+    `;
   }
 
   function renderSingleCamera(cameraId) {
