@@ -93,8 +93,7 @@
   });
 
   function runAction(action) {
-    const isVideoPresentation = action.scene?.startsWith("videoPresentation");
-    clearActivityTimers({ stopPresentation: !isVideoPresentation });
+    clearActivityTimers();
     setVoiceMode("listening");
     heardText.textContent = action.trigger;
     responseText.textContent = action.response;
@@ -180,11 +179,11 @@
     });
   }
 
-  function clearActivityTimers(options = {}) {
-    const { stopPresentation = true } = options;
+  function clearActivityTimers() {
     activityTimers.forEach((timer) => window.clearTimeout(timer));
     activityTimers = [];
-    if (stopPresentation) stopPresentationVideo();
+    stopAllSceneMedia();
+    stopPresentationVideo();
     if (currentStandbyVideo) {
       currentStandbyVideo.muted = true;
       currentStandbyVideo.pause();
@@ -199,6 +198,15 @@
     currentPresentationVideo.removeAttribute("src");
     currentPresentationVideo.load();
     currentPresentationVideo = null;
+  }
+
+  function stopAllSceneMedia() {
+    scene.querySelectorAll("video, audio").forEach((media) => {
+      media.muted = true;
+      media.pause();
+      media.removeAttribute("src");
+      media.load();
+    });
   }
 
   function setAgentState(state, title, detail) {
@@ -592,20 +600,13 @@
 
   function renderVideoPresentation(videoId) {
     const video = presentationVideos.find((item) => item.id === videoId) || presentationVideos[0] || {};
-    const previousVideo = scene.querySelector(".presentation-video");
-    const previousSrc = previousVideo?.currentSrc || previousVideo?.src || "";
-    const hasPreviousVideo = currentSceneName?.startsWith("videoPresentation") && previousSrc && previousSrc !== video.video;
-    if (previousVideo) {
-      previousVideo.muted = true;
-      previousVideo.pause();
-    }
+    stopAllSceneMedia();
     stopPresentationVideo();
     const poster = videoPosterFromUrl(video.video);
-    const outgoingPoster = videoPosterFromUrl(previousSrc);
     scene.innerHTML = `
-      <section class="video-presentation-screen ${hasPreviousVideo ? "has-outgoing" : ""}" style="--video-poster: url('${poster}')">
-        ${hasPreviousVideo ? `<div class="presentation-video outgoing visual-only" style="--outgoing-video-image: url('${outgoingPoster}')"></div>` : ""}
+      <section class="video-presentation-screen" style="--video-poster: url('${poster}')">
         ${video.video ? `
+          <div class="video-loading-indicator">Loading video...</div>
           <video class="presentation-video incoming" src="${video.video}" poster="${poster}" autoplay playsinline preload="auto"></video>
         ` : `
           <div class="video-placeholder">
@@ -881,19 +882,28 @@
       video.volume = 1;
       video.muted = false;
       video.currentTime = 0;
+      const shell = video.closest(".video-presentation-screen");
       video.addEventListener("ended", () => {
         video.pause();
         video.classList.add("ended");
       });
-      video.addEventListener("loadeddata", () => video.classList.add("ready"));
+      video.addEventListener("loadeddata", () => {
+        video.classList.add("ready");
+        shell?.classList.add("video-ready");
+      });
+      video.addEventListener("playing", () => shell?.classList.add("video-ready"));
       video.addEventListener("error", () => {
         video.muted = true;
         video.pause();
         video.classList.add("playback-error");
+        shell?.classList.add("video-error");
       });
       video.play().catch(() => {
-        video.muted = true;
-        video.play().catch(() => {});
+        video.load();
+        video.play().catch(() => {
+          video.muted = true;
+          video.play().catch(() => shell?.classList.add("video-error"));
+        });
       });
     });
   }
