@@ -196,6 +196,22 @@ window.SNAPKEY_CONFIG = {
       metric: "Thanks",
       image: "https://res.cloudinary.com/dhluqyjl5/image/upload/v1784233310/thanku_p0q8qv.png",
       tone: "#f0c935"
+    },
+    {
+      id: "innagoration",
+      title: "Inauguration",
+      subtitle: "Opening ceremony and milestone moment",
+      metric: "Launch",
+      image: "https://res.cloudinary.com/dhluqyjl5/image/upload/v1784271312/innagoration_hs4fcb.png",
+      tone: "#e5b72f"
+    },
+    {
+      id: "ganesh",
+      title: "Ganesh Blessings",
+      subtitle: "Auspicious beginning and positive energy",
+      metric: "Blessings",
+      image: "https://res.cloudinary.com/dhluqyjl5/image/upload/v1784271305/ganesh_wb40lf.png",
+      tone: "#f0c935"
     }
   ],
 
