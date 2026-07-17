@@ -3833,12 +3833,12 @@ body.screen-page {
   gap: 10px !important;
   min-height: 54px !important;
   margin: 0 !important;
-  padding: 8px 12px !important;
-  border: 1px solid rgba(36, 29, 10, 0.12) !important;
+  /* padding: 8px 12px !important; */
+  border: none !important;
   border-radius: 8px !important;
-  background: rgba(255, 255, 255, 0.9) !important;
-  box-shadow: 0 10px 28px rgba(7, 19, 35, 0.12) !important;
-  backdrop-filter: blur(8px) !important;
+  background: transparent !important;
+  color: #fff !important;
+  /* box-shadow: 0 10px 28px rgba(7, 19, 35, 0.12) !important; */
 }
 
 .screen-page .assistant-line span {
