@@ -76,10 +76,16 @@
       return;
     }
     if (payload.csrSlideId) {
+      clearActivityTimers();
+      if (currentAudio) currentAudio.pause();
       if (currentSceneName === "donatingSociety") {
         updateCsrSlide(payload.csrSlideId);
       } else {
         activeCsrSlideId = payload.csrSlideId;
+        renderDonatingSociety(activeCsrSlideId);
+        currentSceneName = "donatingSociety";
+        setAgentState("complete", "Image Slides", "Showing selected image slide.");
+        setVoiceMode("complete");
       }
       return;
     }
@@ -609,7 +615,7 @@
   }
 
   function renderDonatingSociety(selectedSlideId) {
-    const slides = getCsrSlides();
+    const slides = getManualSlides();
     const activeSlide = selectedSlideId || activeCsrSlideId || slides[0]?.id;
     activeCsrSlideId = activeSlide;
     scene.innerHTML = `
@@ -657,7 +663,7 @@
   }
 
   function updateCsrSlide(nextSlideId) {
-    const slides = getCsrSlides();
+    const slides = getManualSlides();
     if (!nextSlideId || nextSlideId === activeCsrSlideId) return;
 
     const currentId = activeCsrSlideId || slides[0]?.id;
@@ -701,6 +707,10 @@
 
   function getCsrSlides() {
     return appConfig.csrSlides || [];
+  }
+
+  function getManualSlides() {
+    return [...getCsrSlides(), ...(appConfig.manualOnlySlides || [])];
   }
 
   function getStandbySlides() {

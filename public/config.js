@@ -215,5 +215,16 @@ window.SNAPKEY_CONFIG = {
     }
   ],
 
+  manualOnlySlides: [
+    {
+      id: "website",
+      title: "Website",
+      subtitle: "Website presentation screen",
+      metric: "Web",
+      image: "assets/images/website.png",
+      tone: "#48a7ff"
+    }
+  ],
+
   channelPath: "Demo/currentAction"
 };

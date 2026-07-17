@@ -10,7 +10,10 @@
   const pauseVoice = document.getElementById("pauseVoice");
   const csrSlideList = document.getElementById("csrSlideList");
   const cameraControlList = document.getElementById("cameraControlList");
-  const csrSlides = window.SNAPKEY_CONFIG?.csrSlides || [];
+  const csrSlides = [
+    ...(window.SNAPKEY_CONFIG?.csrSlides || []),
+    ...(window.SNAPKEY_CONFIG?.manualOnlySlides || [])
+  ];
   const cameras = window.SNAPKEY_CONFIG?.cameras || [];
   const imageSlidesAction = actions.find((action) => action.id === "donating-society");
   const cameraWallAction = actions.find((action) => action.id === "shop-cameras");
