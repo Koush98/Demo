@@ -174,5 +174,16 @@ window.SNAPKEY_ACTIONS = [
     presentationMode: true,
     group: "videos",
     aliases: ["play video 3", "play lions video", "show lions video"]
+  },
+  {
+    id: "presentation-video-4",
+    trigger: "Play KSL video",
+    response: "Opening KSL presentation video.",
+    scene: "videoPresentation4",
+    steps: ["Video command received", "Preparing media player", "Loading Cloudinary stream", "Video screen opened"],
+    audio: "",
+    presentationMode: true,
+    group: "videos",
+    aliases: ["play video 4", "play ksl video", "show ksl video"]
   }
 ];

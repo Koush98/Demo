@@ -42,7 +42,8 @@
     donatingSociety: renderDonatingSociety,
     videoPresentation1: () => renderVideoPresentation("video1"),
     videoPresentation2: () => renderVideoPresentation("video2"),
-    videoPresentation3: () => renderVideoPresentation("video3")
+    videoPresentation3: () => renderVideoPresentation("video3"),
+    videoPresentation4: () => renderVideoPresentation("video4")
   };
 
   try {

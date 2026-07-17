@@ -84,6 +84,12 @@ window.SNAPKEY_CONFIG = {
       title: "Lions Association",
       subtitle: "Community service presentation",
       video: "https://res.cloudinary.com/dhluqyjl5/video/upload/v1784236804/lions_v2mrzf.mp4"
+    },
+    {
+      id: "video4",
+      title: "KSL Video",
+      subtitle: "KSL presentation video",
+      video: "https://res.cloudinary.com/dhluqyjl5/video/upload/v1784266177/KSL_b7npbp.mp4"
     }
   ],
 
