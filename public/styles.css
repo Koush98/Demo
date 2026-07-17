@@ -1699,6 +1699,7 @@ h2 {
   object-fit: contain;
   background: #05070b;
   margin: auto;
+  width: 100%;
 }
 
 .assistant-standby.video-mode .standby-video-stage {
