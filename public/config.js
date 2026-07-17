@@ -77,7 +77,7 @@ window.SNAPKEY_CONFIG = {
       id: "video2",
       title: "ABM Video 2",
       subtitle: "ABM Techno Matrix showcase",
-      video: "https://res.cloudinary.com/dhluqyjl5/video/upload/v1784236704/abm2_b9vwts.mp4"
+      video: "https://res.cloudinary.com/dhluqyjl5/video/upload/v1784259793/abmnew_jn1blz.mp4"
     },
     {
       id: "video3",
